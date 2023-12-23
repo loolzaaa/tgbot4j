@@ -36,5 +36,5 @@ public class ShippingQuery {
      * User specified shipping address
      */
     @JsonProperty("shipping_address")
-    private ShippingAffress shippingAffress;
+    private ShippingAddress shippingAddress;
 }
