@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a result of an inline query
+ * Represents a {@link InlineQueryResult} of an inline query
  * that was chosen by the user
  * and sent to their chat partner.
  *
