@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.EditMessageText;
 import ru.loolzaaa.tgbot4j.core.api.SetGameScore;
+import ru.loolzaaa.tgbot4j.core.api.methods.EditMessageText;
 
 import java.util.List;
 
