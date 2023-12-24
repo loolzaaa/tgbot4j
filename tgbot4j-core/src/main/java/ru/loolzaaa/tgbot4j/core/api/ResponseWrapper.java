@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.ResponseParameters;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonResponse<T> {
+public class ResponseWrapper {
     /**
      * This field indicates the success of the request
      */
@@ -41,5 +42,5 @@ public class CommonResponse<T> {
      * Result of the query
      */
     @JsonProperty("result")
-    private T result;
+    private JsonNode result;
 }
