@@ -58,4 +58,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = InlineQueryResultVoice.class, name = "voice"),
 })
 public interface InlineQueryResult {
+    //TODO: same type property values for simple and cached types
 }
