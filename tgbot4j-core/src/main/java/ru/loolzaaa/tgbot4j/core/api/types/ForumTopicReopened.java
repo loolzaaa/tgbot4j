@@ -1,6 +1,5 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//TODO: @AllArgsConstructor
 public class ForumTopicReopened {
 }
