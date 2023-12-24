@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultCachedVideo {
+public class InlineQueryResultCachedVideo implements InlineQueryResult {
     /**
      * Type of the result, must be video
      */

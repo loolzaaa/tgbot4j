@@ -13,7 +13,7 @@ import ru.loolzaaa.tgbot4j.core.api.AnswerWebAppQuery;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuButtonWebApp {
+public class MenuButtonWebApp implements MenuButton {
     /**
      * Type of the button, must be web_app
      */

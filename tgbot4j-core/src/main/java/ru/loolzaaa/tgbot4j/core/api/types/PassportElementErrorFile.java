@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorFile {
+public class PassportElementErrorFile implements PassportElementError {
     /**
      * Error source, must be file
      */

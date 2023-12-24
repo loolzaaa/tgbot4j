@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MenuButtonDefault {
+public class MenuButtonDefault implements MenuButton {
     /**
      * Type of the button, must be default
      */

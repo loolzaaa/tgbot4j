@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMemberBanned {
+public class ChatMemberBanned implements ChatMember {
     /**
      * The member's status in the chat, always “kicked”
      */

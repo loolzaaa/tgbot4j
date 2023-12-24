@@ -1,8 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * This object represents the content of a media message
@@ -16,8 +15,13 @@ import lombok.NoArgsConstructor;
  * </ul>
  */
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class InputMedia {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InputMediaAnimation.class, name = "animation"),
+        @JsonSubTypes.Type(value = InputMediaDocument.class, name = "document"),
+        @JsonSubTypes.Type(value = InputMediaAudio.class, name = "audio"),
+        @JsonSubTypes.Type(value = InputMediaPhoto.class, name = "photo"),
+        @JsonSubTypes.Type(value = InputMediaVideo.class, name = "video"),
+})
+public interface InputMedia {
 }

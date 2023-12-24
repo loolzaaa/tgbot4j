@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorFrontSide {
+public class PassportElementErrorFrontSide implements PassportElementError {
     /**
      * Error source, must be front_side
      */

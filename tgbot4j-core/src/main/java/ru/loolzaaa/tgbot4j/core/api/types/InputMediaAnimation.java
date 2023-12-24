@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputMediaAnimation {
+public class InputMediaAnimation implements InputMedia {
     /**
      * Type of the result, must be animation
      */

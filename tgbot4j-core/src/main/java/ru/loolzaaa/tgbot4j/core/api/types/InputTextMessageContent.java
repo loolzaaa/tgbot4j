@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputTextMessageContent {
+public class InputTextMessageContent implements InputMessageContent {
     /**
      * Text of the message to be sent, 1-4096 characters
      */

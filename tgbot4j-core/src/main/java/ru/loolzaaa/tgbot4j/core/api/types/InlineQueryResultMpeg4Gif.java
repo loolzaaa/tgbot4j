@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultMpeg4Gif {
+public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
     /**
      * Type of the result, must be mpeg4_gif
      */

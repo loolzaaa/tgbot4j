@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultGame {
+public class InlineQueryResultGame implements InlineQueryResult {
     /**
      * Type of the result, must be game
      */

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultArticle {
+public class InlineQueryResultArticle implements InlineQueryResult {
     /**
      * Type of the result, must be article
      */

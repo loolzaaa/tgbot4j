@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultVoice {
+public class InlineQueryResultVoice implements InlineQueryResult {
     /**
      * Type of the result, must be voice
      */

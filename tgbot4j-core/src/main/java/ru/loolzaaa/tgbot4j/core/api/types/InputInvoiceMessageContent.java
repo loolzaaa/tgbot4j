@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputInvoiceMessageContent {
+public class InputInvoiceMessageContent implements InputMessageContent {
     /**
      * Product name, 1-32 characters
      */

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultLocation {
+public class InlineQueryResultLocation implements InlineQueryResult {
     /**
      * Type of the result, must be location
      */

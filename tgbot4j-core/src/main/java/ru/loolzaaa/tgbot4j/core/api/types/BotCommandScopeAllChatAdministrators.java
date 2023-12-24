@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BotCommandScopeAllChatAdministrators {
+public class BotCommandScopeAllChatAdministrators implements BotCommandScope {
     /**
      * Scope type, must be all_chat_administrators
      */

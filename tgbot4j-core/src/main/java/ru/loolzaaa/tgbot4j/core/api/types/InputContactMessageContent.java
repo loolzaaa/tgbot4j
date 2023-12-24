@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputContactMessageContent {
+public class InputContactMessageContent implements InputMessageContent {
     /**
      * Contact's phone number
      */

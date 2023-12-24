@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMemberAdministrator {
+public class ChatMemberAdministrator implements ChatMember {
     /**
      * The member's status in the chat, always “administrator”
      */

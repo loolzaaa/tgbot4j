@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMemberOwner {
+public class ChatMemberOwner implements ChatMember {
     /**
      * The member's status in the chat, always “creator”
      */

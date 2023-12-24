@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultCachedPhoto {
+public class InlineQueryResultCachedPhoto implements InlineQueryResult {
     /**
      * Type of the result, must be photo
      */

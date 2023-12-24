@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultDocument {
+public class InlineQueryResultDocument implements InlineQueryResult {
     /**
      * Type of the result, must be document
      */

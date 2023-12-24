@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputMediaVideo {
+public class InputMediaVideo implements InputMedia {
     /**
      * Type of the result, must be video
      */

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorDataField {
+public class PassportElementErrorDataField implements PassportElementError {
     /**
      * Error source, must be data
      */

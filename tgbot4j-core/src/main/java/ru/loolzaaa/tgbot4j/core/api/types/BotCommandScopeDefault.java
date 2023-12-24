@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BotCommandScopeDefault {
+public class BotCommandScopeDefault implements BotCommandScope {
     /**
      * Scope type, must be default
      */

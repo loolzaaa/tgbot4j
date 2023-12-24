@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultContact {
+public class InlineQueryResultContact implements InlineQueryResult {
     /**
      * Type of the result, must be contact
      */

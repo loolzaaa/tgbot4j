@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorUnspecified {
+public class PassportElementErrorUnspecified implements PassportElementError {
     /**
      * Error source, must be unspecified
      */

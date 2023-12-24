@@ -1,8 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * This object describes the bot's menu button in a private chat.
@@ -17,8 +16,11 @@ import lombok.NoArgsConstructor;
  * By default, the menu button opens the list of bot commands.
  */
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class MenuButton {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = MenuButtonCommands.class, name = "commands"),
+        @JsonSubTypes.Type(value = MenuButtonWebApp.class, name = "web_app"),
+        @JsonSubTypes.Type(value = MenuButtonDefault.class, name = "default"),
+})
+public interface MenuButton {
 }

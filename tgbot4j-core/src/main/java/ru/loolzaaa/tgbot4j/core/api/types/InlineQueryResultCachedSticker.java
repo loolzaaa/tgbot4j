@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultCachedSticker {
+public class InlineQueryResultCachedSticker implements InlineQueryResult {
     /**
      * Type of the result, must be sticker
      */

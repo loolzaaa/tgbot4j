@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorFiles {
+public class PassportElementErrorFiles implements PassportElementError {
     /**
      * Error source, must be files
      */

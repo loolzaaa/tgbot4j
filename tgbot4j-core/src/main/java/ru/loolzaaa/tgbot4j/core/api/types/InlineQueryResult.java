@@ -1,8 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * This object represents one result of an inline query.
@@ -35,8 +34,28 @@ import lombok.NoArgsConstructor;
  * must be assumed to be <b>public</b>.
  */
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class InlineQueryResult {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InlineQueryResultCachedAudio.class, name = "audio"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedDocument.class, name = "document"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedGif.class, name = "gif"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedMpeg4Gif.class, name = "mpeg4_gif"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedPhoto.class, name = "photo"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedSticker.class, name = "sticker"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedVideo.class, name = "video"),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedVoice.class, name = "voice"),
+        @JsonSubTypes.Type(value = InlineQueryResultArticle.class, name = "article"),
+        @JsonSubTypes.Type(value = InlineQueryResultAudio.class, name = "audio"),
+        @JsonSubTypes.Type(value = InlineQueryResultContact.class, name = "contact"),
+        @JsonSubTypes.Type(value = InlineQueryResultGame.class, name = "game"),
+        @JsonSubTypes.Type(value = InlineQueryResultDocument.class, name = "document"),
+        @JsonSubTypes.Type(value = InlineQueryResultGif.class, name = "gif"),
+        @JsonSubTypes.Type(value = InlineQueryResultLocation.class, name = "location"),
+        @JsonSubTypes.Type(value = InlineQueryResultMpeg4Gif.class, name = "mpeg4_gif"),
+        @JsonSubTypes.Type(value = InlineQueryResultPhoto.class, name = "photo"),
+        @JsonSubTypes.Type(value = InlineQueryResultVenue.class, name = "venue"),
+        @JsonSubTypes.Type(value = InlineQueryResultVideo.class, name = "video"),
+        @JsonSubTypes.Type(value = InlineQueryResultVoice.class, name = "voice"),
+})
+public interface InlineQueryResult {
 }

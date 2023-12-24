@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputVenueMessageContent {
+public class InputVenueMessageContent implements InputMessageContent {
     /**
      * Latitude of the venue in degrees
      */

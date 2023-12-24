@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassportElementErrorSelfie {
+public class PassportElementErrorSelfie implements PassportElementError {
     /**
      * Error source, must be selfie
      */

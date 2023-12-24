@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultCachedGif {
+public class InlineQueryResultCachedGif implements InlineQueryResult {
     /**
      * Type of the result, must be gif
      */

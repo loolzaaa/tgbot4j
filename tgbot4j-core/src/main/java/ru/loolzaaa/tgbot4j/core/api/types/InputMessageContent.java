@@ -1,8 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * This object represents the content of a message
@@ -17,8 +16,13 @@ import lombok.NoArgsConstructor;
  * </ul>
  */
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class InputMessageContent {
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InputTextMessageContent.class),
+        @JsonSubTypes.Type(value = InputLocationMessageContent.class),
+        @JsonSubTypes.Type(value = InputVenueMessageContent.class),
+        @JsonSubTypes.Type(value = InputContactMessageContent.class),
+        @JsonSubTypes.Type(value = InputInvoiceMessageContent.class),
+})
+public interface InputMessageContent {
 }

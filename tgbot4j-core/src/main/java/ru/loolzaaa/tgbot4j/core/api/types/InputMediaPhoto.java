@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputMediaPhoto {
+public class InputMediaPhoto implements InputMedia {
     /**
      * Type of the result, must be photo
      */

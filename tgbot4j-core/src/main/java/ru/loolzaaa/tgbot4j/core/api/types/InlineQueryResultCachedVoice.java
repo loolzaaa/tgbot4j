@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultCachedVoice {
+public class InlineQueryResultCachedVoice implements InlineQueryResult {
     /**
      * Type of the result, must be voice
      */

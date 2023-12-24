@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineQueryResultVideo {
+public class InlineQueryResultVideo implements InlineQueryResult {
     /**
      * Type of the result, must be video
      */

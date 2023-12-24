@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InputMediaAudio {
+public class InputMediaAudio implements InputMedia {
     /**
      * Type of the result, must be audio
      */
