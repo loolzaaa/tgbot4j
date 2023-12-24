@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.api;
+package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

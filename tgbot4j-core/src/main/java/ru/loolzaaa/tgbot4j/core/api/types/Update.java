@@ -1,10 +1,9 @@
-package ru.loolzaaa.tgbot4j.core.api;
+package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.types.*;
 
 /**
  * This <a href="https://core.telegram.org/bots/api#available-types">object</a> represents an incoming update.
