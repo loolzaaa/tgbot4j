@@ -44,8 +44,8 @@ public class ChosenInlineResult {
      * in {@link CallbackQuery} and can be used
      * to <a href="https://core.telegram.org/bots/api#updating-messages">edit</a> the message.
      */
-    @JsonProperty("result_id")
-    private String inline_message_id;
+    @JsonProperty("inline_message_id")
+    private String inlineMessageId;
 
     /**
      * The query that was used to obtain the result

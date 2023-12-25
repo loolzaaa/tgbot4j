@@ -28,7 +28,7 @@ public class ResponseWrapper {
      *
      * @apiNote Its contents are subject to change in the future
      */
-    @JsonProperty("errorCode")
+    @JsonProperty("error_code")
     private Integer errorCode;
 
     /**
