@@ -17,14 +17,9 @@ public class UpdateProcessorChain {
 
     private int currentProcessor = 0;
 
-    public void init() {
-        updateProcessors.sort(Comparator.comparingInt(UpdateProcessor::getOrder));
-        log.info("Update processor chain initialized with {} processors: {}",
-                updateProcessors.size(), updateProcessors);
-    }
-
     public void addUpdateProcess(UpdateProcessor updateProcessor) {
         updateProcessors.add(updateProcessor);
+        updateProcessors.sort(Comparator.comparingInt(UpdateProcessor::getOrder));
         log.info("Add new update processor: {}", updateProcessor);
     }
 

@@ -1,6 +1,8 @@
 package ru.loolzaaa.tgbot4j.core.bot;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessor;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessorChain;
@@ -15,31 +17,40 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractBot implements Bot {
 
+    private static final Logger log = LoggerFactory.getLogger(AbstractBot.class);
+
     private final ConcurrentLinkedDeque<Update> updates = new ConcurrentLinkedDeque<>();
 
-    private final UpdateReceiver updateReceiver;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
     private final UpdateProcessorChain updateProcessorChain = new UpdateProcessorChain();
 
-    private UpdateHandler updateHandler;
-
-    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private final UpdateReceiver updateReceiver;
 
     private final TelegramSender telegramSender;
 
     private final String name;
-    private final String token;
 
-    public AbstractBot(UpdateReceiver updateReceiver, TelegramSender telegramSender, String name, String token) {
+    private UpdateHandler updateHandler;
+
+    public AbstractBot(UpdateReceiver updateReceiver, TelegramSender telegramSender, String name) {
         this.updateReceiver = updateReceiver;
         this.telegramSender = telegramSender;
         this.name = name;
-        this.token = token;
     }
 
     @Override
-    public void init() {
-        updateProcessorChain.init();
+    public synchronized void registerUpdateProcessor(UpdateProcessor updateProcessor) {
+        updateProcessorChain.addUpdateProcess(updateProcessor);
+    }
+
+    @Override
+    public synchronized void init() {
+        //TODO: Is there a need to possible RE-RUN bot, or create new?
+        if (isRunning.get()) {
+            log.info("{} already initialized, do nothing", name);
+            return;
+        }
 
         isRunning.set(true);
 
@@ -50,8 +61,17 @@ public abstract class AbstractBot implements Bot {
     }
 
     @Override
-    public void registerUpdateProcessor(UpdateProcessor updateProcessor) {
-        updateProcessorChain.addUpdateProcess(updateProcessor);
+    public synchronized void destroy() {
+        if (!isRunning.get()) {
+            log.info("{} already destroyed, do nothing", name);
+            return;
+        }
+
+        isRunning.set(false);
+
+        updateHandler.interrupt();
+
+        updateReceiver.stop();
     }
 
     private class UpdateHandler extends Thread {
@@ -60,27 +80,24 @@ public abstract class AbstractBot implements Bot {
             setPriority(Thread.MIN_PRIORITY);
             while (isRunning.get()) {
                 try {
-                    List<Update> updates = getUpdateList();
-                    if (updates.isEmpty()) {
-                        synchronized (updates) {
-                            updates.wait();
-                            updates = getUpdateList();
-                            if (updates.isEmpty()) {
-                                continue;
-                            }
+                    synchronized (updates) {
+                        updates.wait();
+                        List<Update> updates = getUpdateList();
+                        if (updates.isEmpty()) {
+                            continue;
                         }
                     }
                     for (Update update : updates) {
                         updateProcessorChain.doProcess(update, telegramSender);
                     }
                 } catch (InterruptedException e) {
-                    // log
+                    log.debug("Interrupt {} update handler with message: {}", name, e.getLocalizedMessage());
                     interrupt();
                 } catch (Exception e) {
-                    // log
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
-            // log
+            log.debug("{} update handler stopped", name);
         }
     }
 
