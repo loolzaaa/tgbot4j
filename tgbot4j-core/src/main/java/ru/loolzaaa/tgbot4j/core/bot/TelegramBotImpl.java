@@ -49,7 +49,7 @@ public class TelegramBotImpl implements TelegramBot {
         if (runStatus.get() == 1) {
             log.info("{} already initialized, do nothing", name);
             return;
-        } else if (runStatus.get() == 0) {
+        } else if (runStatus.get() == -1) {
             throw new IllegalStateException(name + " already destroyed, create new instance");
         }
         runStatus.set(1);
@@ -74,14 +74,15 @@ public class TelegramBotImpl implements TelegramBot {
             setPriority(Thread.MIN_PRIORITY);
             while (runStatus.get() == 1) {
                 try {
+                    List<Update> receivedUpdates;
                     synchronized (updates) {
                         updates.wait();
-                        List<Update> updates = getUpdateList();
-                        if (updates.isEmpty()) {
+                        receivedUpdates = getUpdateList();
+                        if (receivedUpdates.isEmpty()) {
                             continue;
                         }
                     }
-                    for (Update update : updates) {
+                    for (Update update : receivedUpdates) {
                         updateProcessorChain.doProcess(update, methodSender);
                     }
                 } catch (InterruptedException e) {
