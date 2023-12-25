@@ -1,6 +1,8 @@
 package ru.loolzaaa.tgbot4j.core.receiver;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.slf4j.Logger;
@@ -157,7 +159,9 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
                 .connectTimeout(Duration.of(options.connectTimeout, ChronoUnit.MILLIS))
                 .build();
 
-        private final ObjectMapper mapper = new ObjectMapper();
+        private final ObjectMapper mapper = new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
 
         @Override
         public List<Update> get() {

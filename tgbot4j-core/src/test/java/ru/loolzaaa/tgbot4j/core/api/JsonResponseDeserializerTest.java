@@ -1,5 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.BooleanNode;
@@ -15,7 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonResponseDeserializerTest {
 
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
 
     @Test
     void shouldCorrectDeserializeConcreteType() {
