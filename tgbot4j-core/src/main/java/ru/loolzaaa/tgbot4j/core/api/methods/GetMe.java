@@ -22,6 +22,7 @@ public class GetMe implements JsonResponseDeserializer<User> {
      * Dummy parameter for correct serialization,
      * because method requires no parameters
      */
+    //TODO: remove it and others by global settings of mapper
     private Integer dummy;
 
     @Override
