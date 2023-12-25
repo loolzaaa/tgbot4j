@@ -15,7 +15,7 @@ public class UpdateProcessorChain {
 
     private final List<UpdateProcessor> updateProcessors = new ArrayList<>(4);
 
-    private int currentProcessor = 0;
+    private int currentProcessorPosition = 0;
 
     public void addUpdateProcess(UpdateProcessor updateProcessor) {
         updateProcessors.add(updateProcessor);
@@ -28,17 +28,19 @@ public class UpdateProcessorChain {
             doProcessInternal(update, methodSender);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
+        } finally {
+            currentProcessorPosition = 0;
         }
     }
 
     private void doProcessInternal(Update update, MethodSender methodSender) {
-        if (currentProcessor == updateProcessors.size()) {
+        if (currentProcessorPosition == updateProcessors.size()) {
             return;
         }
-        UpdateProcessor nextProcessor = updateProcessors.get(currentProcessor++);
+        UpdateProcessor nextProcessor = updateProcessors.get(currentProcessorPosition++);
         if (log.isTraceEnabled()) {
             String name = nextProcessor.getClass().getSimpleName();
-            log.trace("Invoking {} ({}/{})", name, currentProcessor, updateProcessors.size());
+            log.trace("Invoking {} ({}/{})", name, currentProcessorPosition, updateProcessors.size());
         }
         nextProcessor.process(update, methodSender, this);
     }
