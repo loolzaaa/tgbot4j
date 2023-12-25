@@ -8,4 +8,5 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public interface UpdateReceiver {
     void start(ConcurrentLinkedDeque<Update> updates);
     void stop();
+    boolean isRunning();
 }

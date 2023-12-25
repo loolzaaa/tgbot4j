@@ -62,6 +62,8 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             throw new IllegalStateException(botName + " receiver already running!");
         }
 
+        //TODO: clear webhook
+
         receiverService = Executors.newSingleThreadScheduledExecutor(runnable -> {
             Thread thread = new Thread(runnable, "Receiver-" + botName);
             thread.setPriority(Thread.MIN_PRIORITY);
@@ -95,6 +97,11 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
         }
         isRunning = false;
         log.info("{} long polling receiver stopped", botName);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 
     @Getter
