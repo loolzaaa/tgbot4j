@@ -40,6 +40,8 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private final ReceiverOptions options;
 
+    private volatile boolean isRunning = false;
+
     private ScheduledExecutorService receiverService;
 
     private int lastReceivedUpdateId;
@@ -56,6 +58,10 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
     @Override
     public void start(ConcurrentLinkedDeque<Update> updates) {
+        if (isRunning) {
+            throw new IllegalStateException(botName + " receiver already running!");
+        }
+
         receiverService = Executors.newSingleThreadScheduledExecutor(runnable -> {
             Thread thread = new Thread(runnable, "Receiver-" + botName);
             thread.setPriority(Thread.MIN_PRIORITY);
@@ -66,11 +72,18 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
         ReceiverTask receiverTask = new ReceiverTask(updates, Objects.requireNonNullElseGet(updatesSupplier, DefaultUpdateSupplier::new));
         receiverService.scheduleWithFixedDelay(receiverTask, 100, options.receiverTaskDelay, TimeUnit.MILLISECONDS);
+
+        isRunning = true;
         log.info("{} long polling receiver started with next options: {}", botName, options);
     }
 
     @Override
     public void stop() {
+        if (!isRunning) {
+            log.info(botName + " receiver not started or already stopped");
+            return;
+        }
+
         receiverService.shutdown();
         try {
             if (!receiverService.awaitTermination(2000, TimeUnit.MILLISECONDS)) {
@@ -80,6 +93,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             receiverService.shutdownNow();
             Thread.currentThread().interrupt();
         }
+        isRunning = false;
         log.info("{} long polling receiver stopped", botName);
     }
 
