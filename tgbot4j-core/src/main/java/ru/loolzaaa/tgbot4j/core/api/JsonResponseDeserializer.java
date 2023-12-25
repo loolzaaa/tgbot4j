@@ -18,7 +18,7 @@ public interface JsonResponseDeserializer<T> {
                 return determineResponseType(mapper, responseWrapper.getResult());
             } else {
                 //TODO: change to library exception
-                throw new RuntimeException(String.format("Error executing %s query", this.getClass().getName()));
+                throw new RuntimeException(responseWrapper.toString());
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
