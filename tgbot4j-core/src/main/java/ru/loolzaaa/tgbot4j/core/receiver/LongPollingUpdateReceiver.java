@@ -2,10 +2,9 @@ package ru.loolzaaa.tgbot4j.core.receiver;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 
@@ -31,6 +30,8 @@ import java.util.function.Supplier;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 public class LongPollingUpdateReceiver implements UpdateReceiver {
+
+    private static final Logger log = LoggerFactory.getLogger(LongPollingUpdateReceiver.class);
 
     private final String botName;
     private final String botToken;
@@ -65,6 +66,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
         ReceiverTask receiverTask = new ReceiverTask(updates, Objects.requireNonNullElseGet(updatesSupplier, DefaultUpdateSupplier::new));
         receiverService.scheduleWithFixedDelay(receiverTask, 100, options.receiverTaskDelay, TimeUnit.MILLISECONDS);
+        log.info("{} long polling receiver started with next options: {}", botName, options);
     }
 
     @Override
@@ -78,10 +80,12 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             receiverService.shutdownNow();
             Thread.currentThread().interrupt();
         }
+        log.info("{} long polling receiver stopped", botName);
     }
 
     @Getter
     @Setter
+    @ToString
     public static class ReceiverOptions {
         private int receiverTaskDelay = 500;
         private int connectTimeout = 30 * 1000;
@@ -105,18 +109,23 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
                 if (updates.isEmpty()) {
                     return;
                 }
+                if (log.isTraceEnabled()) {
+                    log.trace("Received {} updates: {}", updates.size(), updates);
+                } else if (log.isDebugEnabled()) {
+                    log.debug("Received {} updates", updates.size());
+                }
                 updates.removeIf(update -> update.getUpdateId() < lastReceivedUpdateId);
                 lastReceivedUpdateId = updates.parallelStream()
                         .map(Update::getUpdateId)
                         .max(Integer::compareTo)
                         .orElse(0);
+                log.debug("Current last received update id: {}", lastReceivedUpdateId);
                 synchronized (receivedUpdates) {
                     receivedUpdates.addAll(updates);
                     receivedUpdates.notifyAll();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                //log
+                log.error(e.getLocalizedMessage(), e);
             }
         }
     }
@@ -139,6 +148,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
                 getUpdates.setAllowedUpdates(options.updateAllowedUpdates);
             }
 
+            //TODO: Extract it? Inject sender for this purposes?
             try {
                 final String url = BASE_URL + botToken + "/" + GetUpdates.class.getSimpleName();
                 final String body = mapper.writeValueAsString(getUpdates);
@@ -151,16 +161,16 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
                         .build();
 
                 HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.UTF_8));
-                if (response.statusCode() == 200) {
+                int statusCode = response.statusCode();
+                if (statusCode == 200) {
                     return getUpdates.deserializeResponse(mapper, response.body());
                 }
-                //log
+                log.warn("{} error status code: {}. Response content: {}",
+                        GetUpdates.class.getSimpleName(), statusCode, response.body());
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                //log
+                log.info("{} request interrupted with message: {}", GetUpdates.class.getSimpleName(), e.getLocalizedMessage());
             } catch (IOException e) {
-                e.printStackTrace();
-                //log
+                log.error(e.getLocalizedMessage(), e);
             }
             return Collections.emptyList();
         }

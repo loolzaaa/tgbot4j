@@ -1,5 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.sender.TelegramSender;
 
@@ -9,25 +11,28 @@ import java.util.List;
 
 public class UpdateProcessorChain {
 
+    private static final Logger log = LoggerFactory.getLogger(UpdateProcessorChain.class);
+
     private final List<UpdateProcessor> updateProcessors = new ArrayList<>(4);
 
     private int currentProcessor = 0;
 
     public void init() {
         updateProcessors.sort(Comparator.comparingInt(UpdateProcessor::getOrder));
+        log.info("Update processor chain initialized with {} processors: {}",
+                updateProcessors.size(), updateProcessors);
     }
 
     public void addUpdateProcess(UpdateProcessor updateProcessor) {
         updateProcessors.add(updateProcessor);
+        log.info("Add new update processor: {}", updateProcessor);
     }
 
     public void doProcess(Update update, TelegramSender telegramSender) {
         try {
             doProcessInternal(update, telegramSender);
         } catch (Exception e) {
-            //
-        } finally {
-            //
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -36,10 +41,10 @@ public class UpdateProcessorChain {
             return;
         }
         UpdateProcessor nextProcessor = updateProcessors.get(currentProcessor++);
-//        if (logger.isTraceEnabled()) {
-//            String name = nextFilter.getClass().getSimpleName();
-//            logger.trace(LogMessage.format("Invoking %s (%d/%d)", name, this.currentPosition, this.size));
-//        }
+        if (log.isTraceEnabled()) {
+            String name = nextProcessor.getClass().getSimpleName();
+            log.trace("Invoking {} ({}/{})", name, currentProcessor, updateProcessors.size());
+        }
         nextProcessor.process(update, telegramSender, this);
     }
 }

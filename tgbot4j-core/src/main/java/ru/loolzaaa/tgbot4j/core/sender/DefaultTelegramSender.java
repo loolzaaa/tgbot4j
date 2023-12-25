@@ -3,7 +3,11 @@ package ru.loolzaaa.tgbot4j.core.sender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,6 +25,8 @@ import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 public class DefaultTelegramSender implements TelegramSender {
 
+    private static final Logger log = LoggerFactory.getLogger(DefaultTelegramSender.class);
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     private final HttpClient httpClient;
@@ -35,6 +41,7 @@ public class DefaultTelegramSender implements TelegramSender {
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.of(this.options.connectTimeout, ChronoUnit.MILLIS))
                 .build();
+        log.info("Default telegram sender created with next options: {}", options);
     }
 
     @Override
@@ -52,22 +59,24 @@ public class DefaultTelegramSender implements TelegramSender {
                     .build();
 
             HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.UTF_8));
-            if (response.statusCode() == 200) {
+            int statusCode = response.statusCode();
+            if (statusCode == 200) {
                 return method.deserializeResponse(mapper, response.body());
             }
+            log.warn("{} error status code: {}. Response content: {}",
+                    GetUpdates.class.getSimpleName(), statusCode, response.body());
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            //log
+            log.info("{} request interrupted with message: {}", GetUpdates.class.getSimpleName(), e.getLocalizedMessage());
         } catch (IOException e) {
-            e.printStackTrace();
-            //log
+            log.error(e.getLocalizedMessage(), e);
         }
-
+        //TODO: should throw exception? Need always return result!
         return null;
     }
 
     @Getter
     @Setter
+    @ToString
     public static class SenderOptions {
         private int connectTimeout = 30 * 1000;
         private int requestTimeout = 30 * 1000;
