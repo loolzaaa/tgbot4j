@@ -23,9 +23,9 @@ import java.util.Objects;
 
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
-public class DefaultTelegramSender implements TelegramSender {
+public class DefaultMethodSender implements MethodSender {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultTelegramSender.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultMethodSender.class);
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -35,7 +35,7 @@ public class DefaultTelegramSender implements TelegramSender {
 
     private final SenderOptions options;
 
-    public DefaultTelegramSender(String botToken, SenderOptions options) {
+    public DefaultMethodSender(String botToken, SenderOptions options) {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, SenderOptions::new);
         this.httpClient = HttpClient.newBuilder()

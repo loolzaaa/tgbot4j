@@ -7,7 +7,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessor;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessorChain;
 import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
-import ru.loolzaaa.tgbot4j.core.sender.TelegramSender;
+import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,15 +27,15 @@ public abstract class AbstractBot implements Bot {
 
     private final UpdateReceiver updateReceiver;
 
-    private final TelegramSender telegramSender;
+    private final MethodSender methodSender;
 
     private final String name;
 
     private UpdateHandler updateHandler;
 
-    public AbstractBot(UpdateReceiver updateReceiver, TelegramSender telegramSender, String name) {
+    public AbstractBot(UpdateReceiver updateReceiver, MethodSender methodSender, String name) {
         this.updateReceiver = updateReceiver;
-        this.telegramSender = telegramSender;
+        this.methodSender = methodSender;
         this.name = name;
     }
 
@@ -88,7 +88,7 @@ public abstract class AbstractBot implements Bot {
                         }
                     }
                     for (Update update : updates) {
-                        updateProcessorChain.doProcess(update, telegramSender);
+                        updateProcessorChain.doProcess(update, methodSender);
                     }
                 } catch (InterruptedException e) {
                     log.debug("Interrupt {} update handler with message: {}", name, e.getLocalizedMessage());

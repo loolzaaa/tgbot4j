@@ -3,7 +3,7 @@ package ru.loolzaaa.tgbot4j.core.processor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
-import ru.loolzaaa.tgbot4j.core.sender.TelegramSender;
+import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,15 +23,15 @@ public class UpdateProcessorChain {
         log.info("Add new update processor: {}", updateProcessor);
     }
 
-    public void doProcess(Update update, TelegramSender telegramSender) {
+    public void doProcess(Update update, MethodSender methodSender) {
         try {
-            doProcessInternal(update, telegramSender);
+            doProcessInternal(update, methodSender);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
         }
     }
 
-    private void doProcessInternal(Update update, TelegramSender telegramSender) {
+    private void doProcessInternal(Update update, MethodSender methodSender) {
         if (currentProcessor == updateProcessors.size()) {
             return;
         }
@@ -40,6 +40,6 @@ public class UpdateProcessorChain {
             String name = nextProcessor.getClass().getSimpleName();
             log.trace("Invoking {} ({}/{})", name, currentProcessor, updateProcessors.size());
         }
-        nextProcessor.process(update, telegramSender, this);
+        nextProcessor.process(update, methodSender, this);
     }
 }
