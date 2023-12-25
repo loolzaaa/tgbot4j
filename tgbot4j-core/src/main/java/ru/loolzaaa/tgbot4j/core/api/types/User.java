@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.GetMe;
+import ru.loolzaaa.tgbot4j.core.api.methods.GetMe;
 
 /**
  * This object represents a Telegram user or bot.
