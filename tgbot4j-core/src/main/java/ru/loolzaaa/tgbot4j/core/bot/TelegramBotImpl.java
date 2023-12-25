@@ -13,30 +13,30 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AbstractBot implements Bot {
+public class TelegramBotImpl implements TelegramBot {
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractBot.class);
+    private static final Logger log = LoggerFactory.getLogger(TelegramBotImpl.class);
 
     private final ConcurrentLinkedDeque<Update> updates = new ConcurrentLinkedDeque<>();
 
-    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private final AtomicInteger runStatus = new AtomicInteger(0);
+
+    private final UpdateHandler updateHandler = new UpdateHandler();
 
     private final UpdateProcessorChain updateProcessorChain = new UpdateProcessorChain();
 
-    private final UpdateReceiver updateReceiver;
+    private final String name;
 
     private final MethodSender methodSender;
 
-    private final String name;
+    private final UpdateReceiver updateReceiver;
 
-    private UpdateHandler updateHandler;
-
-    public AbstractBot(UpdateReceiver updateReceiver, MethodSender methodSender, String name) {
-        this.updateReceiver = updateReceiver;
-        this.methodSender = methodSender;
+    public TelegramBotImpl(String name, MethodSender methodSender, UpdateReceiver updateReceiver) {
         this.name = name;
+        this.methodSender = methodSender;
+        this.updateReceiver = updateReceiver;
     }
 
     @Override
@@ -46,31 +46,25 @@ public abstract class AbstractBot implements Bot {
 
     @Override
     public synchronized void init() {
-        //TODO: Is there a need to possible RE-RUN bot, or create new?
-        if (isRunning.get()) {
+        if (runStatus.get() == 1) {
             log.info("{} already initialized, do nothing", name);
             return;
+        } else if (runStatus.get() == 0) {
+            throw new IllegalStateException(name + " already destroyed, create new instance");
         }
-
-        isRunning.set(true);
-
+        runStatus.set(1);
         updateReceiver.start(updates);
-
-        updateHandler = new UpdateHandler();
         updateHandler.start();
     }
 
     @Override
     public synchronized void destroy() {
-        if (!isRunning.get()) {
-            log.info("{} already destroyed, do nothing", name);
+        if (runStatus.get() <= 0) {
+            log.info("{} already destroyed or not initialized", name);
             return;
         }
-
-        isRunning.set(false);
-
+        runStatus.set(-1);
         updateHandler.interrupt();
-
         updateReceiver.stop();
     }
 
@@ -78,7 +72,7 @@ public abstract class AbstractBot implements Bot {
         @Override
         public void run() {
             setPriority(Thread.MIN_PRIORITY);
-            while (isRunning.get()) {
+            while (runStatus.get() == 1) {
                 try {
                     synchronized (updates) {
                         updates.wait();
