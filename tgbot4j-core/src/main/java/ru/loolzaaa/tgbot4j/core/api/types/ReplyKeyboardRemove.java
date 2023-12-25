@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyKeyboardRemove {
+public class ReplyKeyboardRemove implements ReplyMarkup {
     /**
      * Requests clients to remove the custom keyboard
      * (user will not be able to summon this keyboard;

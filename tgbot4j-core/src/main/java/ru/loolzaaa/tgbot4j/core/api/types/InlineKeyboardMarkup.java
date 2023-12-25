@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineKeyboardMarkup {
+public class InlineKeyboardMarkup implements ReplyMarkup {
     /**
      * Array of button rows, each represented by an Array
      * of {@link InlineKeyboardButton} objects

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ForceReply {
+public class ForceReply implements ReplyMarkup {
     /**
      * Shows reply interface to the user, as if they manually
      * selected the bot's message and tapped 'Reply'

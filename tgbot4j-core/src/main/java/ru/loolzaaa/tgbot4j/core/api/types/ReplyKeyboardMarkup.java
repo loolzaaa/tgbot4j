@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyKeyboardMarkup {
+public class ReplyKeyboardMarkup implements ReplyMarkup {
     /**
      * Array of button rows, each represented
      * by an Array of KeyboardButton objects
