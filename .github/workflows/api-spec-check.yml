@@ -18,7 +18,9 @@ jobs:
         architecture: x64
     - name: Create JAR
       run: mvn -DskipTests -P api-specification-check clean package
-    - name: Run API Specification check to file
-      run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar
-    - name: Run API Specification check to summary
-      run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > $GITHUB_STEP_SUMMARY
+    - name: Run API Specification
+      run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > spec-check.txt
+    - name: Show Check result
+      run: cat spec-check.txt
+    - name: Show Check Result On Summary
+      run: cat spec-check.txt >> $GITHUB_STEP_SUMMARY
