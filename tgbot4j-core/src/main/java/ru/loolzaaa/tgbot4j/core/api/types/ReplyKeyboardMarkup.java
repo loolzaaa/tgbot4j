@@ -30,7 +30,7 @@ public class ReplyKeyboardMarkup implements ReplyMarkup {
      * can be hidden and opened with a keyboard icon.
      */
     @JsonProperty("is_persistent")
-    private Boolean idPersistent;
+    private Boolean isPersistent;
 
     /**
      * Optional. Requests clients to resize the keyboard vertically
