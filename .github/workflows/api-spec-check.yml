@@ -2,10 +2,12 @@ name: Api Specification Checker
 
 on:
   push:
+  pull_request:    
   workflow_dispatch:
 
 jobs:
   check:
+    name: API Specification Check
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repo
@@ -20,7 +22,5 @@ jobs:
       run: mvn -DskipTests -P api-specification-check clean package
     - name: Run API Specification
       run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > spec-check.txt
-    - name: Show Check result
-      run: cat spec-check.txt
-    - name: Show Check Result On Summary
+    - name: Show Check Result
       run: cat spec-check.txt >> $GITHUB_STEP_SUMMARY
