@@ -1,0 +1,22 @@
+name: Api Specification Checker
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+    - name: Setup JDK 17 Temurin
+      uses: actions/setup-java@v4.0.0
+      with:
+        java-version: 17
+        distribution: temurin
+        architecture: x64
+    - name: Create JAR
+      run: mvn -DskipTests -P api-specification-check clean package
+    - name: Run API Specification check
+      run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > $GITHUB_STEP_SUMMARY
