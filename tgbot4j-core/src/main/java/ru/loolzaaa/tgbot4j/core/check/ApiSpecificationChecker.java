@@ -7,17 +7,17 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ApiSpecificationChecker {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         String packageName = "ru.loolzaaa.tgbot4j.core.api";
-        String scanPath = ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api").getPath();
+        String scanPath = Optional.ofNullable(ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api"))
+                .orElseThrow()
+                .getPath();
         String filesPath = "./tgbot4j-core/src/main/java/ru/loolzaaa/tgbot4j/core/api";
 
         ApiSpecificationChecker apiSpecificationChecker = new ApiSpecificationChecker();
@@ -27,9 +27,10 @@ public class ApiSpecificationChecker {
     }
 
     public void checkAllClassesShouldHaveDataAndConstructorsAnnotations(String filesPath) throws IOException {
-        List<Path> files = Files.walk(Paths.get(filesPath))
-                .filter(Files::isRegularFile)
-                .toList();
+        List<Path> files;
+        try (Stream<Path> fileStream = Files.walk(Paths.get(filesPath))) {
+            files = fileStream.filter(Files::isRegularFile).toList();
+        }
         List<String> invalidClasses = new ArrayList<>();
         for (Path path : files) {
             FileInputStream inputStream = new FileInputStream(path.toString());
@@ -43,8 +44,12 @@ public class ApiSpecificationChecker {
                 invalidClasses.add(classPath);
             }
         }
-        System.out.println(invalidClasses.isEmpty() ? "All classes have correct lombok annotations" : "Classes without lombok annotations: ");
-        invalidClasses.forEach(System.out::println);
+        if (invalidClasses.isEmpty()) {
+            System.out.println("#### All classes have correct lombok annotations :+1:");
+        } else {
+            System.out.println("#### Classes without lombok annotations :x::");
+            invalidClasses.forEach(s -> System.out.println("- " + s));
+        }
     }
 
     public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath) throws ClassNotFoundException {
@@ -58,8 +63,12 @@ public class ApiSpecificationChecker {
                 }
             }
         }
-        System.out.println(invalidFields.isEmpty() ? "All fields have JsonProperty annotation" : "Fields without JsonProperty annotation: ");
-        invalidFields.forEach(System.out::println);
+        if (invalidFields.isEmpty()) {
+            System.out.println("#### All fields have JsonProperty annotation :+1:");
+        } else {
+            System.out.println("#### Fields without JsonProperty annotation :x::");
+            invalidFields.forEach(s -> System.out.println("- " + s));
+        }
     }
 
     public void checkAllJsonPropertiesValuesAreCorrect(String packageName, String scanPath) throws ClassNotFoundException {
@@ -88,13 +97,17 @@ public class ApiSpecificationChecker {
                 }
             }
         }
-        System.out.println(invalidPropertyValues.isEmpty() ? "All fields have correct JsonProperty value" : "Fields has incorrect JsonProperty value: ");
-        invalidPropertyValues.forEach(System.out::println);
+        if (invalidPropertyValues.isEmpty()) {
+            System.out.println("#### All fields have correct JsonProperty value :+1:");
+        } else {
+            System.out.println("#### Fields has incorrect JsonProperty value :x::");
+            invalidPropertyValues.forEach(s -> System.out.println("- " + s));
+        }
     }
 
-    private Set<Class> getAllClassesFromApiPackage(String packageName, String scanPath) throws ClassNotFoundException {
+    private Set<Class<?>> getAllClassesFromApiPackage(String packageName, String scanPath) throws ClassNotFoundException {
         File[] files = new File(scanPath).listFiles();
-        Set<Class> classes = new HashSet<>();
+        Set<Class<?>> classes = new HashSet<>();
         if (files == null) return new HashSet<>();
 
         for (File f : files) {
