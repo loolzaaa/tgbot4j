@@ -4,8 +4,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-permissions:
-  pull-requests: write
+#permissions:
+#  pull-requests: write
 
 jobs:
   check:
