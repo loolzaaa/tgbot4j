@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
@@ -25,7 +25,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EditMessageText implements JsonResponseDeserializer<Object> {
+public class EditMessageText implements TelegramMethod<Object> {
     /**
      * Required if inline_message_id is not specified.
      * Unique identifier for the target chat or username

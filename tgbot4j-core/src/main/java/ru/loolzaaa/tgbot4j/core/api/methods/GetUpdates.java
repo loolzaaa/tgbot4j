@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetUpdates implements JsonResponseDeserializer<List<Update>> {
+public class GetUpdates implements TelegramMethod<List<Update>> {
     /**
      * Identifier of the first update to be returned.
      * Must be greater by one than the highest among the identifiers

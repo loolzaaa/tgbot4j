@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JsonResponseDeserializerTest {
+class TelegramMethodTest {
 
     ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -60,14 +60,14 @@ class JsonResponseDeserializerTest {
         assertThrows(RuntimeException.class, () -> new ConcreteTypeResponse().deserializeResponse(mapper, json));
     }
 
-    static class ConcreteTypeResponse implements JsonResponseDeserializer<TestResponse> {
+    static class ConcreteTypeResponse implements TelegramMethod<TestResponse> {
         @Override
         public TestResponse determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
             return  deserializeObjectResponse(mapper, resultNode, TestResponse.class);
         }
     }
 
-    static class ObjectResponse implements JsonResponseDeserializer<Object> {
+    static class ObjectResponse implements TelegramMethod<Object> {
         @Override
         public Object determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
             if (resultNode instanceof ObjectNode) {
@@ -78,7 +78,7 @@ class JsonResponseDeserializerTest {
             return null;
         }
     }
-    static class CollectionResponse implements JsonResponseDeserializer<List<TestResponse>> {
+    static class CollectionResponse implements TelegramMethod<List<TestResponse>> {
         @Override
         public List<TestResponse> determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
             return deserializeCollectionResponse(mapper, resultNode, TestResponse.class);

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 
 /**
@@ -19,7 +19,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetWebhookInfo implements JsonResponseDeserializer<WebhookInfo> {
+public class GetWebhookInfo implements TelegramMethod<WebhookInfo> {
     /**
      * Dummy parameter for correct serialization,
      * because method requires no parameters

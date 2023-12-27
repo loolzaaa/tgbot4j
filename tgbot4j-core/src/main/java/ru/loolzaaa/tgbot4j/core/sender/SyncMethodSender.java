@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 
 import java.io.IOException;
@@ -25,9 +25,9 @@ import java.util.Objects;
 
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
-public class DefaultMethodSender implements MethodSender {
+public class SyncMethodSender implements MethodSender {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultMethodSender.class);
+    private static final Logger log = LoggerFactory.getLogger(SyncMethodSender.class);
 
     private final ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -39,7 +39,7 @@ public class DefaultMethodSender implements MethodSender {
 
     private final SenderOptions options;
 
-    public DefaultMethodSender(String botToken, SenderOptions options) {
+    public SyncMethodSender(String botToken, SenderOptions options) {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, SenderOptions::new);
         this.httpClient = HttpClient.newBuilder()
@@ -49,9 +49,9 @@ public class DefaultMethodSender implements MethodSender {
     }
 
     @Override
-    public <T, M extends JsonResponseDeserializer<T>> T send(M method) {
+    public <T, M extends TelegramMethod<T>> T send(M method) {
         try {
-            //TODO: validate method
+            method.validate();
             final String url = BASE_URL + botToken + "/" + method.getClass().getSimpleName();
             final String body = mapper.writeValueAsString(method);
             HttpRequest httpRequest = HttpRequest.newBuilder()

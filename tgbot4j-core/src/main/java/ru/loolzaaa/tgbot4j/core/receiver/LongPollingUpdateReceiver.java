@@ -175,6 +175,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
             //TODO: Extract it? Inject sender for this purposes?
             try {
+                getUpdates.validate();
                 final String url = BASE_URL + botToken + "/" + GetUpdates.class.getSimpleName();
                 final String body = mapper.writeValueAsString(getUpdates);
                 HttpRequest httpRequest = HttpRequest.newBuilder()

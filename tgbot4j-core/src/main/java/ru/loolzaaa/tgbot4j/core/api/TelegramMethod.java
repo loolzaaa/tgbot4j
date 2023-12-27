@@ -7,11 +7,12 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.util.ArrayList;
 
-public interface JsonResponseDeserializer<T> {
+public interface TelegramMethod<T> {
 
     T determineResponseType(ObjectMapper mapper, JsonNode resultNode);
 
     default T deserializeResponse(ObjectMapper mapper, String response) {
+        //TODO: check stack trace for determineResponseType method, prevent stack overflow
         try {
             ResponseWrapper responseWrapper = mapper.readValue(response, ResponseWrapper.class);
             if (responseWrapper.getOk()) {
@@ -32,5 +33,8 @@ public interface JsonResponseDeserializer<T> {
     default <K> T deserializeCollectionResponse(ObjectMapper mapper, JsonNode resultNode, Class<K> resultType) {
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, resultType);
         return mapper.convertValue(resultNode, collectionType);
+    }
+
+    default void validate() {
     }
 }

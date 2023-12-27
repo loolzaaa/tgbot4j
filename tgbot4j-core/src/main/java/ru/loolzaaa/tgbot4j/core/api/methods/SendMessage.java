@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
@@ -21,7 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendMessage implements JsonResponseDeserializer<Message> {
+public class SendMessage implements TelegramMethod<Message> {
     /**
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})

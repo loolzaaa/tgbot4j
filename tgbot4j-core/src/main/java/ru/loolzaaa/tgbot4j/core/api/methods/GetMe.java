@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.JsonResponseDeserializer;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.User;
 
 /**
@@ -17,7 +17,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.User;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetMe implements JsonResponseDeserializer<User> {
+public class GetMe implements TelegramMethod<User> {
     /**
      * Dummy parameter for correct serialization,
      * because method requires no parameters
