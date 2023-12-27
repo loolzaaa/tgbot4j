@@ -1,25 +1,14 @@
 package ru.loolzaaa.tgbot4j.core.receiver;
 
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
+import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.core.sender.SyncMethodSender;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,8 +17,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 public class LongPollingUpdateReceiver implements UpdateReceiver {
 
@@ -155,13 +142,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private class DefaultUpdateSupplier implements Supplier<List<Update>> {
 
-        private final HttpClient httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.of(options.connectTimeout, ChronoUnit.MILLIS))
-                .build();
-
-        private final ObjectMapper mapper = new ObjectMapper()
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
+        private final MethodSender methodSender = new SyncMethodSender(botToken, null);
 
         @Override
         public List<Update> get() {
@@ -172,33 +153,11 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             if (options.updateAllowedUpdates != null) {
                 getUpdates.setAllowedUpdates(options.updateAllowedUpdates);
             }
-
-            //TODO: Extract it? Inject sender for this purposes?
             try {
-                getUpdates.validate();
-                final String url = BASE_URL + botToken + "/" + GetUpdates.class.getSimpleName();
-                final String body = mapper.writeValueAsString(getUpdates);
-                HttpRequest httpRequest = HttpRequest.newBuilder()
-                        .timeout(Duration.of(options.requestTimeout, ChronoUnit.MILLIS))
-                        .POST(BodyPublishers.ofString(body))
-                        .uri(URI.create(url))
-                        .header(CHARSET_HEADER, StandardCharsets.UTF_8.name())
-                        .header(CONTENT_TYPE_HEADER, JSON_CONTENT_TYPE_VALUE)
-                        .build();
-
-                HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.UTF_8));
-                int statusCode = response.statusCode();
-                if (statusCode == 200) {
-                    return getUpdates.deserializeResponse(mapper, response.body());
-                }
-                log.warn("{} error status code: {}. Response content: {}",
-                        GetUpdates.class.getSimpleName(), statusCode, response.body());
-            } catch (InterruptedException e) {
-                log.info("{} request interrupted with message: {}", GetUpdates.class.getSimpleName(), e.getLocalizedMessage());
-            } catch (IOException e) {
-                log.error(e.getLocalizedMessage(), e);
+                return methodSender.send(getUpdates);
+            } catch (Exception e) {
+                return Collections.emptyList();
             }
-            return Collections.emptyList();
         }
     }
 }
