@@ -1,9 +1,11 @@
 name: Api Specification Checker
 
 on:
-  push:
-  pull_request:    
+  pull_request:
   workflow_dispatch:
+
+permissions:
+  pull-requests: write
 
 jobs:
   check:
@@ -24,3 +26,8 @@ jobs:
       run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > spec-check.txt
     - name: Show Check Result
       run: cat spec-check.txt >> $GITHUB_STEP_SUMMARY
+    - name: Upsert Check Result PR Comment
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        comment_tag: api-spec
+        filePath: spec-check.txt
