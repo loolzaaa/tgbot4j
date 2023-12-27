@@ -13,6 +13,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Use this method to send photos.
@@ -134,5 +135,10 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
         }
         //TODO: photo.validate()
         //TODO: replyMarkup.validate() <--- may be null
+    }
+
+    @Override
+    public Map<String, byte[]> getParts() {
+        Map<String, byte[]>
     }
 }
