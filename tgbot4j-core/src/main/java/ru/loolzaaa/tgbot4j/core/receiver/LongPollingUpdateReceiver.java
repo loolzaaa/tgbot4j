@@ -8,6 +8,7 @@ import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.core.sender.SyncMethodSender;
+import ru.loolzaaa.tgbot4j.core.util.WebhookUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,9 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             throw new IllegalStateException(botName + " receiver already running!");
         }
 
-        //TODO: clear webhook
+        if (options.clearWebhookIfExist) {
+            WebhookUtils.deleteWebhook(botToken, false);
+        }
 
         receiverService = Executors.newSingleThreadScheduledExecutor(runnable -> {
             Thread thread = new Thread(runnable, "Receiver-" + botName);
@@ -97,6 +100,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
     @Setter
     @ToString
     public static class ReceiverOptions {
+        private boolean clearWebhookIfExist = false;
         private int receiverTaskDelay = 500;
         private int connectTimeout = 30 * 1000;
         private int requestTimeout = 30 * 1000;
