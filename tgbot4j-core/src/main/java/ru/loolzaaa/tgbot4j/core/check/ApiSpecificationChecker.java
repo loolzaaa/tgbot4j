@@ -7,30 +7,40 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static java.lang.String.*;
 
 public class ApiSpecificationChecker {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
-        String packageName = "ru.loolzaaa.tgbot4j.core.api";
-        String scanPath = Optional.ofNullable(ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api"))
-                .orElseThrow()
-                .getPath();
+        String typesPackageName = "ru.loolzaaa.tgbot4j.core.api.types";
+        String methodsPackageName = "ru.loolzaaa.tgbot4j.core.api.methods";
+        String typeScanPath = ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api/types").getPath();
+        String methodScanPath = ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api/methods").getPath();
         String filesPath = "./tgbot4j-core/src/main/java/ru/loolzaaa/tgbot4j/core/api";
 
         ApiSpecificationChecker apiSpecificationChecker = new ApiSpecificationChecker();
-        apiSpecificationChecker.checkAllFieldsShouldHaveJsonPropertyAnnotations(packageName, scanPath);
         apiSpecificationChecker.checkAllClassesShouldHaveDataAndConstructorsAnnotations(filesPath);
-        apiSpecificationChecker.checkAllJsonPropertiesValuesAreCorrect(packageName, scanPath);
+        apiSpecificationChecker.checkAllFieldsShouldHaveJsonPropertyAnnotations(typesPackageName, typeScanPath, "Types");
+        apiSpecificationChecker.checkAllFieldsShouldHaveJsonPropertyAnnotations(methodsPackageName, methodScanPath, "Methods");
+        apiSpecificationChecker.checkAllJsonPropertiesValuesAreCorrect(typesPackageName, typeScanPath, "Types");
+        apiSpecificationChecker.checkAllJsonPropertiesValuesAreCorrect(methodsPackageName, methodScanPath, "Methods");
     }
 
     public void checkAllClassesShouldHaveDataAndConstructorsAnnotations(String filesPath) throws IOException {
-        List<Path> files;
-        try (Stream<Path> fileStream = Files.walk(Paths.get(filesPath))) {
-            files = fileStream.filter(Files::isRegularFile).toList();
-        }
+        List<Path> types = Files.walk(Paths.get(filesPath + "/types"))
+                .filter(Files::isRegularFile)
+                .toList();
+        List<Path> methods = Files.walk(Paths.get(filesPath + "/methods"))
+                .filter(Files::isRegularFile)
+                .toList();
+        List<Path> files = new ArrayList<>(types);
+        files.addAll(methods);
         List<String> invalidClasses = new ArrayList<>();
         for (Path path : files) {
             FileInputStream inputStream = new FileInputStream(path.toString());
@@ -52,7 +62,7 @@ public class ApiSpecificationChecker {
         }
     }
 
-    public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath) throws ClassNotFoundException {
+    public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidFields = new ArrayList<>();
         for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
             if (!(clazz.getDeclaredFields().length == 0)) {
@@ -63,15 +73,13 @@ public class ApiSpecificationChecker {
                 }
             }
         }
-        if (invalidFields.isEmpty()) {
-            System.out.println("#### All fields have JsonProperty annotation :+1:");
-        } else {
-            System.out.println("#### Fields without JsonProperty annotation :x::");
-            invalidFields.forEach(s -> System.out.println("- " + s));
-        }
+        System.out.println(invalidFields.isEmpty() ?
+                format("#### All %s have JsonProperty annotation :+1:", scanType) :
+                format("#### %s without JsonProperty annotation :x:: ", scanType));
+        invalidFields.forEach(s -> System.out.println("- " + s));
     }
 
-    public void checkAllJsonPropertiesValuesAreCorrect(String packageName, String scanPath) throws ClassNotFoundException {
+    public void checkAllJsonPropertiesValuesAreCorrect(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidPropertyValues = new ArrayList<>();
         for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
             if (!(clazz.getDeclaredFields().length == 0)) {
@@ -97,12 +105,10 @@ public class ApiSpecificationChecker {
                 }
             }
         }
-        if (invalidPropertyValues.isEmpty()) {
-            System.out.println("#### All fields have correct JsonProperty value :+1:");
-        } else {
-            System.out.println("#### Fields has incorrect JsonProperty value :x::");
-            invalidPropertyValues.forEach(s -> System.out.println("- " + s));
-        }
+        System.out.println(invalidPropertyValues.isEmpty() ?
+                format("#### All %s have correct JsonProperty value :+1:", scanType) :
+                format("#### %s has incorrect JsonProperty value :x:: ", scanType));
+        invalidPropertyValues.forEach(s -> System.out.println("- " + s));
     }
 
     private Set<Class<?>> getAllClassesFromApiPackage(String packageName, String scanPath) throws ClassNotFoundException {
