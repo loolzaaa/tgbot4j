@@ -133,7 +133,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
         if (photo == null) {
             throw new RuntimeException("Photo parameter can't be null");
         }
-        //TODO: photo.validate()
+        photo.validate();
         //TODO: replyMarkup.validate() <--- may be null
     }
 
