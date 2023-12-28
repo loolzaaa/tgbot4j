@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import ru.loolzaaa.tgbot4j.core.exception.ApiRequestException;
 
 import java.util.ArrayList;
 
@@ -18,8 +19,7 @@ public interface TelegramMethod<T> extends Validated {
             if (responseWrapper.getOk()) {
                 return determineResponseType(mapper, responseWrapper.getResult());
             } else {
-                //TODO: change to library exception
-                throw new RuntimeException(responseWrapper.toString());
+                throw new ApiRequestException(responseWrapper);
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

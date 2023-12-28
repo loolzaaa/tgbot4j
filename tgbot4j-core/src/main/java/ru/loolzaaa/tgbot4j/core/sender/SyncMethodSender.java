@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
-import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
+import ru.loolzaaa.tgbot4j.core.exception.ApiRequestException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 import ru.loolzaaa.tgbot4j.core.util.MultipartUtils;
 
@@ -28,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.String.*;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 public class SyncMethodSender implements MethodSender {
@@ -80,18 +81,20 @@ public class SyncMethodSender implements MethodSender {
 
             HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.UTF_8));
             int statusCode = response.statusCode();
-            if (statusCode == 200) {
-                return method.deserializeResponse(mapper, response.body());
+            if (statusCode != 200) {
+                log.error("{} error status code: {}. Response content: {}",
+                        method.getClass().getSimpleName(), statusCode, response.body());
+                throw new ApiRequestException(format("%s request error. Status: %d. Response body: %s",
+                        method.getClass().getSimpleName(), statusCode, response.body()));
             }
-            log.warn("{} error status code: {}. Response content: {}",
-                    method.getClass().getSimpleName(), statusCode, response.body());
+            return method.deserializeResponse(mapper, response.body());
         } catch (InterruptedException e) {
-            log.info("{} request interrupted with message: {}", GetUpdates.class.getSimpleName(), e.getLocalizedMessage());
+            log.info("{} request interrupted with message: {}", method.getClass().getSimpleName(), e.getLocalizedMessage());
+            throw new RuntimeException(e);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(), e);
+            throw new RuntimeException(e);
         }
-        //TODO: should throw exception? Need always return result!
-        return null;
     }
 
     private <M extends TelegramMethod<?>> BodyPublisher prepareStringBody(M method) throws IOException {
