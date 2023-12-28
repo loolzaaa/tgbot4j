@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Validated;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.io.File;
 import java.io.InputStream;
@@ -49,14 +50,14 @@ public class InputFile implements Validated {
     @Override
     public void validate() {
         if (attachName == null || attachName.isEmpty()) {
-            throw new RuntimeException("Attach name must not be empty");
+            throw new ApiValidationException("Attach name must not be empty", this);
         }
         if (attachName.startsWith(ATTACH_PREFIX)) {
             if (inputName == null || inputName.isEmpty()) {
-                throw new RuntimeException("Input name must not be empty");
+                throw new ApiValidationException("Input name must not be empty", this);
             }
             if (file == null && inputStream == null) {
-                throw new RuntimeException("File or input stream must not be empty");
+                throw new ApiValidationException("File or input stream must not be empty", this);
             }
         }
     }
