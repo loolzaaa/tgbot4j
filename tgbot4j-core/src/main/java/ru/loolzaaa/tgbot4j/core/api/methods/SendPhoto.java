@@ -6,14 +6,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.MultipartType;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
-import java.util.Map;
+
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
 
 /**
  * Use this method to send photos.
@@ -50,6 +57,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      * Width and height ratio must be at most 20.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
+    @MultipartType(BINARY)
     @JsonProperty("photo")
     private InputFile photo;
 
@@ -73,6 +81,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      * that appear in the caption, which
      * can be specified instead of parse_mode
      */
+    @MultipartType(JSON)
     @JsonProperty("caption_entities")
     private List<MessageEntity> captionEntities;
 
@@ -117,6 +126,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard
      * or to force a reply from the user.
      */
+    @MultipartType(JSON)
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;
 
@@ -138,7 +148,16 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
     }
 
     @Override
-    public Map<String, byte[]> getParts() {
-        Map<String, byte[]>
+    public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
+        if (partField.getName().equals("photo")) {
+            parts.add(new MultipartBodyPart(partName, photo.getAttachName().getBytes(StandardCharsets.UTF_8), false));
+            if (photo.getFile() != null) {
+                parts.add(new MultipartBodyPart(photo.getInputName(), Files.readAllBytes(photo.getFile().toPath()), true));
+                return;
+            }
+            if (photo.getInputStream() != null) {
+                parts.add(new MultipartBodyPart(photo.getInputName(), photo.getInputStream().readAllBytes(), true));
+            }
+        }
     }
 }
