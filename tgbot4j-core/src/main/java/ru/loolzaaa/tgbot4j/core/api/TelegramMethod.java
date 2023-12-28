@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.util.ArrayList;
 
-public interface TelegramMethod<T> {
+public interface TelegramMethod<T> extends Validated {
 
     T determineResponseType(ObjectMapper mapper, JsonNode resultNode);
 
@@ -33,8 +33,5 @@ public interface TelegramMethod<T> {
     default <K> T deserializeCollectionResponse(ObjectMapper mapper, JsonNode resultNode, Class<K> resultType) {
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, resultType);
         return mapper.convertValue(resultNode, collectionType);
-    }
-
-    default void validate() {
     }
 }
