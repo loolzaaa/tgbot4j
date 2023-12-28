@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-//TODO: @AllArgsConstructor
+//@AllArgsConstructor
 public class Story {
 }

@@ -2,7 +2,6 @@ package ru.loolzaaa.tgbot4j.core.api.methods;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
@@ -18,14 +17,8 @@ import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class GetWebhookInfo implements TelegramMethod<WebhookInfo> {
-    /**
-     * Dummy parameter for correct serialization,
-     * because method requires no parameters
-     */
-    private Integer dummy;
-
     @Override
     public WebhookInfo determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
         return deserializeObjectResponse(mapper, resultNode, WebhookInfo.class);
