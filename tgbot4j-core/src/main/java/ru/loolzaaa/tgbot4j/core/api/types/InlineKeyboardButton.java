@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.AnswerWebAppQuery;
+import ru.loolzaaa.tgbot4j.core.api.methods.AnswerWebAppQuery;
 
 /**
  * This object represents one button of an inline keyboard.

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.util.List;
 
@@ -115,10 +116,10 @@ public class SetWebhook implements TelegramMethod<Boolean> {
     @Override
     public void validate() {
         if (url == null || url.isEmpty()) {
-            throw new RuntimeException("URL parameter can't be empty");
+            throw new ApiValidationException("URL parameter can't be empty", this);
         }
         if (maxConnections < 1 || maxConnections > 100) {
-            throw new RuntimeException("Max connections parameter must be in 1..100 range");
+            throw new ApiValidationException("Max connections parameter must be in 1..100 range", this);
         }
         //TODO: implement it
 //        if (certificate != null) {
@@ -127,7 +128,7 @@ public class SetWebhook implements TelegramMethod<Boolean> {
 //            }
 //        }
         if (secretToken != null && !secretToken.matches("[A-Za-z0-9_-]{1,256}")) {
-            throw new RuntimeException("SecretToken parameter must only contains A-Z, a-z, 0-9, _ and -");
+            throw new ApiValidationException("SecretToken parameter must only contains A-Z, a-z, 0-9, _ and -", this);
         }
     }
 }

@@ -12,6 +12,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
@@ -138,10 +139,10 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
     @Override
     public void validate() {
         if (chatId == null || chatId.isEmpty()) {
-            throw new RuntimeException("Chat ID parameter can't be null or empty");
+            throw new ApiValidationException("Chat ID parameter can't be null or empty", this);
         }
         if (photo == null) {
-            throw new RuntimeException("Photo parameter can't be null");
+            throw new ApiValidationException("Photo parameter can't be null", this);
         }
         photo.validate();
         //TODO: replyMarkup.validate() <--- may be null

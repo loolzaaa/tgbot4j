@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.GetFile;
+import ru.loolzaaa.tgbot4j.core.api.methods.GetFile;
 
 /**
  * This object represents a file ready to be downloaded.
