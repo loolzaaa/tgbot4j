@@ -69,7 +69,7 @@ public class SendPoll implements TelegramMethod<Message> {
      * ignored for polls in quiz mode, defaults to False
      */
     @JsonProperty("allows_multiple_answers")
-    private Boolean allowMultipleAnswers;
+    private Boolean allowsMultipleAnswers;
 
     /**
      * 0-based identifier of the correct answer option,
