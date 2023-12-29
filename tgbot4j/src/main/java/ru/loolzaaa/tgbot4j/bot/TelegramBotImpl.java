@@ -1,9 +1,10 @@
-package ru.loolzaaa.tgbot4j.core.bot;
+package ru.loolzaaa.tgbot4j.bot;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
+import ru.loolzaaa.tgbot4j.core.bot.TelegramBot;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessor;
 import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessorChain;
 import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;

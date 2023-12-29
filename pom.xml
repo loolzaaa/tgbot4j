@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
-    <groupId>ru.loolzaaa</groupId>
-    <artifactId>tgbot4j</artifactId>
+    <groupId>ru.loolzaaa.tgbot4j</groupId>
+    <artifactId>tgbot4j-parent</artifactId>
     <version>0.0.1</version>
 
     <properties>
@@ -25,6 +25,7 @@
 
     <modules>
         <module>tgbot4j-core</module>
+        <module>tgbot4j</module>
     </modules>
 
     <dependencyManagement>

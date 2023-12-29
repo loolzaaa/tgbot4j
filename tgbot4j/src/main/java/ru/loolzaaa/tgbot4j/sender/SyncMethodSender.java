@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.sender;
+package ru.loolzaaa.tgbot4j.sender;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,7 +13,8 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiRequestException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
-import ru.loolzaaa.tgbot4j.core.util.MultipartUtils;
+import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.util.MultipartUtils;
 
 import java.io.IOException;
 import java.net.URI;

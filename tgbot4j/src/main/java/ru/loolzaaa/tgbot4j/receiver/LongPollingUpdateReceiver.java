@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.receiver;
+package ru.loolzaaa.tgbot4j.receiver;
 
 
 import lombok.*;
@@ -6,9 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
+import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
-import ru.loolzaaa.tgbot4j.core.sender.SyncMethodSender;
-import ru.loolzaaa.tgbot4j.core.util.WebhookUtils;
+import ru.loolzaaa.tgbot4j.sender.SyncMethodSender;
+import ru.loolzaaa.tgbot4j.util.WebhookUtils;
 
 import java.util.Collections;
 import java.util.List;

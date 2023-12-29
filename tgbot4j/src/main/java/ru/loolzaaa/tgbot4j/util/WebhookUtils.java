@@ -1,9 +1,9 @@
-package ru.loolzaaa.tgbot4j.core.util;
+package ru.loolzaaa.tgbot4j.util;
 
 import ru.loolzaaa.tgbot4j.core.api.methods.DeleteWebhook;
 import ru.loolzaaa.tgbot4j.core.api.methods.SetWebhook;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
-import ru.loolzaaa.tgbot4j.core.sender.SyncMethodSender;
+import ru.loolzaaa.tgbot4j.sender.SyncMethodSender;
 
 public class WebhookUtils {
     public static boolean setWebhook(String botToken, SetWebhook setWebhook) {

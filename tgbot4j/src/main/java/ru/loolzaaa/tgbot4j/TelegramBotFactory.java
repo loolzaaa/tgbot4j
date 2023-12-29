@@ -1,10 +1,12 @@
-package ru.loolzaaa.tgbot4j.core.bot;
+package ru.loolzaaa.tgbot4j;
 
 import lombok.NonNull;
-import ru.loolzaaa.tgbot4j.core.receiver.LongPollingUpdateReceiver;
+import ru.loolzaaa.tgbot4j.bot.TelegramBotImpl;
+import ru.loolzaaa.tgbot4j.core.bot.TelegramBot;
 import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
-import ru.loolzaaa.tgbot4j.core.sender.SyncMethodSender;
+import ru.loolzaaa.tgbot4j.receiver.LongPollingUpdateReceiver;
+import ru.loolzaaa.tgbot4j.sender.SyncMethodSender;
 
 public class TelegramBotFactory {
     public static TelegramBot createLongPollingBot(@NonNull String name, @NonNull String token) {

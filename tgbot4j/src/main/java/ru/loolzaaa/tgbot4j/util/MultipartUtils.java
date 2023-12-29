@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.util;
+package ru.loolzaaa.tgbot4j.util;
 
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
