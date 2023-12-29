@@ -1,0 +1,33 @@
+name: Api Specification Checker
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: API Specification Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+    - name: Setup JDK 17 Temurin
+      uses: actions/setup-java@v4.0.0
+      with:
+        java-version: 17
+        distribution: temurin
+        architecture: x64
+    - name: Create JAR
+      run: mvn -DskipTests -P api-specification-check clean package
+    - name: Run API Specification
+      run: java -jar tgbot4j-core/target/api-specification-check-jar-with-dependencies.jar > spec-check.txt
+    - name: Show Check Result
+      run: cat spec-check.txt >> $GITHUB_STEP_SUMMARY
+    - name: Upsert Check Result PR Comment
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        comment_tag: api-spec
+        filePath: spec-check.txt
