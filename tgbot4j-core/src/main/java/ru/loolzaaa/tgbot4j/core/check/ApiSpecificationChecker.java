@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.check;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -43,9 +44,17 @@ public class ApiSpecificationChecker {
         files.addAll(methods);
         List<String> invalidClasses = new ArrayList<>();
         for (Path path : files) {
+            // Class name exclusions
+            if (path.getFileName().toString().contains("InputFile")) {
+                continue;
+            }
             FileInputStream inputStream = new FileInputStream(path.toString());
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String s = reader.lines().collect(Collectors.joining("\n"));
+            // Interface exclusions
+            if (s.contains("public interface")) {
+                continue;
+            }
             if (!s.contains("@Data") || !s.contains("@NoArgsConstructor") || !s.contains("@AllArgsConstructor")) {
                 String classPath = path.toString()
                         .substring(path.toString().indexOf("ru"))
@@ -65,6 +74,10 @@ public class ApiSpecificationChecker {
     public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidFields = new ArrayList<>();
         for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
+            // Exclusions
+            if (clazz == InputFile.class) {
+                continue;
+            }
             if (!(clazz.getDeclaredFields().length == 0)) {
                 for (Field field : clazz.getDeclaredFields()) {
                     if (!field.isAnnotationPresent(JsonProperty.class)) {
