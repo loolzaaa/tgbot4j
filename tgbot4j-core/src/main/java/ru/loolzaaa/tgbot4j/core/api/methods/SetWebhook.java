@@ -6,12 +6,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
+import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
+import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
+
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
 
 /**
  * Use this method to specify a URL and receive
@@ -47,7 +55,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetWebhook implements TelegramMethod<Boolean> {
+public class SetWebhook implements TelegramMultipartMethod<Boolean> {
     /**
      * HTTPS URL to send updates to. Use an empty string
      * to remove webhook integration
@@ -59,6 +67,7 @@ public class SetWebhook implements TelegramMethod<Boolean> {
      * Upload your public key certificate so that the root certificate
      * in use can be checked. See our <a href="https://core.telegram.org/bots/self-signed">self-signed guide</a> for details.
      */
+    @MultipartType(BINARY)
     @JsonProperty("certificate")
     private InputFile certificate;
 
@@ -88,6 +97,7 @@ public class SetWebhook implements TelegramMethod<Boolean> {
      * to receive all update types except chat_member (default).
      * If not specified, the previous setting will be used.
      */
+    @MultipartType(JSON)
     @JsonProperty("allowed_updates")
     private List<String> allowedUpdates;
 
@@ -121,14 +131,25 @@ public class SetWebhook implements TelegramMethod<Boolean> {
         if (maxConnections < 1 || maxConnections > 100) {
             throw new ApiValidationException("Max connections parameter must be in 1..100 range", this);
         }
-        //TODO: implement it
-//        if (certificate != null) {
-//            if (!certificate.isNew()) {
-//                throw new RuntimeException("Certificate parameter must be a new file to upload");
-//            }
-//        }
+        if (certificate != null) {
+            certificate.validate();
+        }
         if (secretToken != null && !secretToken.matches("[A-Za-z0-9_-]{1,256}")) {
             throw new ApiValidationException("SecretToken parameter must only contains A-Z, a-z, 0-9, _ and -", this);
+        }
+    }
+
+    @Override
+    public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
+        if (partField.getName().equals("certificate")) {
+            parts.add(new MultipartBodyPart(partName, certificate.getAttachName().getBytes(StandardCharsets.UTF_8), false));
+            if (certificate.getFile() != null) {
+                parts.add(new MultipartBodyPart(certificate.getInputName(), Files.readAllBytes(certificate.getFile().toPath()), true));
+                return;
+            }
+            if (certificate.getInputStream() != null) {
+                parts.add(new MultipartBodyPart(certificate.getInputName(), certificate.getInputStream().readAllBytes(), true));
+            }
         }
     }
 }

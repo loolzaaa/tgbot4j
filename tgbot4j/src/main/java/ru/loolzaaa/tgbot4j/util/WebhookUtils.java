@@ -7,13 +7,8 @@ import ru.loolzaaa.tgbot4j.sender.SyncMethodSender;
 
 public class WebhookUtils {
     public static boolean setWebhook(String botToken, SetWebhook setWebhook) {
-        if (setWebhook.getCertificate() == null) {
-            MethodSender methodSender = new SyncMethodSender(botToken, null);
-            return methodSender.send(setWebhook);
-        } else {
-            //TODO: Implement it
-            throw new RuntimeException("Not implemented for self signed certificate");
-        }
+        MethodSender methodSender = new SyncMethodSender(botToken, null);
+        return methodSender.send(setWebhook);
     }
 
     public static boolean deleteWebhook(String botToken, boolean dropPendingUpdated) {
