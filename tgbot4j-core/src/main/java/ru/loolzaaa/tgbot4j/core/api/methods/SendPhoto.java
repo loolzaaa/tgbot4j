@@ -145,7 +145,9 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
             throw new ApiValidationException("Photo parameter can't be null", this);
         }
         photo.validate();
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 
     @Override

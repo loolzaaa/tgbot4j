@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * Upon receiving a message with this object,
@@ -44,4 +45,11 @@ public class ReplyKeyboardRemove implements ReplyMarkup {
      */
     @JsonProperty("selective")
     private Boolean selective;
+
+    @Override
+    public void validate() {
+        if (removeKeyboard == null) {
+            throw new ApiValidationException("Remove keyboard parameter must not be null", this);
+        }
+    }
 }

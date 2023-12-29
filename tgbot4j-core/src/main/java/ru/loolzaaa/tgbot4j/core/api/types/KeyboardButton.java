@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Validated;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * This object represents one button of the reply keyboard.
@@ -30,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KeyboardButton {
+public class KeyboardButton implements Validated {
     /**
      * Text of the button. If none of the optional fields are used,
      * it will be sent as a message when the button is pressed
@@ -90,4 +92,11 @@ public class KeyboardButton {
      */
     @JsonProperty("web_app")
     private WebAppInfo webApp;
+
+    @Override
+    public void validate() {
+        if (text == null || text.isEmpty()) {
+            throw new ApiValidationException("Text parameter must not be null or empty", this);
+        }
+    }
 }

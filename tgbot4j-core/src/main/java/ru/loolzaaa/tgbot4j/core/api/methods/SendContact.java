@@ -114,6 +114,8 @@ public class SendContact implements TelegramMethod<Message> {
         if (firstName == null) {
             throw new ApiValidationException("First name parameter can't be null or empty", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 }

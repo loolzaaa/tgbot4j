@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Validated;
 import ru.loolzaaa.tgbot4j.core.api.methods.AnswerWebAppQuery;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * This object represents one button of an inline keyboard.
@@ -14,7 +16,7 @@ import ru.loolzaaa.tgbot4j.core.api.methods.AnswerWebAppQuery;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InlineKeyboardButton {
+public class InlineKeyboardButton implements Validated {
     /**
      * Label text on the button
      */
@@ -103,4 +105,11 @@ public class InlineKeyboardButton {
      */
     @JsonProperty("pay")
     private Boolean pay;
+
+    @Override
+    public void validate() {
+        if (text == null || text.isEmpty()) {
+            throw new ApiValidationException("Text parameter must not be null or empty", this);
+        }
+    }
 }

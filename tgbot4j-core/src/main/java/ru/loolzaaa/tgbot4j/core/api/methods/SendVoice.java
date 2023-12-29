@@ -143,7 +143,9 @@ public class SendVoice implements TelegramMultipartMethod<Message> {
             throw new ApiValidationException("Voice parameter can't be null", this);
         }
         voice.validate();
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 
     @Override

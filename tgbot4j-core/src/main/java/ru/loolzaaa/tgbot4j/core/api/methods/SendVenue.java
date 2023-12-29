@@ -146,6 +146,8 @@ public class SendVenue implements TelegramMethod<Message> {
         if (address == null) {
             throw new ApiValidationException("Address parameter can't be null or empty", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 }

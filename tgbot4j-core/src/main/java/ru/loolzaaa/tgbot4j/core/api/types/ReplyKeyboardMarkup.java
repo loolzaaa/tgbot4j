@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.util.List;
 
@@ -72,4 +73,24 @@ public class ReplyKeyboardMarkup implements ReplyMarkup {
      */
     @JsonProperty("selective")
     private Boolean selective;
+
+    @Override
+    public void validate() {
+        if (keyboard == null || keyboard.isEmpty()) {
+            throw new ApiValidationException("Inline keyboard parameter must not be null or empty", this);
+        }
+        if (inputFieldPlaceholder != null && (inputFieldPlaceholder.isEmpty() || inputFieldPlaceholder.length() > 64)) {
+            throw new ApiValidationException("Input field placeholder parameter must be in 1..64 range", this);
+        }
+        for (List<KeyboardButton> row : keyboard) {
+            if (row == null || row.isEmpty()) {
+                throw new ApiValidationException("Every keyboard row must not be null or empty", this);
+            }
+        }
+        for (List<KeyboardButton> row : keyboard) {
+            for (KeyboardButton button : row) {
+                button.validate();
+            }
+        }
+    }
 }

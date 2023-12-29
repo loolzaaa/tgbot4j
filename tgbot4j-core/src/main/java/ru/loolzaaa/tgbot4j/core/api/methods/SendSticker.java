@@ -119,7 +119,9 @@ public class SendSticker implements TelegramMultipartMethod<Message> {
             throw new ApiValidationException("Sticker parameter can't be null", this);
         }
         sticker.validate();
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 
     @Override

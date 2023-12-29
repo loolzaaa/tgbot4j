@@ -182,7 +182,9 @@ public class SendAnimation implements TelegramMultipartMethod<Message> {
         if (thumbnail != null && thumbnail.getFile() == null && thumbnail.getInputStream() == null) {
             throw new ApiValidationException("Thumbnail parameter must be uploaded with multipart/form-data", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 
     @Override

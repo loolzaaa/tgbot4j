@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * Upon receiving a message with this object,
@@ -40,4 +41,14 @@ public class ForceReply implements ReplyMarkup {
      */
     @JsonProperty("selective")
     private Boolean selective;
+
+    @Override
+    public void validate() {
+        if (forceReply == null) {
+            throw new ApiValidationException("Force reply parameter must not be null", this);
+        }
+        if (inputFieldPlaceholder != null && (inputFieldPlaceholder.isEmpty() || inputFieldPlaceholder.length() > 64)) {
+            throw new ApiValidationException("Input field placeholder parameter must be in 1..64 range", this);
+        }
+    }
 }

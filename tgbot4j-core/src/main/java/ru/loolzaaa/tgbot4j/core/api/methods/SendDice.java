@@ -94,6 +94,8 @@ public class SendDice implements TelegramMethod<Message> {
         if (chatId == null || chatId.isEmpty()) {
             throw new ApiValidationException("Chat ID parameter can't be null or empty", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 }

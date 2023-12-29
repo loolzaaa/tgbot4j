@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.util.List;
 
@@ -26,4 +27,21 @@ public class InlineKeyboardMarkup implements ReplyMarkup {
      */
     @JsonProperty("inline_keyboard")
     private List<List<InlineKeyboardButton>> inlineKeyboard;
+
+    @Override
+    public void validate() {
+        if (inlineKeyboard == null || inlineKeyboard.isEmpty()) {
+            throw new ApiValidationException("Inline keyboard parameter must not be null or empty", this);
+        }
+        for (List<InlineKeyboardButton> row : inlineKeyboard) {
+            if (row == null || row.isEmpty()) {
+                throw new ApiValidationException("Every inline keyboard row must not be null or empty", this);
+            }
+        }
+        for (List<InlineKeyboardButton> row : inlineKeyboard) {
+            for (InlineKeyboardButton button : row) {
+                button.validate();
+            }
+        }
+    }
 }

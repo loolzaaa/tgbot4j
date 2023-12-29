@@ -1,4 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-public interface ReplyMarkup {
+
+import ru.loolzaaa.tgbot4j.core.api.Validated;
+
+public interface ReplyMarkup extends Validated {
 }

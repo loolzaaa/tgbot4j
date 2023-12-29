@@ -143,6 +143,8 @@ public class SendLocation implements TelegramMethod<Message> {
         if (proximityAlertRadius != null && (proximityAlertRadius < 1 || proximityAlertRadius > 100000)) {
             throw new ApiValidationException("Proximity alert radius parameter must be in 1..100000 range", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 }

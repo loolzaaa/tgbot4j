@@ -189,6 +189,8 @@ public class SendPoll implements TelegramMethod<Message> {
         if (closeDate != null && openPeriod != null) {
             throw new ApiValidationException("Only one parameter allowed: closeDate, openPeriod", this);
         }
-        //TODO: replyMarkup.validate() <--- may be null
+        if (replyMarkup != null) {
+            replyMarkup.validate();
+        }
     }
 }
