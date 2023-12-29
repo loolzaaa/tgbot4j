@@ -1,12 +1,17 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Validated;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -18,6 +23,7 @@ import java.io.InputStream;
 
 @Data
 @NoArgsConstructor
+@JsonSerialize(using = InputFile.InputFileSerializer.class)
 public class InputFile implements Validated {
 
     private static final String ATTACH_PREFIX = "attach://";
@@ -59,6 +65,13 @@ public class InputFile implements Validated {
             if (file == null && inputStream == null) {
                 throw new ApiValidationException("File or input stream must not be empty", this);
             }
+        }
+    }
+
+    static class InputFileSerializer extends JsonSerializer<InputFile> {
+        @Override
+        public void serialize(InputFile value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            gen.writeObject(value.getAttachName());
         }
     }
 }
