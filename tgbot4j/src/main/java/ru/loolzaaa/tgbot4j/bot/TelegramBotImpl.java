@@ -26,13 +26,14 @@ public class TelegramBotImpl implements TelegramBot {
 
     private final UpdateHandler updateHandler = new UpdateHandler();
 
-    private final UpdateProcessorChain updateProcessorChain = new UpdateProcessorChain();
-
     private final String name;
 
     private final MethodSender methodSender;
 
     private final UpdateReceiver updateReceiver;
+
+    private final UpdateProcessorChain.Builder processorChainBuilder = new UpdateProcessorChain.Builder();
+    private UpdateProcessorChain updateProcessorChain;
 
     public TelegramBotImpl(String name, MethodSender methodSender, UpdateReceiver updateReceiver) {
         this.name = name;
@@ -42,7 +43,10 @@ public class TelegramBotImpl implements TelegramBot {
 
     @Override
     public synchronized void registerUpdateProcessor(UpdateProcessor updateProcessor) {
-        updateProcessorChain.addUpdateProcess(updateProcessor);
+        if (runStatus.get() != 0) {
+            throw new IllegalStateException(name + " already initialized or destroyed");
+        }
+        processorChainBuilder.addUpdateProcess(updateProcessor);
     }
 
     @Override
@@ -53,6 +57,7 @@ public class TelegramBotImpl implements TelegramBot {
         } else if (runStatus.get() == -1) {
             throw new IllegalStateException(name + " already destroyed, create new instance");
         }
+        updateProcessorChain = processorChainBuilder.build();
         runStatus.set(1);
         updateReceiver.start(updates);
         updateHandler.start();
