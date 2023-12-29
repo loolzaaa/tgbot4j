@@ -16,8 +16,6 @@ import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
 
 import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
@@ -127,14 +125,7 @@ public class SendSticker implements TelegramMultipartMethod<Message> {
     @Override
     public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
         if (partField.getName().equals("sticker")) {
-            parts.add(new MultipartBodyPart(partName, sticker.getAttachName().getBytes(StandardCharsets.UTF_8), false));
-            if (sticker.getFile() != null) {
-                parts.add(new MultipartBodyPart(sticker.getInputName(), Files.readAllBytes(sticker.getFile().toPath()), true));
-                return;
-            }
-            if (sticker.getInputStream() != null) {
-                parts.add(new MultipartBodyPart(sticker.getInputName(), sticker.getInputStream().readAllBytes(), true));
-            }
+            addInputFileBodyPart(parts, sticker, partName);
         }
     }
 }

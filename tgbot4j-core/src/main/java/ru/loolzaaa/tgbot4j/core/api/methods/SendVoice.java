@@ -14,8 +14,6 @@ import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
 
 import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
@@ -151,14 +149,7 @@ public class SendVoice implements TelegramMultipartMethod<Message> {
     @Override
     public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
         if (partField.getName().equals("voice")) {
-            parts.add(new MultipartBodyPart(partName, voice.getAttachName().getBytes(StandardCharsets.UTF_8), false));
-            if (voice.getFile() != null) {
-                parts.add(new MultipartBodyPart(voice.getInputName(), Files.readAllBytes(voice.getFile().toPath()), true));
-                return;
-            }
-            if (voice.getInputStream() != null) {
-                parts.add(new MultipartBodyPart(voice.getInputName(), voice.getInputStream().readAllBytes(), true));
-            }
+            addInputFileBodyPart(parts, voice, partName);
         }
     }
 }

@@ -15,8 +15,6 @@ import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
 
 import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
@@ -142,14 +140,7 @@ public class SetWebhook implements TelegramMultipartMethod<Boolean> {
     @Override
     public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
         if (partField.getName().equals("certificate")) {
-            parts.add(new MultipartBodyPart(partName, certificate.getAttachName().getBytes(StandardCharsets.UTF_8), false));
-            if (certificate.getFile() != null) {
-                parts.add(new MultipartBodyPart(certificate.getInputName(), Files.readAllBytes(certificate.getFile().toPath()), true));
-                return;
-            }
-            if (certificate.getInputStream() != null) {
-                parts.add(new MultipartBodyPart(certificate.getInputName(), certificate.getInputStream().readAllBytes(), true));
-            }
+            addInputFileBodyPart(parts, certificate, partName);
         }
     }
 }

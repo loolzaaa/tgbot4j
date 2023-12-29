@@ -2,11 +2,13 @@ package ru.loolzaaa.tgbot4j.core.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,17 @@ public interface TelegramMultipartMethod<T> extends TelegramMethod<T> {
             return parts;
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    default void addInputFileBodyPart(List<MultipartBodyPart> parts, InputFile inputFile, String partName) throws IOException {
+        parts.add(new MultipartBodyPart(partName, inputFile.getAttachName().getBytes(StandardCharsets.UTF_8), false));
+        if (inputFile.getFile() != null) {
+            parts.add(new MultipartBodyPart(inputFile.getInputName(), Files.readAllBytes(inputFile.getFile().toPath()), true));
+            return;
+        }
+        if (inputFile.getInputStream() != null) {
+            parts.add(new MultipartBodyPart(inputFile.getInputName(), inputFile.getInputStream().readAllBytes(), true));
         }
     }
 }

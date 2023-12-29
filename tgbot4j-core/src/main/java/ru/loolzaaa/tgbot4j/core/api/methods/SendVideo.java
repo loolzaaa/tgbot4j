@@ -14,8 +14,6 @@ import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
 
 import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
@@ -194,24 +192,10 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
     @Override
     public void addBinaryBodyPart(List<MultipartBodyPart> parts, Field partField, String partName) throws IOException {
         if (partField.getName().equals("video")) {
-            parts.add(new MultipartBodyPart(partName, video.getAttachName().getBytes(StandardCharsets.UTF_8), false));
-            if (video.getFile() != null) {
-                parts.add(new MultipartBodyPart(video.getInputName(), Files.readAllBytes(video.getFile().toPath()), true));
-                return;
-            }
-            if (video.getInputStream() != null) {
-                parts.add(new MultipartBodyPart(video.getInputName(), video.getInputStream().readAllBytes(), true));
-            }
+            addInputFileBodyPart(parts, video, partName);
         }
         if (partField.getName().equals("thumbnail")) {
-            parts.add(new MultipartBodyPart(partName, thumbnail.getAttachName().getBytes(StandardCharsets.UTF_8), false));
-            if (thumbnail.getFile() != null) {
-                parts.add(new MultipartBodyPart(thumbnail.getInputName(), Files.readAllBytes(thumbnail.getFile().toPath()), true));
-                return;
-            }
-            if (thumbnail.getInputStream() != null) {
-                parts.add(new MultipartBodyPart(thumbnail.getInputName(), thumbnail.getInputStream().readAllBytes(), true));
-            }
+            addInputFileBodyPart(parts, thumbnail, partName);
         }
     }
 }
