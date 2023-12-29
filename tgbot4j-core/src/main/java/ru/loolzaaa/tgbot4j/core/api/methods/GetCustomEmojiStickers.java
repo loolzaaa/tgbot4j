@@ -36,9 +36,8 @@ public class GetCustomEmojiStickers implements TelegramMethod<List<Sticker>> {
 
     @Override
     public void validate() {
-        //TODO: need to check for empty?
-        if (customEmojiIds == null || customEmojiIds.size() > 200) {
-            throw new ApiValidationException("CustomEmojiIds parameter can't be null or size greater than 200", this);
+        if (customEmojiIds == null || customEmojiIds.isEmpty() || customEmojiIds.size() > 200) {
+            throw new ApiValidationException("CustomEmojiIds parameter can't be null, empty or size greater than 200", this);
         }
     }
 }
