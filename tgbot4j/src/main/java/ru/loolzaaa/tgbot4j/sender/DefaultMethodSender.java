@@ -29,13 +29,16 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static java.lang.String.*;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
-public class SyncMethodSender implements MethodSender {
+public class DefaultMethodSender implements MethodSender {
 
-    private static final Logger log = LoggerFactory.getLogger(SyncMethodSender.class);
+    private static final Logger log = LoggerFactory.getLogger(DefaultMethodSender.class);
 
     private final ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -44,16 +47,19 @@ public class SyncMethodSender implements MethodSender {
 
     private final HttpClient httpClient;
 
+    private final ExecutorService executorService;
+
     private final String botToken;
 
     private final SenderOptions options;
 
-    public SyncMethodSender(String botToken, SenderOptions options) {
+    public DefaultMethodSender(String botToken, SenderOptions options) {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, SenderOptions::new);
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.of(this.options.connectTimeout, ChronoUnit.MILLIS))
                 .build();
+        this.executorService = Executors.newFixedThreadPool(this.options.maxThreads);
         log.info("Default telegram sender created with next options: {}", options);
     }
 
@@ -100,6 +106,19 @@ public class SyncMethodSender implements MethodSender {
         }
     }
 
+    @Override
+    public <T, M extends TelegramMethod<T>> CompletableFuture<T> sendAsync(M method) {
+        CompletableFuture<T> futureResult = new CompletableFuture<>();
+        executorService.submit(() -> {
+            try {
+                futureResult.complete(send(method));
+            } catch (Exception e) {
+                futureResult.completeExceptionally(e);
+            }
+        });
+        return futureResult;
+    }
+
     private <M extends TelegramMethod<?>> BodyPublisher prepareStringBody(M method) throws IOException {
         final String stringBody = mapper.writeValueAsString(method);
         return BodyPublishers.ofString(stringBody);
@@ -117,5 +136,6 @@ public class SyncMethodSender implements MethodSender {
     public static class SenderOptions {
         private int connectTimeout = 30 * 1000;
         private int requestTimeout = 30 * 1000;
+        private int maxThreads = 1;
     }
 }

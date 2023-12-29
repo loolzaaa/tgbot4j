@@ -8,7 +8,7 @@ import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
-import ru.loolzaaa.tgbot4j.sender.SyncMethodSender;
+import ru.loolzaaa.tgbot4j.sender.DefaultMethodSender;
 import ru.loolzaaa.tgbot4j.util.WebhookUtils;
 
 import java.util.Collections;
@@ -147,7 +147,7 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private class DefaultUpdateSupplier implements Supplier<List<Update>> {
 
-        private final MethodSender methodSender = new SyncMethodSender(botToken, null);
+        private final MethodSender methodSender = new DefaultMethodSender(botToken, null);
 
         @Override
         public List<Update> get() {
