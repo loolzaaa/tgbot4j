@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
+import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.sender.DefaultMethodSender;
@@ -53,8 +54,16 @@ public class LongPollingUpdateReceiver implements UpdateReceiver {
             throw new IllegalStateException(botName + " receiver already running!");
         }
 
+        WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken);
         if (options.clearWebhookIfExist) {
-            WebhookUtils.deleteWebhook(botToken, false);
+            if (webhookInfo.getUrl() != null && !webhookInfo.getUrl().isEmpty()) {
+                boolean deleteWebhookResult = WebhookUtils.deleteWebhook(botToken, false);
+                log.info("Webhook for {} delete result: {}", botName, deleteWebhookResult);
+            }
+        } else {
+            if (webhookInfo.getUrl() != null && !webhookInfo.getUrl().isEmpty()) {
+                throw new IllegalStateException("You need to delete webhook before start long polling receiver");
+            }
         }
 
         receiverService = Executors.newSingleThreadScheduledExecutor(runnable -> {
