@@ -37,8 +37,8 @@ public class InputTextMessageContent implements InputMessageContent {
     private List<MessageEntity> entities;
 
     /**
-     * Optional. Disables link previews for links in the sent message
+     * Optional. Link preview generation options for the message
      */
-    @JsonProperty("disable_web_page_preview")
-    private Boolean disableWebPagePreview;
+    @JsonProperty("link_preview_options")
+    private LinkPreviewOptions linkPreviewOptions;
 }

@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 
 import java.util.List;
 
@@ -59,10 +57,10 @@ public class SendMessage implements TelegramMethod<Message> {
     private List<MessageEntity> entities;
 
     /**
-     * Disables link previews for links in this message
+     * Link preview generation options for the message
      */
-    @JsonProperty("disable_web_page_preview")
-    private Boolean disableWebPagePreview;
+    @JsonProperty("link_preview_options")
+    private LinkPreviewOptions linkPreviewOptions;
 
     /**
      * Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>.
@@ -79,17 +77,10 @@ public class SendMessage implements TelegramMethod<Message> {
     private Boolean protectContent;
 
     /**
-     * If the message is a reply, ID of the original message
+     * Description of the message to reply to
      */
-    @JsonProperty("reply_to_message_id")
-    private Integer replyToMessageId;
-
-    /**
-     * Pass True if the message should be sent
-     * even if the specified replied-to message is not found
-     */
-    @JsonProperty("allow_sending_without_reply")
-    private Boolean allowSendingWithoutReply;
+    @JsonProperty("reply_parameters")
+    private ReplyParameters replyParameters;
 
     /**
      * Additional interface options.

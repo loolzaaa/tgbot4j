@@ -58,6 +58,25 @@ public class Update {
     private Message editedChannelPost;
 
     /**
+     * Optional. A reaction to a message was changed by a user.
+     * The bot must be an administrator in the chat
+     * and must explicitly specify {@code "message_reaction"}
+     * in the list of allowed_updates to receive these updates.
+     * The update isn't received for reactions set by bots.
+     */
+    @JsonProperty("message_reaction")
+    private MessageReactionUpdated messageReaction;
+
+    /**
+     * Optional. Reactions to a message with anonymous reactions
+     * were changed. The bot must be an administrator in the chat
+     * and must explicitly specify {@code "message_reaction_count"}
+     * in the list of allowed_updates to receive these updates.
+     */
+    @JsonProperty("message_reaction_count")
+    private MessageReactionCountUpdated messageReactionCount;
+
+    /**
      * Optional. New incoming <a href="https://core.telegram.org/bots/api#inline-mode">inline</a> query
      */
     @JsonProperty("inline_query")
@@ -130,4 +149,20 @@ public class Update {
      */
     @JsonProperty("chat_join_request")
     private ChatJoinRequest chatJoinRequest;
+
+    /**
+     * Optional. A chat boost was added or changed.
+     * The bot must be an administrator in the chat
+     * to receive these updates.
+     */
+    @JsonProperty("chat_boost")
+    private ChatBoostUpdated chatBoost;
+
+    /**
+     * Optional. A boost was removed from a chat.
+     * The bot must be an administrator in the chat
+     * to receive these updates.
+     */
+    @JsonProperty("removed_chat_boost")
+    private ChatBoostRemoved removedChatBoost;
 }

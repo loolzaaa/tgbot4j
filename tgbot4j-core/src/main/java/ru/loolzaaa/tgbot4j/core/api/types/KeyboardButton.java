@@ -41,14 +41,13 @@ public class KeyboardButton implements Validated {
     private String text;
 
     /**
-     * Optional. If specified, pressing the button
-     * will open a list of suitable users.
-     * Tapping on any user will send their identifier
-     * to the bot in a “user_shared” service message.
+     * Optional. If specified, pressing the button will open
+     * a list of suitable users. Identifiers of selected users
+     * will be sent to the bot in a “users_shared” service message.
      * Available in private chats only.
      */
-    @JsonProperty("request_user")
-    private KeyboardButtonRequestUser requestUser;
+    @JsonProperty("request_users")
+    private KeyboardButtonRequestUsers requestUsers;
 
     /**
      * Optional. If specified, pressing the button

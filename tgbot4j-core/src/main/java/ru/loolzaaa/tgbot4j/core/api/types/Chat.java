@@ -86,8 +86,58 @@ public class Chat {
     private List<String> activeUsernames;
 
     /**
-     * Optional. Custom emoji identifier of emoji status
-     * of the other party in a private chat.
+     * Optional. List of available reactions allowed in the chat.
+     * If omitted, then all {@link ReactionTypeEmoji} are allowed.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("available_reactions")
+    private List<ReactionType> availableReactions;
+
+    /**
+     * Optional. Identifier of the accent color
+     * for the chat name and backgrounds of the chat photo,
+     * reply header, and link preview.
+     * See <a href="https://core.telegram.org/bots/api#accent-colors">accent colors</a> for more details.
+     * <p>
+     * Returned only in {@link GetChat}.
+     * <p>
+     * Always returned in {@link GetChat}.
+     */
+    @JsonProperty("accent_color_id")
+    private Integer accentColorId;
+
+    /**
+     * Optional. Custom emoji identifier of emoji chosen
+     * by the chat for the reply header and link preview background.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("background_custom_emoji_id")
+    private String backgroundCustomEmojiId;
+
+    /**
+     * Optional. Identifier of the accent color for the chat's
+     * profile background.
+     * See <a href="https://core.telegram.org/bots/api#profile-accent-colors">profile accent colors</a> for more details.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("profile_accent_color_id")
+    private Integer profileAccentColorId;
+
+    /**
+     * Optional. Custom emoji identifier of the emoji
+     * chosen by the chat for its profile background.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("profile_background_custom_emoji_id")
+    private String profileBackgroundCustomEmojiId;
+
+    /**
+     * Optional. Custom emoji identifier of the emoji status
+     * of the chat or the other party in a private chat.
      * <p>
      * Returned only in {@link GetChat}.
      */
@@ -96,7 +146,8 @@ public class Chat {
 
     /**
      * Optional. Expiration date of the emoji status
-     * of the other party in a private chat in Unix time, if any.
+     * of the chat or the other party in a private chat,
+     * in Unix time, if any.
      * <p>
      * Returned only in {@link GetChat}.
      */
@@ -232,6 +283,15 @@ public class Chat {
      */
     @JsonProperty("has_protected_content")
     private Boolean hasProtectedContent;
+
+    /**
+     * Optional. True, if new chat members will have access
+     * to old messages; available only to chat administrators.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("has_visible_history")
+    private Boolean hasVisibleHistory;
 
     /**
      * Optional. For supergroups, name of group sticker set.

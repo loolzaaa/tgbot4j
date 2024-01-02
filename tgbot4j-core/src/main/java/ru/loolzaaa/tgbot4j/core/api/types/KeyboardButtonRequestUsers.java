@@ -15,27 +15,35 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KeyboardButtonRequestUser {
+public class KeyboardButtonRequestUsers {
     /**
      * Signed 32-bit identifier of the request,
-     * which will be received back in the {@link UserShared} object.
+     * which will be received back in the {@link UsersShared} object.
      * Must be unique within the message
      */
     @JsonProperty("request_id")
     private Integer requestId;
 
     /**
-     * Optional. Pass True to request a bot, pass False to request a regular user.
-     * If not specified, no additional restrictions are applied.
+     * Optional. Pass True to request bots, pass False
+     * to request regular users. If not specified,
+     * no additional restrictions are applied.
      */
     @JsonProperty("user_is_bot")
     private Boolean userIsBot;
 
     /**
-     * Optional. Pass True to request a premium user,
-     * pass False to request a non-premium user.
+     * Optional. Pass True to request premium users,
+     * pass False to request non-premium users.
      * If not specified, no additional restrictions are applied.
      */
     @JsonProperty("user_is_premium")
     private Boolean userIsPremium;
+
+    /**
+     * Optional. The maximum number of users to be selected;
+     * 1-10. Defaults to 1.
+     */
+    @JsonProperty("max_quantity")
+    private Integer maxQuantity;
 }

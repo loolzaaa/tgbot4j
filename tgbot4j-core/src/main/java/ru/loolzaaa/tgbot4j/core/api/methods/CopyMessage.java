@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
-import ru.loolzaaa.tgbot4j.core.api.types.MessageId;
-import ru.loolzaaa.tgbot4j.core.api.types.Poll;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.util.List;
@@ -91,17 +88,10 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private Boolean protectContent;
 
     /**
-     * If the message is a reply, ID of the original message
+     * Description of the message to reply to
      */
-    @JsonProperty("reply_to_message_id")
-    private Integer replyToMessageId;
-
-    /**
-     * Pass True if the message should be sent
-     * even if the specified replied-to message is not found
-     */
-    @JsonProperty("allow_sending_without_reply")
-    private Boolean allowSendingWithoutReply;
+    @JsonProperty("reply_parameters")
+    private ReplyParameters replyParameters;
 
     /**
      * Additional interface options.

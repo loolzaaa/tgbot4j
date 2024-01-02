@@ -11,6 +11,7 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
@@ -18,7 +19,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 
 /**
  * As of <a href="https://telegram.org/blog/video-messages-and-telescope">v.4.0</a>,
@@ -103,18 +105,11 @@ public class SendVideoNote implements TelegramMultipartMethod<Message> {
     private Boolean protectContent;
 
     /**
-     * If the message is a reply, ID of the original message
+     * Description of the message to reply to
      */
-    @JsonProperty("reply_to_message_id")
-    private Integer replyToMessageId;
-
-    /**
-     * Pass True if the message should be sent
-     * even if the specified replied-to message
-     * is not found
-     */
-    @JsonProperty("allow_sending_without_reply")
-    private Boolean allowSendingWithoutReply;
+    @MultipartType(JSON)
+    @JsonProperty("reply_parameters")
+    private ReplyParameters replyParameters;
 
     /**
      * Additional interface options.

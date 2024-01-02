@@ -40,12 +40,11 @@ public class CallbackQuery {
     private User from;
 
     /**
-     * Optional. Message with the callback button that originated the query.
-     * Note that message content and message date
-     * will not be available if the message is too old
+     * Optional. Message sent by the bot with the callback button
+     * that originated the query
      */
     @JsonProperty("message")
-    private Message message;
+    private MaybeInaccessibleMessage message;
 
     /**
      * Optional. Identifier of the message sent via the bot

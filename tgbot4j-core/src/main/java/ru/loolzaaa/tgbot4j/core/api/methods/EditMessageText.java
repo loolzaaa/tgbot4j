@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
+import ru.loolzaaa.tgbot4j.core.api.types.LinkPreviewOptions;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
 
@@ -70,10 +71,10 @@ public class EditMessageText implements TelegramMethod<Object> {
     private List<MessageEntity> entities;
 
     /**
-     * Disables link previews for links in this message
+     * Link preview generation options for the message
      */
-    @JsonProperty("disable_web_page_preview")
-    private Boolean disableWebPagePreview;
+    @JsonProperty("link_preview_options")
+    private LinkPreviewOptions linkPreviewOptions;
 
     /**
      * A JSON-serialized object for an <a hred="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>.

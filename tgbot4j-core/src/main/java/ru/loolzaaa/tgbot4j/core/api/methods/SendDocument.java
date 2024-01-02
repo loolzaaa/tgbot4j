@@ -8,10 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
-import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
@@ -19,7 +16,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 
 /**
  * Use this method to send general files.
@@ -122,18 +120,11 @@ public class SendDocument implements TelegramMultipartMethod<Message> {
     private Boolean protectContent;
 
     /**
-     * If the message is a reply, ID of the original message
+     * Description of the message to reply to
      */
-    @JsonProperty("reply_to_message_id")
-    private Integer replyToMessageId;
-
-    /**
-     * Pass True if the message should be sent
-     * even if the specified replied-to message
-     * is not found
-     */
-    @JsonProperty("allow_sending_without_reply")
-    private Boolean allowSendingWithoutReply;
+    @MultipartType(JSON)
+    @JsonProperty("reply_parameters")
+    private ReplyParameters replyParameters;
 
     /**
      * Additional interface options.

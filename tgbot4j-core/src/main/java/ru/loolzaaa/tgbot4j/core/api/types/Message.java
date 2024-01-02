@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,11 @@ import java.util.List;
  * This object represents a message.
  */
 
+@JsonDeserialize // Prevent stack overflow
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class Message implements MaybeInaccessibleMessage {
     /**
      * Unique message identifier inside this chat
      */
@@ -62,49 +64,11 @@ public class Message {
     private Chat chat;
 
     /**
-     * Optional. For forwarded messages,
-     * sender of the original message
+     * Optional. Information about the original message
+     * for forwarded messages
      */
-    @JsonProperty("forward_from")
-    private User forwardFrom;
-
-    /**
-     * Optional. For messages forwarded from channels
-     * or from anonymous administrators,
-     * information about the original sender chat
-     */
-    @JsonProperty("forward_from_chat")
-    private Chat forwardFromChat;
-
-    /**
-     * Optional. For messages forwarded from channels,
-     * identifier of the original message in the channel
-     */
-    @JsonProperty("forward_from_message_id")
-    private Integer forwardFromMessageId;
-
-    /**
-     * Optional. For forwarded messages that were originally
-     * sent in channels or by an anonymous chat administrator,
-     * signature of the message sender if present
-     */
-    @JsonProperty("forward_signature")
-    private String forwardSignature;
-
-    /**
-     * Optional. Sender's name for messages forwarded from users
-     * who disallow adding a link to their account
-     * in forwarded messages
-     */
-    @JsonProperty("forward_sender_name")
-    private String forwardSenderName;
-
-    /**
-     * Optional. For forwarded messages, date the original message
-     * was sent in Unix time
-     */
-    @JsonProperty("forward_date")
-    private Integer forwardDate;
+    @JsonProperty("forward_origin")
+    private MessageOrigin forwardOrigin;
 
     /**
      * Optional. True, if the message is sent to a forum topic
@@ -128,6 +92,22 @@ public class Message {
      */
     @JsonProperty("reply_to_message")
     private Message replyToMessage;
+
+    /**
+     * Optional. Information about the message
+     * that is being replied to, which may come
+     * from another chat or forum topic
+     */
+    @JsonProperty("external_reply")
+    private ExternalReplyInfo externalReply;
+
+    /**
+     * Optional. For replies that quote part
+     * of the original message, the quoted part
+     * of the message
+     */
+    @JsonProperty("quote")
+    private TextQuote quote;
 
     /**
      * Optional. Bot through which the message was sent
@@ -176,6 +156,14 @@ public class Message {
      */
     @JsonProperty("entities")
     private List<MessageEntity> entities;
+
+    /**
+     * Optional. Options used for link preview generation
+     * for the message, if it is a text message
+     * and link preview options were changed
+     */
+    @JsonProperty("link_preview_options")
+    private LinkPreviewOptions linkPreviewOptions;
 
     /**
      * Optional. Message is an animation, information about the animation.
@@ -386,12 +374,13 @@ public class Message {
     private Long migrateFromChatId;
 
     /**
-     * Optional. Specified message was pinned. Note that the Message object
-     * in this field will not contain further reply_to_message fields
-     * even if it is itself a reply.
+     * Optional. Specified message was pinned.
+     * Note that the Message object in this field
+     * will not contain further reply_to_message fields
+     * even if it itself is a reply.
      */
     @JsonProperty("pinned_message")
-    private Message pinnedMessage;
+    private MaybeInaccessibleMessage pinnedMessage;
 
     /**
      * Optional. Message is an invoice for a <a href="https://core.telegram.org/bots/api#payments">payment</a>,
@@ -412,8 +401,8 @@ public class Message {
     /**
      * Optional. Service message: a user was shared with the bot
      */
-    @JsonProperty("user_shared")
-    private UserShared userShared;
+    @JsonProperty("users_shared")
+    private UsersShared usersShared;
 
     /**
      * Optional. Service message: a chat was shared with the bot
@@ -488,6 +477,31 @@ public class Message {
      */
     @JsonProperty("general_forum_topic_unhidden")
     private GeneralForumTopicUnhidden generalForumTopicUnhidden;
+
+    /**
+     * Optional. Service message: a scheduled giveaway was created
+     */
+    @JsonProperty("giveaway_created")
+    private GiveawayCreated giveawayCreated;
+
+    /**
+     * Optional. The message is a scheduled giveaway message
+     */
+    @JsonProperty("giveaway")
+    private Giveaway giveaway;
+
+    /**
+     * Optional. A giveaway with public winners was completed
+     */
+    @JsonProperty("giveaway_winners")
+    private GiveawayWinners giveawayWinners;
+
+    /**
+     * Optional. Service message: a giveaway
+     * without public winners was completed
+     */
+    @JsonProperty("giveaway_completed")
+    private GiveawayCompleted giveawayCompleted;
 
     /**
      * Optional. Service message: video chat scheduled
