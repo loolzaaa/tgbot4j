@@ -1,11 +1,11 @@
 package ru.loolzaaa.tgbot4j.util;
 
+import ru.loolzaaa.tgbot4j.bot.sender.DefaultMethodSender;
 import ru.loolzaaa.tgbot4j.core.api.methods.DeleteWebhook;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetWebhookInfo;
 import ru.loolzaaa.tgbot4j.core.api.methods.SetWebhook;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
-import ru.loolzaaa.tgbot4j.sender.DefaultMethodSender;
 
 public class WebhookUtils {
     public static WebhookInfo getWebhook(String botToken) {

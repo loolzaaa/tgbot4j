@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.receiver;
+package ru.loolzaaa.tgbot4j.bot.receiver;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

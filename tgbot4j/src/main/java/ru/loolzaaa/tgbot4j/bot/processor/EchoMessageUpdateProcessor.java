@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.processor;
+package ru.loolzaaa.tgbot4j.bot.processor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

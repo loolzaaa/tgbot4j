@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.sender;
+package ru.loolzaaa.tgbot4j.bot.sender;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
