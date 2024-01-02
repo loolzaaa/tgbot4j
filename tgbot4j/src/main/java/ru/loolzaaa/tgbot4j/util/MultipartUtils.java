@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 /**
@@ -54,7 +54,7 @@ public class MultipartUtils {
                 partBuilder
                         .append(format(CONTENT_DISPOSITION_PATTERN, part.name()))
                         .append("\r\n")
-                        .append(format(CONTENT_TYPE_WITH_CHARSET_PATTERN, MULTIPART_TEXT_CONTENT_TYPE, DEFAULT_CHARSET))
+                        .append(format(CONTENT_TYPE_WITH_CHARSET_PATTERN, TEXT_CONTENT_TYPE_VALUE, DEFAULT_CHARSET))
                         .append("\r\n\r\n");
             }
             byteArrays.add(partBuilder.toString().getBytes(StandardCharsets.UTF_8));
