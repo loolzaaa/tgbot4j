@@ -1,7 +1,14 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
+
+import java.io.IOException;
 
 /**
  * This object represents one result of an inline query.
@@ -34,29 +41,81 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * must be assumed to be <b>public</b>.
  */
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = InlineQueryResultCachedAudio.class, name = "audio"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedDocument.class, name = "document"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedGif.class, name = "gif"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedMpeg4Gif.class, name = "mpeg4_gif"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedPhoto.class, name = "photo"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedSticker.class, name = "sticker"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedVideo.class, name = "video"),
-        @JsonSubTypes.Type(value = InlineQueryResultCachedVoice.class, name = "voice"),
-        @JsonSubTypes.Type(value = InlineQueryResultArticle.class, name = "article"),
-        @JsonSubTypes.Type(value = InlineQueryResultAudio.class, name = "audio"),
-        @JsonSubTypes.Type(value = InlineQueryResultContact.class, name = "contact"),
-        @JsonSubTypes.Type(value = InlineQueryResultGame.class, name = "game"),
-        @JsonSubTypes.Type(value = InlineQueryResultDocument.class, name = "document"),
-        @JsonSubTypes.Type(value = InlineQueryResultGif.class, name = "gif"),
-        @JsonSubTypes.Type(value = InlineQueryResultLocation.class, name = "location"),
-        @JsonSubTypes.Type(value = InlineQueryResultMpeg4Gif.class, name = "mpeg4_gif"),
-        @JsonSubTypes.Type(value = InlineQueryResultPhoto.class, name = "photo"),
-        @JsonSubTypes.Type(value = InlineQueryResultVenue.class, name = "venue"),
-        @JsonSubTypes.Type(value = InlineQueryResultVideo.class, name = "video"),
-        @JsonSubTypes.Type(value = InlineQueryResultVoice.class, name = "voice"),
-})
+@JsonDeserialize(using = InlineQueryResult.InlineQueryResultDeserializer.class)
 public interface InlineQueryResult {
-    //TODO: same type property values for simple and cached types
+    class InlineQueryResultDeserializer extends StdDeserializer<InlineQueryResult> {
+        public InlineQueryResultDeserializer() {
+            this(null);
+        }
+
+        protected InlineQueryResultDeserializer(Class<?> vc) {
+            super(vc);
+        }
+
+        @Override
+        public InlineQueryResult deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            ObjectCodec codec = p.getCodec();
+            JsonNode node = codec.readTree(p);
+            if (node.get("type") == null) {
+                throw new ApiValidationException("Type parameter must not be null", null);
+            }
+            String type = node.get("type").asText();
+            switch (type) {
+                case "audio" -> {
+                    return node.has("audio_url") ?
+                            codec.treeToValue(node, InlineQueryResultAudio.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedAudio.class);
+                }
+                case "document" -> {
+                    return node.has("document_url") ?
+                            codec.treeToValue(node, InlineQueryResultDocument.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedDocument.class);
+                }
+                case "gif" -> {
+                    return node.has("gif_url") ?
+                            codec.treeToValue(node, InlineQueryResultGif.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedGif.class);
+                }
+                case "video" -> {
+                    return node.has("video_url") ?
+                            codec.treeToValue(node, InlineQueryResultVideo.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedVideo.class);
+                }
+                case "photo" -> {
+                    return node.has("photo_url") ?
+                            codec.treeToValue(node, InlineQueryResultPhoto.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedPhoto.class);
+                }
+                case "voice" -> {
+                    return node.has("voice_url") ?
+                            codec.treeToValue(node, InlineQueryResultVoice.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedVoice.class);
+                }
+                case "mpeg4_gif" -> {
+                    return node.has("mpeg4_url") ?
+                            codec.treeToValue(node, InlineQueryResultMpeg4Gif.class) :
+                            codec.treeToValue(node, InlineQueryResultCachedMpeg4Gif.class);
+                }
+                case "article" -> {
+                    return codec.treeToValue(node, InlineQueryResultArticle.class);
+                }
+                case "contact" -> {
+                    return codec.treeToValue(node, InlineQueryResultContact.class);
+                }
+                case "game" -> {
+                    return codec.treeToValue(node, InlineQueryResultGame.class);
+                }
+                case "location" -> {
+                    return codec.treeToValue(node, InlineQueryResultLocation.class);
+                }
+                case "venue" -> {
+                    return codec.treeToValue(node, InlineQueryResultVenue.class);
+                }
+                case "sticker" -> {
+                    return codec.treeToValue(node, InlineQueryResultCachedSticker.class);
+                }
+                default -> throw new ApiValidationException("Unknown inline query result type: " + type, null);
+            }
+        }
+    }
 }

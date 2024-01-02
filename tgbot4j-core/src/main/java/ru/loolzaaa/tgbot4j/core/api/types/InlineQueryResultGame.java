@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
  * any inline results if a game result is among them.
  */
 
+@JsonDeserialize // Prevent stack overflow
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

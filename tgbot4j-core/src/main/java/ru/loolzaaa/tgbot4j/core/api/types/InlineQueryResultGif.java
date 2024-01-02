@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
  * to send a message with the specified content instead of the animation.
  */
 
+@JsonDeserialize // Prevent stack overflow
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

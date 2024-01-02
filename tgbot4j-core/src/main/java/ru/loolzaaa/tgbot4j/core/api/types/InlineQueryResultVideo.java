@@ -1,6 +1,7 @@
 package ru.loolzaaa.tgbot4j.core.api.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
  * you <b>must</b> replace its content using input_message_content.
  */
 
+@JsonDeserialize // Prevent stack overflow
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
