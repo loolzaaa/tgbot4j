@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.receiver;
+package ru.loolzaaa.tgbot4j.core.bot.receiver;
 
 
 import ru.loolzaaa.tgbot4j.core.api.types.Update;

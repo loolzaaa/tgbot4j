@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.bot.TelegramBot;
-import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessor;
-import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessorChain;
-import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
-import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessor;
+import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessorChain;
+import ru.loolzaaa.tgbot4j.core.bot.receiver.UpdateReceiver;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 import java.util.ArrayList;
 import java.util.Iterator;

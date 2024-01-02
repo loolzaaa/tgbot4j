@@ -1,4 +1,4 @@
-package ru.loolzaaa.tgbot4j.core.sender;
+package ru.loolzaaa.tgbot4j.core.bot.sender;
 
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 

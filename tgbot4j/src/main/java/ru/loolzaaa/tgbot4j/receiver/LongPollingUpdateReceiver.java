@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.GetUpdates;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
-import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
-import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.core.bot.receiver.UpdateReceiver;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.sender.DefaultMethodSender;
 import ru.loolzaaa.tgbot4j.util.WebhookUtils;
 

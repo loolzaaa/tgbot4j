@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.SendMessage;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
-import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessor;
-import ru.loolzaaa.tgbot4j.core.processor.UpdateProcessorChain;
-import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessor;
+import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessorChain;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 public class EchoMessageUpdateProcessor implements UpdateProcessor {
 

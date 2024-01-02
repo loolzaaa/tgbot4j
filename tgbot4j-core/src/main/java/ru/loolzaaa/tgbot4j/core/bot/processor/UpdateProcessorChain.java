@@ -1,10 +1,10 @@
-package ru.loolzaaa.tgbot4j.core.processor;
+package ru.loolzaaa.tgbot4j.core.bot.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
-import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 import java.util.ArrayList;
 import java.util.Comparator;

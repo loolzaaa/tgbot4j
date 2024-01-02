@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.methods.SetWebhook;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
-import ru.loolzaaa.tgbot4j.core.receiver.UpdateReceiver;
+import ru.loolzaaa.tgbot4j.core.bot.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.util.WebhookUtils;
 
 import java.io.IOException;

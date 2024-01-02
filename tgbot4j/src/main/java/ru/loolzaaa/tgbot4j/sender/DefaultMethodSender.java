@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.core.exception.ApiRequestException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
-import ru.loolzaaa.tgbot4j.core.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.util.MultipartUtils;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 public class DefaultMethodSender implements MethodSender {
