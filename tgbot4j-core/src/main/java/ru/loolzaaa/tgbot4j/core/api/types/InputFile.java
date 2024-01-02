@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Validated;
+import ru.loolzaaa.tgbot4j.core.check.IgnoreCheck;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.io.File;
@@ -21,6 +22,7 @@ import java.io.InputStream;
  * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
  */
 
+@IgnoreCheck
 @Data
 @NoArgsConstructor
 @JsonSerialize(using = InputFile.InputFileSerializer.class)

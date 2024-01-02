@@ -1,7 +1,6 @@
 package ru.loolzaaa.tgbot4j.core.check;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 public class ApiSpecificationChecker {
 
@@ -74,8 +73,7 @@ public class ApiSpecificationChecker {
     public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidFields = new ArrayList<>();
         for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
-            // Exclusions
-            if (clazz == InputFile.class) {
+            if (clazz.isAnonymousClass() || clazz.isAnnotationPresent(IgnoreCheck.class)) {
                 continue;
             }
             if (!(clazz.getDeclaredFields().length == 0)) {
