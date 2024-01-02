@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 
 /**
  * Use this method to specify a URL and receive
@@ -126,7 +127,7 @@ public class SetWebhook implements TelegramMultipartMethod<Boolean> {
         if (url == null || url.isEmpty()) {
             throw new ApiValidationException("URL parameter can't be empty", this);
         }
-        if (maxConnections < 1 || maxConnections > 100) {
+        if (maxConnections != null && (maxConnections < 1 || maxConnections > 100)) {
             throw new ApiValidationException("Max connections parameter must be in 1..100 range", this);
         }
         if (certificate != null) {
