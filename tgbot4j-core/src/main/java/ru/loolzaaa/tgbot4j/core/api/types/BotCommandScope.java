@@ -16,12 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *     <li>{@link BotCommandScopeChatMember}</li>
  * </ul>
  * <p>
- * <h3>Determining list of commands</h3>
+ * <b>Determining list of commands</b>
  * The following algorithm is used to determine the list of commands
  * for a particular user viewing the bot menu.
  * The first list of commands which is set is returned:
  * <p>
- * <h4>Commands in the chat with the bot</h4>
+ * <b>Commands in the chat with the bot</b>
  * <ul>
  *     <li>botCommandScopeChat + language_code</li>
  *     <li>botCommandScopeChat</li>
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *     <li>botCommandScopeDefault</li>
  * </ul>
  * <p>
- * <h4>Commands in group and supergroup chats</h4>
+ * <b>Commands in group and supergroup chats</b>
  * <ul>
  *     <li>botCommandScopeChatMember + language_code</li>
  *     <li>botCommandScopeChatMember</li>

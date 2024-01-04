@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * for the Telegram Login Widget when the user is coming from Telegram.
  * All the user needs to do is tap/click a button
  * and confirm that they want to log in:
- * <img src="https://core.telegram.org/file/811140015/1734/8VZFkwWXalM.97872/6127fa62d8a0bf2b3c">
+ * <img src="https://core.telegram.org/file/811140015/1734/8VZFkwWXalM.97872/6127fa62d8a0bf2b3c" alt="Open link">
  *
  * @apiNote Telegram apps support these buttons as of version 5.7.
  */
