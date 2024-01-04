@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Executor;
-import java.util.function.Function;
 
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
@@ -34,8 +33,6 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
 
     private final SetWebhook setWebhook;
 
-    private final Function<ConcurrentLinkedDeque<Update>, HttpHandler> updateHandler;
-
     private final ReceiverOptions options;
 
     private volatile boolean isRunning = false;
@@ -45,12 +42,10 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
     public WebhookUpdateReceiver(@NonNull String botName,
                                  @NonNull String botToken,
                                  SetWebhook setWebhook,
-                                 Function<ConcurrentLinkedDeque<Update>, HttpHandler> updateHandler,
                                  ReceiverOptions options) {
         this.botName = botName;
         this.botToken = botToken;
         this.setWebhook = setWebhook;
-        this.updateHandler = updateHandler;
         this.options = Objects.requireNonNullElseGet(options, ReceiverOptions::new);
         if (this.options.server != null) {
             this.options.serverPort = -1;
@@ -81,14 +76,14 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
             }
         }
 
-        Function<ConcurrentLinkedDeque<Update>, HttpHandler> updateHandlerFn = Objects.requireNonNullElseGet(updateHandler, () -> DefaultUpdateHandler::new);
+        UpdateHandler updateHandler = new UpdateHandler(updates);
         if (options.server == null) {
             if (!webhookSupportedPorts.contains(options.serverPort)) {
                 log.warn("Ports currently supported for webhooks: {}. Current port: {}", webhookSupportedPorts, options.serverPort);
             }
             try {
                 server = HttpServer.create(new InetSocketAddress(options.serverPort), 0);
-                server.createContext(options.botPath, exchange -> updateHandlerFn.apply(updates).handle(exchange));
+                server.createContext(options.botPath, updateHandler);
                 server.setExecutor(options.executor);
                 server.start();
             } catch (Exception e) {
@@ -97,7 +92,8 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
             }
         } else {
             server = options.server;
-            server.createContext(options.botPath, exchange -> updateHandlerFn.apply(updates).handle(exchange));
+            server.createContext(options.botPath, updateHandler);
+            log.info("Using predefined server: {}. Don't forget to start it if needed!", server);
         }
 
         isRunning = true;
@@ -111,7 +107,9 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
             return;
         }
 
-        server.stop(2);
+        if (options.server == null) {
+            server.stop(2);
+        }
 
         isRunning = false;
         log.info("{} webhook receiver stopped", botName);
@@ -149,7 +147,7 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
     }
 
     @RequiredArgsConstructor
-    private class DefaultUpdateHandler implements HttpHandler {
+    private class UpdateHandler implements HttpHandler {
 
         private final ObjectMapper mapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -159,9 +157,9 @@ public class WebhookUpdateReceiver implements UpdateReceiver {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             int responseCode = HTTP_CODE_OK;
-            if (exchange.getRequestMethod().equals("POST")) {
+            if (exchange.getRequestMethod().equals(HTTP_METHOD_POST)) {
                 Headers requestHeaders = exchange.getRequestHeaders();
-                String secretTokenHeader = requestHeaders.getFirst("X-Telegram-Bot-Api-Secret-Token");
+                String secretTokenHeader = requestHeaders.getFirst(SECRET_TOKEN_HEADER);
                 if (options.secretToken != null && !options.secretToken.equals(secretTokenHeader)) {
                     responseCode = HTTP_CODE_UNAUTHORIZED;
                 } else {
