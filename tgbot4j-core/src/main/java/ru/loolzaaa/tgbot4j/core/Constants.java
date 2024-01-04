@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Constants {
     public static final String BASE_URL = "https://api.telegram.org/bot";
+    public static final String SECRET_TOKEN_HEADER = "X-Telegram-Bot-Api-Secret-Token";
 
     public static final List<Integer> webhookSupportedPorts = List.of(443, 80, 88, 8443);
 
@@ -14,6 +15,8 @@ public class Constants {
     public static final String JSON_CONTENT_TYPE_VALUE = "application/json";
     public static final String MULTIPART_CONTENT_TYPE_VALUE = "multipart/form-data";
     public static final String MULTIPART_BINARY_CONTENT_TYPE = "application/octet-stream";
+
+    public static final String HTTP_METHOD_POST = "POST";
 
     public static final int HTTP_CODE_OK = 200;
     public static final int HTTP_CODE_UNAUTHORIZED = 401;
