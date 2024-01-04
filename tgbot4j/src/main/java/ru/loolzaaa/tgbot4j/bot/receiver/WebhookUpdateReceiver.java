@@ -24,7 +24,7 @@ import java.util.concurrent.Executor;
 
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
-public class WebhookUpdateReceiver implements UpdateReceiver {
+public final class WebhookUpdateReceiver implements UpdateReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(WebhookUpdateReceiver.class);
 

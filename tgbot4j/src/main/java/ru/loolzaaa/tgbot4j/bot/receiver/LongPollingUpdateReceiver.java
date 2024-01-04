@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public class LongPollingUpdateReceiver implements UpdateReceiver {
+public final class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(LongPollingUpdateReceiver.class);
 

@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class UpdateProcessorChain {
+public final class UpdateProcessorChain {
 
     private static final Logger log = LoggerFactory.getLogger(UpdateProcessorChain.class);
 

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TelegramBotImpl implements TelegramBot {
+public final class TelegramBotImpl implements TelegramBot {
 
     private static final Logger log = LoggerFactory.getLogger(TelegramBotImpl.class);
 

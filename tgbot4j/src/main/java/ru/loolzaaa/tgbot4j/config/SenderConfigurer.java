@@ -5,7 +5,7 @@ import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 import java.util.function.Consumer;
 
-public class SenderConfigurer extends BotConfigurer<MethodSender> {
+public final class SenderConfigurer extends BotConfigurer<MethodSender> {
 
     private ComponentConfigurer<? extends MethodSender> methodSenderConfigurer;
 

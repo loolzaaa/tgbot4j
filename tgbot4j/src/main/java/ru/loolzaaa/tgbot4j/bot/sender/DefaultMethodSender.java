@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 import static java.lang.String.format;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
-public class DefaultMethodSender implements MethodSender {
+public final class DefaultMethodSender implements MethodSender {
 
     private static final Logger log = LoggerFactory.getLogger(DefaultMethodSender.class);
 

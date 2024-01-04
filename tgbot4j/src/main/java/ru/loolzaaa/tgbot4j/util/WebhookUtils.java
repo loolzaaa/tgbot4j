@@ -7,7 +7,7 @@ import ru.loolzaaa.tgbot4j.core.api.methods.SetWebhook;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
-public class WebhookUtils {
+public final class WebhookUtils {
     public static WebhookInfo getWebhook(String botToken) {
         GetWebhookInfo getWebhookInfo = new GetWebhookInfo();
         MethodSender methodSender = new DefaultMethodSender(botToken, null);

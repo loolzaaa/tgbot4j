@@ -15,7 +15,7 @@ import static ru.loolzaaa.tgbot4j.core.Constants.*;
  * <p>
  * Details: <a href="https://datatracker.ietf.org/doc/html/rfc7578">https://datatracker.ietf.org/doc/html/rfc7578</a>
  */
-public class MultipartUtils {
+public final class MultipartUtils {
 
     private final static char[] MULTIPART_CHARS =
             "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class ServerlessWebhookUpdateReceiver implements UpdateReceiver {
+public final class ServerlessWebhookUpdateReceiver implements UpdateReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(ServerlessWebhookUpdateReceiver.class);
 
