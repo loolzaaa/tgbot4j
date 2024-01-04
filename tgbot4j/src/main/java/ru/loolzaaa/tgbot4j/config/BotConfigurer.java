@@ -3,16 +3,7 @@ package ru.loolzaaa.tgbot4j.config;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class BotConfigurer<T> {
-
+public abstract class BotConfigurer<T> implements ComponentConfigurer<T> {
     protected final String botName;
     protected final String botToken;
-
-    protected T botComponent;
-
-    public void setBotComponent(T botComponent) {
-        this.botComponent = botComponent;
-    }
-
-    public abstract T configure();
 }

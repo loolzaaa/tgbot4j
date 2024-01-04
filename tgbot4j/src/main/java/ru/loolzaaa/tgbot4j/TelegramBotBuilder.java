@@ -13,15 +13,13 @@ import java.util.function.Consumer;
 public class TelegramBotBuilder {
 
     private final String botName;
-    private final String botToken;
 
     private final SenderConfigurer senderConfigurer;
 
     private final ReceiverConfigurer receiverConfigurer;
 
-    private TelegramBotBuilder(String botName, String botToken) {
+    private TelegramBotBuilder(@NonNull String botName, @NonNull String botToken) {
         this.botName = botName;
-        this.botToken = botToken;
         this.senderConfigurer = new SenderConfigurer(botName, botToken);
         this.receiverConfigurer = new ReceiverConfigurer(botName, botToken);
     }
