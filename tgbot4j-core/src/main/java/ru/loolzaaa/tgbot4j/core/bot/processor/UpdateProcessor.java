@@ -6,8 +6,4 @@ import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 public interface UpdateProcessor {
     void process(Update update, MethodSender methodSender, UpdateProcessorChain chain);
-
-    default int getOrder() {
-        return 1;
-    }
 }

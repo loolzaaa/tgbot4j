@@ -42,11 +42,11 @@ public final class TelegramBotImpl implements TelegramBot {
     }
 
     @Override
-    public synchronized void registerUpdateProcessor(UpdateProcessor updateProcessor) {
+    public synchronized void registerUpdateProcessor(UpdateProcessor updateProcessor, int order) {
         if (runStatus.get() != 0) {
             throw new IllegalStateException(name + " already initialized or destroyed");
         }
-        processorChainBuilder.addUpdateProcess(updateProcessor);
+        processorChainBuilder.addUpdateProcessor(updateProcessor, order);
     }
 
     @Override

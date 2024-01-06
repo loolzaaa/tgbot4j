@@ -43,16 +43,25 @@ public final class UpdateProcessorChain {
 
     public static class Builder {
 
-        private final List<UpdateProcessor> updateProcessors = new ArrayList<>(4);
+        private final List<OrderedUpdateProcessor> orderedUpdateProcessors = new ArrayList<>(4);
 
-        public void addUpdateProcess(UpdateProcessor updateProcessor) {
-            updateProcessors.add(updateProcessor);
-            log.info("Add new update processor: {}", updateProcessor);
+        public void addUpdateProcessor(UpdateProcessor updateProcessor, int order) {
+            orderedUpdateProcessors.add(new OrderedUpdateProcessor(updateProcessor, order));
+            log.info("Add new update processor {} with order {}", updateProcessor, order);
         }
 
         public UpdateProcessorChain build() {
-            updateProcessors.sort(Comparator.comparingInt(UpdateProcessor::getOrder));
-            return new UpdateProcessorChain(updateProcessors);
+            List<UpdateProcessor> sortedUpdateProcessors = orderedUpdateProcessors.stream()
+                    .sorted(Comparator.comparingInt(o -> o.order))
+                    .map(orderedUpdateProcessor -> orderedUpdateProcessor.updateProcessor)
+                    .toList();
+            return new UpdateProcessorChain(sortedUpdateProcessors);
+        }
+
+        @RequiredArgsConstructor
+        private static class OrderedUpdateProcessor {
+            private final UpdateProcessor updateProcessor;
+            private final int order;
         }
     }
 }
