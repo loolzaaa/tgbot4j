@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultUserActivityHandler implements UserActivityHandler {
 
-    private final Map<Long, UserActivity> userActivities = new ConcurrentHashMap<>();
+    private final Map<Long, UserActivity> userActivityRegistry = new ConcurrentHashMap<>();
 
     /**
      * Load user activity from map by user id.
@@ -21,7 +21,11 @@ public class DefaultUserActivityHandler implements UserActivityHandler {
      */
     @Override
     public UserActivity loadUserActivity(long id) {
-        return userActivities.get(id);
+        UserActivity userActivity = userActivityRegistry.get(id);
+        if (userActivity != null) {
+            return new UserActivity(userActivity);
+        }
+        return null;
     }
 
     /**
@@ -32,7 +36,7 @@ public class DefaultUserActivityHandler implements UserActivityHandler {
      */
     @Override
     public void saveUserActivity(long id, UserActivity userActivity) {
-        userActivities.put(id, userActivity);
+        userActivityRegistry.put(id, userActivity);
     }
 
     /**
@@ -44,6 +48,6 @@ public class DefaultUserActivityHandler implements UserActivityHandler {
      */
     @Override
     public UserActivity removeUserActivity(long id) {
-        return userActivities.remove(id);
+        return userActivityRegistry.remove(id);
     }
 }

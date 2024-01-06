@@ -1,6 +1,9 @@
 package ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandState;
 
 import java.time.LocalDateTime;
@@ -13,11 +16,22 @@ import java.time.LocalDateTime;
  * @see CommandState
  */
 
-@EqualsAndHashCode
-@ToString
-@Getter
+@Data
 @Setter(onParam_ = @NonNull)
+@RequiredArgsConstructor
 public class UserActivity {
+
+    private final long userId;
+
     private CommandState<?> commandState = new CommandState<>(null, null);
+
     private LocalDateTime lastActivity = LocalDateTime.now();
+
+    public UserActivity(UserActivity userActivity) {
+        CommandState<?> originalCommandState = userActivity.getCommandState();
+
+        this.userId = userActivity.getUserId();
+        this.commandState = new CommandState<>(originalCommandState.identifier(), originalCommandState.state());
+        this.lastActivity = userActivity.getLastActivity();
+    }
 }

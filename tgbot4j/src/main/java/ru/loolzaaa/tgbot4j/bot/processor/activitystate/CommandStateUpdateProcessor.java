@@ -1,7 +1,9 @@
 package ru.loolzaaa.tgbot4j.bot.processor.activitystate;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.DefaultUserActivityHandler;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.UserActivity;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.UserActivityHandler;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.Command;
@@ -18,16 +20,32 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-@RequiredArgsConstructor
+/**
+ * @apiNote Works only if the button that originated
+ * the query was attached to a message sent by the bot
+ */
+
 public class CommandStateUpdateProcessor implements UpdateProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(CommandStateUpdateProcessor.class);
 
     private final Map<String, Command<?>> commandRegistry = new HashMap<>();
 
     private final UserActivityHandler userActivityHandler;
 
+    private final CommandExceptionHandler commandExceptionHandler;
+
     @Setter
     private int userInactivityMaxTime = 20;
+
+    public CommandStateUpdateProcessor(UserActivityHandler userActivityHandler, CommandExceptionHandler commandExceptionHandler) {
+        this.userActivityHandler = Objects.requireNonNullElseGet(userActivityHandler, DefaultUserActivityHandler::new);
+        this.commandExceptionHandler = Objects.requireNonNullElse(commandExceptionHandler, (e, update, methodSender) ->
+                log.info("Command '{}' execution for user {} exception: {}",
+                        e.getCommandIdentifier(), e.getUserId(), e.getLocalizedMessage()));
+    }
 
     @Override
     public void process(Update update, MethodSender methodSender, UpdateProcessorChain chain) {
@@ -36,29 +54,33 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
          https://core.telegram.org/bots/api#update
         */
         if (update.getMessage() != null || update.getCallbackQuery() != null) {
-            Message message = update.getMessage();
-            CallbackQuery callbackQuery = update.getCallbackQuery();
-            if (message != null) {
-                if (isMessageCommand(message)) {
-                    if (userActivityHandler == null) {
-                        executeStatelessCommand(update, methodSender, message);
+            try {
+                Message message = update.getMessage();
+                CallbackQuery callbackQuery = update.getCallbackQuery();
+                if (message != null) {
+                    if (isCommandMessage(message)) {
+                        startCommandProcess(methodSender, message);
                     } else {
-                        executeStatefulCommand(update, methodSender, message);
+                    /*
+                     It is currently unclear whether this is a continuation
+                     of the command or just a message
+                    */
+                        continueCommandProcessWithMessage(methodSender, message);
                     }
                     chain.doProcess(update, methodSender);
                     return;
-                } else if (userActivityHandler != null) {
-                    continueStatefulCommandWithMessage(update, methodSender, message);
+                } else if (callbackQuery.getMessage() != null) {
+                    continueCommandProcessWithCallbackQuery(methodSender, callbackQuery);
                     chain.doProcess(update, methodSender);
                     return;
                 }
-            } else if (callbackQuery.getMessage() != null && userActivityHandler != null) {
-                continueStatefulCommandWithCallbackQuery(update, methodSender, callbackQuery);
-                chain.doProcess(update, methodSender);
-                return;
+            } catch (ProcessCommandException e) {
+                // The user has interacted with the bot via commands previously
+                if (e.getUserId() != null) {
+                    commandExceptionHandler.handle(e, update, methodSender);
+                }
             }
         }
-        // non-command update
         chain.doProcess(update, methodSender);
     }
 
@@ -66,73 +88,57 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         commandRegistry.put(command.getIdentifier(), command);
     }
 
-    private void executeStatelessCommand(Update update, MethodSender methodSender, Message message) {
-        CommandState<?> resultState = executeCommand(message, methodSender, null);
-        if (!commandRegistry.executeCommand(this, message)) {
-            processInvalidCommandUpdate(update);
-        }
-    }
-
-    private void executeStatefulCommand(Update update, MethodSender methodSender, Message message) {
+    private void startCommandProcess(MethodSender methodSender, Message message) {
         long userId = message.getFrom().getId();
-        UserActivity userActivity = new UserActivity();
+        UserActivity userActivity = new UserActivity(userId);
         userActivityHandler.saveUserActivity(userId, userActivity);
         CommandState<?> resultState = executeCommand(message, methodSender, userActivity.getCommandState());
-        if (!checkCommandState(resultState, userId, userActivity)) {
-            processInvalidCommandUpdate(update);
-        }
+        validateResultState(resultState, userActivity);
     }
 
-    private void continueStatefulCommandWithMessage(Update update, MethodSender methodSender, Message message) {
+    private void continueCommandProcessWithMessage(MethodSender methodSender, Message message) {
         long userId = message.getFrom().getId();
         UserActivity userActivity = userActivityHandler.loadUserActivity(userId);
-        if (userActivity != null && validateUserActivity(userActivity)) {
-            CommandState<?> resultState = executeCommand(message, methodSender, userActivity.getCommandState());
-            if (!checkCommandState(resultState, userId, userActivity)) {
-                processInvalidCommandUpdate(update);
-            }
-        } else {
-            processInvalidCommandUpdate(update);
-        }
+        validateUserActivity(userActivity);
+        CommandState<?> resultState = executeCommand(message, methodSender, userActivity.getCommandState());
+        validateResultState(resultState, userActivity);
     }
 
-    private void continueStatefulCommandWithCallbackQuery(Update update, MethodSender methodSender, CallbackQuery callbackQuery) {
+    private void continueCommandProcessWithCallbackQuery(MethodSender methodSender, CallbackQuery callbackQuery) {
         long userId = callbackQuery.getFrom().getId();
         UserActivity userActivity = userActivityHandler.loadUserActivity(userId);
-        if (userActivity != null && validateUserActivity(userActivity)) {
-            CommandState<?> resultState = executeCommand(callbackQuery, methodSender, userActivity.getCommandState());
-            if (!checkCommandState(resultState, userId, userActivity)) {
-                processInvalidCommandUpdate(update);
-            }
-        } else {
-            processInvalidCommandUpdate(update);
-        }
+        validateUserActivity(userActivity);
+        CommandState<?> resultState = executeCommand(callbackQuery, methodSender, userActivity.getCommandState());
+        validateResultState(resultState, userActivity);
     }
 
     private CommandState<?> executeCommand(Message message, MethodSender methodSender, CommandState<?> commandState) {
-        if (message.getText() != null && !message.getText().isEmpty()) {
-            String text = message.getText();
-            if (text.startsWith("/")) {
-                // Start new command
-                String commandMessage = text.substring(1);
-                String[] commandSplit = commandMessage.split("\\s+");
+        if (message.getText() == null || message.getText().isEmpty()) {
+            throw new ProcessCommandException("The message does not contain text to continue the command",
+                    message.getFrom().getId(), commandState.identifier());
+        }
+        String messageText = message.getText();
+        if (messageText.startsWith("/")) {
+            // Start new command
+            String commandMessage = messageText.substring(1);
+            String[] commandSplit = commandMessage.split("\\s+");
 
-                String command = removeUsernameFromCommandIfNeeded(commandSplit[0]);
+            // Remove username from command if exists
+            String commandIdentifier = commandSplit[0].replaceAll("(?i)@\\w+?\\s*$", "").trim();
 
-                if (commandRegistry.containsKey(command)) {
-                    String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-                    return commandRegistry.get(command).processCommand(methodSender, message, parameters, commandState);
-                }
-            } else {
-                // Continue some command with simple message
-                String command = commandState.identifier();
+            if (commandRegistry.containsKey(commandIdentifier)) {
+                String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
+                return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, parameters, commandState);
+            }
+        } else {
+            // Continue some command with simple message
+            String commandIdentifier = commandState.identifier();
 
-                if (command != null && commandRegistry.containsKey(command)) {
-                    return commandRegistry.get(command).processCommand(methodSender, message, new String[0], commandState);
-                }
+            if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
+                return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, new String[0], commandState);
             }
         }
-        return null;
+        return new CommandState<>(null, null);
     }
 
     private CommandState<?> executeCommand(CallbackQuery callbackQuery, MethodSender methodSender, CommandState<?> commandState) {
@@ -148,39 +154,43 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
             System.arraycopy(splitCommandParams, 0, parameters, 1, splitCommandParams.length);
         }
 
-        String command = commandState.identifier();
+        String commandIdentifier = commandState.identifier();
 
-        if (command != null && commandRegistry.containsKey(command)) {
-            return commandRegistry.get(command).processCommand(methodSender, message, parameters, commandState);
+        if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
+            return (commandRegistry.get(commandIdentifier)).processCommand(methodSender, message, parameters, commandState);
         }
-        return null;
+        return new CommandState<>(null, null);
     }
 
-    private boolean checkCommandState(CommandState<?> commandState, long userId, UserActivity userActivity) {
+    private void validateUserActivity(UserActivity userActivity) {
+        if (userActivity == null) {
+            throw new ProcessCommandException("User activity is null, cannot validate", null, null);
+        }
+        LocalDateTime now = LocalDateTime.now();
+        if (now.minusMinutes(userInactivityMaxTime).isAfter(userActivity.getLastActivity())) {
+            userActivityHandler.removeUserActivity(userActivity.getUserId());
+            throw new ProcessCommandException("The user has exceeded the maximum inactivity time",
+                    userActivity.getUserId(), userActivity.getCommandState().identifier());
+        }
+        userActivity.setLastActivity(now);
+    }
+
+    private void validateResultState(CommandState<?> commandState, UserActivity userActivity) {
         if (commandState != null) {
             if (commandState.state() != null) {
                 userActivity.setCommandState(commandState);
-                userActivityHandler.saveUserActivity(userId, userActivity);
+                userActivityHandler.saveUserActivity(userActivity.getUserId(), userActivity);
             } else {
-                userActivityHandler.removeUserActivity(userId);
+                userActivityHandler.removeUserActivity(userActivity.getUserId());
             }
-            return true;
         } else {
-            userActivityHandler.removeUserActivity(userId);
-            return false;
+            userActivityHandler.removeUserActivity(userActivity.getUserId());
+            throw new ProcessCommandException("Command state cannot be null after command execution",
+                    userActivity.getUserId(), userActivity.getCommandState().identifier());
         }
     }
 
-    private boolean validateUserActivity(UserActivity userActivity) {
-        LocalDateTime now = LocalDateTime.now();
-        if (now.minusMinutes(userInactivityMaxTime).isBefore(userActivity.getLastActivity())) {
-            userActivity.setLastActivity(now);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isMessageCommand(Message message) {
+    private boolean isCommandMessage(Message message) {
         if (message.getText() != null && !message.getText().isEmpty() && message.getEntities() != null) {
             for (MessageEntity entity : message.getEntities()) {
                 if (entity != null && entity.getOffset() == 0 && "bot_command".equals(entity.getType())) {
