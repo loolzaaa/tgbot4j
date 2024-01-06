@@ -42,13 +42,14 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
 
     public CommandStateUpdateProcessor(UserActivityHandler userActivityHandler, CommandExceptionHandler commandExceptionHandler) {
         this.userActivityHandler = Objects.requireNonNullElseGet(userActivityHandler, DefaultUserActivityHandler::new);
-        this.commandExceptionHandler = Objects.requireNonNullElse(commandExceptionHandler, (e, update, methodSender) ->
-                log.info("Command '{}' execution for user {} exception: {}",
-                        e.getCommandIdentifier(), e.getUserId(), e.getLocalizedMessage()));
+        this.commandExceptionHandler = Objects.requireNonNullElse(commandExceptionHandler, (e, update, methodSender) -> {});
     }
 
     @Override
     public void process(Update update, MethodSender methodSender, UpdateProcessorChain chain) {
+        if (log.isTraceEnabled()) {
+            log.trace("{} incoming update: {}", CommandStateUpdateProcessor.class.getSimpleName(), update);
+        }
         /*
          Only one (Message/CallbackQuery) can be present in any given update
          https://core.telegram.org/bots/api#update
@@ -75,8 +76,13 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
                     return;
                 }
             } catch (ProcessCommandException e) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Command execution exception: ", e);
+                }
                 // The user has interacted with the bot via commands previously
                 if (e.getUserId() != null) {
+                    log.info("Command '{}' execution for user {} exception: {}",
+                            e.getCommandIdentifier(), e.getUserId(), e.getLocalizedMessage());
                     commandExceptionHandler.handle(e, update, methodSender);
                 }
             }
@@ -94,6 +100,7 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         userActivityHandler.saveUserActivity(userId, userActivity);
         CommandState<?> resultState = executeCommand(message, methodSender, userActivity.getCommandState());
         validateResultState(resultState, userActivity);
+        log.info("Complete new command for user {} with result state: {}", userId, resultState);
     }
 
     private void continueCommandProcessWithMessage(MethodSender methodSender, Message message) {
@@ -102,6 +109,7 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         validateUserActivity(userActivity);
         CommandState<?> resultState = executeCommand(message, methodSender, userActivity.getCommandState());
         validateResultState(resultState, userActivity);
+        log.info("Continued command complete for user {} with result state: {}", userId, resultState);
     }
 
     private void continueCommandProcessWithCallbackQuery(MethodSender methodSender, CallbackQuery callbackQuery) {
@@ -110,6 +118,7 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         validateUserActivity(userActivity);
         CommandState<?> resultState = executeCommand(callbackQuery, methodSender, userActivity.getCommandState());
         validateResultState(resultState, userActivity);
+        log.info("Continued command complete for user {} with result state: {}", userId, resultState);
     }
 
     private CommandState<?> executeCommand(Message message, MethodSender methodSender, CommandState<?> commandState) {
@@ -127,6 +136,9 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
             String commandIdentifier = commandSplit[0].replaceAll("(?i)@\\w+?\\s*$", "").trim();
 
             if (commandRegistry.containsKey(commandIdentifier)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Start new command '{}' for user {}", commandIdentifier, message.getFrom().getId());
+                }
                 String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
                 return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, parameters, commandState);
             }
@@ -135,6 +147,9 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
             String commandIdentifier = commandState.identifier();
 
             if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Continue command '{}' for user {}", commandIdentifier, message.getFrom().getId());
+                }
                 return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, new String[0], commandState);
             }
         }
@@ -144,7 +159,8 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
     private CommandState<?> executeCommand(CallbackQuery callbackQuery, MethodSender methodSender, CommandState<?> commandState) {
         String callbackQueryId = callbackQuery.getId();
         if (!(callbackQuery.getMessage() instanceof Message message)) {
-            return null;
+            throw new ProcessCommandException("Try to continue command with InaccessibleMessage: " + callbackQuery.getMessage(),
+                    callbackQuery.getFrom().getId(), commandState.identifier());
         }
         String commandMessage = callbackQuery.getData();
         String[] parameters = new String[]{callbackQueryId};
@@ -157,6 +173,9 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         String commandIdentifier = commandState.identifier();
 
         if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Continue command '{}' for user {}", commandIdentifier, callbackQuery.getFrom().getId());
+            }
             return (commandRegistry.get(commandIdentifier)).processCommand(methodSender, message, parameters, commandState);
         }
         return new CommandState<>(null, null);
@@ -171,6 +190,9 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
             userActivityHandler.removeUserActivity(userActivity.getUserId());
             throw new ProcessCommandException("The user has exceeded the maximum inactivity time",
                     userActivity.getUserId(), userActivity.getCommandState().identifier());
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Update user {} last activity. Was: {}", userActivity.getUserId(), userActivity.getLastActivity());
         }
         userActivity.setLastActivity(now);
     }
