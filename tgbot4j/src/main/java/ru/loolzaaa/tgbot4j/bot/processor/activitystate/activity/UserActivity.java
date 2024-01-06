@@ -3,7 +3,6 @@ package ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandState;
 
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
  */
 
 @Data
-@Setter(onParam_ = @NonNull)
 @RequiredArgsConstructor
 public class UserActivity {
 
@@ -33,5 +31,13 @@ public class UserActivity {
         this.userId = userActivity.getUserId();
         this.commandState = new CommandState<>(originalCommandState.identifier(), originalCommandState.state());
         this.lastActivity = userActivity.getLastActivity();
+    }
+
+    public void setCommandState(@NonNull CommandState<?> commandState) {
+        this.commandState = commandState;
+    }
+
+    public void setLastActivity(@NonNull LocalDateTime lastActivity) {
+        this.lastActivity = lastActivity;
     }
 }
