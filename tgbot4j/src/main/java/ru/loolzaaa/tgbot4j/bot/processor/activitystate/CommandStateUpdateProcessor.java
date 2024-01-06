@@ -31,6 +31,10 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(CommandStateUpdateProcessor.class);
 
+    private static final String COMMAND_START_CHARACTER = "/";
+    private static final String COMMAND_USERNAME_PATTERN = "(?i)@\\w+?\\s*$";
+    private static final String COMMAND_ARGUMENTS_SEPARATOR_PATTERN = "\\s+";
+
     private final Map<String, Command<?>> commandRegistry = new HashMap<>();
 
     private final UserActivityHandler userActivityHandler;
@@ -127,13 +131,13 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
                     message.getFrom().getId(), commandState.identifier());
         }
         String messageText = message.getText();
-        if (messageText.startsWith("/")) {
+        if (messageText.startsWith(COMMAND_START_CHARACTER)) {
             // Start new command
             String commandMessage = messageText.substring(1);
-            String[] commandSplit = commandMessage.split("\\s+");
+            String[] commandSplit = commandMessage.split(COMMAND_ARGUMENTS_SEPARATOR_PATTERN);
 
             // Remove username from command if exists
-            String commandIdentifier = commandSplit[0].replaceAll("(?i)@\\w+?\\s*$", "").trim();
+            String commandIdentifier = commandSplit[0].replaceAll(COMMAND_USERNAME_PATTERN, "").trim();
 
             if (commandRegistry.containsKey(commandIdentifier)) {
                 if (log.isDebugEnabled()) {
@@ -165,7 +169,7 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         String commandMessage = callbackQuery.getData();
         String[] parameters = new String[]{callbackQueryId};
         if (commandMessage != null) {
-            String[] splitCommandParams = commandMessage.split("\\s+");
+            String[] splitCommandParams = commandMessage.split(COMMAND_ARGUMENTS_SEPARATOR_PATTERN);
             parameters = Arrays.copyOf(parameters, 1 + splitCommandParams.length);
             System.arraycopy(splitCommandParams, 0, parameters, 1, splitCommandParams.length);
         }
