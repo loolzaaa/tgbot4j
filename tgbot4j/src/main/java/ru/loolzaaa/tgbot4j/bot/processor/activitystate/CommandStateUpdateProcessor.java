@@ -1,5 +1,6 @@
 package ru.loolzaaa.tgbot4j.bot.processor.activitystate;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +8,9 @@ import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.DefaultUserActiv
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.UserActivity;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.activity.UserActivityHandler;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.Command;
+import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandRegistry;
 import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandState;
+import ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.DefaultCommandRegistry;
 import ru.loolzaaa.tgbot4j.core.api.types.CallbackQuery;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
@@ -18,9 +21,9 @@ import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+
+import static ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandRegistry.*;
 
 /**
  * @apiNote Works only if the button that originated
@@ -31,11 +34,8 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(CommandStateUpdateProcessor.class);
 
-    private static final String COMMAND_START_CHARACTER = "/";
-    private static final String COMMAND_USERNAME_PATTERN = "(?i)@\\w+?\\s*$";
-    private static final String COMMAND_ARGUMENTS_SEPARATOR_PATTERN = "\\s+";
-
-    private final Map<String, Command<?>> commandRegistry = new HashMap<>();
+    @Getter
+    private final CommandRegistry commandRegistry;
 
     private final UserActivityHandler userActivityHandler;
 
@@ -44,9 +44,13 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
     @Setter
     private int userInactivityMaxTime = 20;
 
-    public CommandStateUpdateProcessor(UserActivityHandler userActivityHandler, CommandExceptionHandler commandExceptionHandler) {
+    public CommandStateUpdateProcessor(CommandRegistry commandRegistry,
+                                       UserActivityHandler userActivityHandler,
+                                       CommandExceptionHandler commandExceptionHandler) {
+        this.commandRegistry = Objects.requireNonNullElseGet(commandRegistry, DefaultCommandRegistry::new);
         this.userActivityHandler = Objects.requireNonNullElseGet(userActivityHandler, DefaultUserActivityHandler::new);
-        this.commandExceptionHandler = Objects.requireNonNullElse(commandExceptionHandler, (e, update, methodSender) -> {});
+        this.commandExceptionHandler = Objects.requireNonNullElse(commandExceptionHandler, (e, update, methodSender) -> {
+        });
     }
 
     @Override
@@ -94,10 +98,6 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         chain.doProcess(update, methodSender);
     }
 
-    public void register(Command<?> command) {
-        commandRegistry.put(command.getIdentifier(), command);
-    }
-
     private void startCommandProcess(MethodSender methodSender, Message message) {
         long userId = message.getFrom().getId();
         UserActivity userActivity = new UserActivity(userId);
@@ -139,22 +139,27 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
             // Remove username from command if exists
             String commandIdentifier = commandSplit[0].replaceAll(COMMAND_USERNAME_PATTERN, "").trim();
 
-            if (commandRegistry.containsKey(commandIdentifier)) {
+            Command<?> command = commandRegistry.getRegisteredCommand(commandIdentifier);
+            if (command != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("Start new command '{}' for user {}", commandIdentifier, message.getFrom().getId());
                 }
                 String[] parameters = Arrays.copyOfRange(commandSplit, 1, commandSplit.length);
-                return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, parameters, commandState);
+                return command.processCommand(methodSender, message, parameters, commandState);
             }
         } else {
             // Continue some command with simple message
             String commandIdentifier = commandState.identifier();
 
-            if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Continue command '{}' for user {}", commandIdentifier, message.getFrom().getId());
+
+            if (commandIdentifier != null) {
+                Command<?> command = commandRegistry.getRegisteredCommand(commandIdentifier);
+                if (command != null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Continue command '{}' for user {}", commandIdentifier, message.getFrom().getId());
+                    }
+                    return command.processCommand(methodSender, message, new String[0], commandState);
                 }
-                return commandRegistry.get(commandIdentifier).processCommand(methodSender, message, new String[0], commandState);
             }
         }
         return new CommandState<>(null, null);
@@ -176,11 +181,14 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
 
         String commandIdentifier = commandState.identifier();
 
-        if (commandIdentifier != null && commandRegistry.containsKey(commandIdentifier)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Continue command '{}' for user {}", commandIdentifier, callbackQuery.getFrom().getId());
+        if (commandIdentifier != null) {
+            Command<?> command = commandRegistry.getRegisteredCommand(commandIdentifier);
+            if (command != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Continue command '{}' for user {}", commandIdentifier, callbackQuery.getFrom().getId());
+                }
+                return command.processCommand(methodSender, message, parameters, commandState);
             }
-            return (commandRegistry.get(commandIdentifier)).processCommand(methodSender, message, parameters, commandState);
         }
         return new CommandState<>(null, null);
     }
