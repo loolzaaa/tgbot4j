@@ -8,7 +8,7 @@
     <parent>
         <groupId>ru.loolzaaa.tgbot4j</groupId>
         <artifactId>tgbot4j-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>tgbot4j</artifactId>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>ru.loolzaaa.tgbot4j</groupId>
             <artifactId>tgbot4j-core</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
