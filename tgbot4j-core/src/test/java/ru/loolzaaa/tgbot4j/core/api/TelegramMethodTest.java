@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +20,10 @@ class TelegramMethodTest {
 
     ObjectMapper mapper = new ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @Test
-    void shouldCorrectDeserializeConcreteType() {
+    void shouldCorrectDeserializeConcreteType() throws IOException {
         final String json = "{\"ok\": true, \"result\":{\"name\": \"Scott\", \"value\": 1111}}";
 
         TestResponse testResponse = new ConcreteTypeResponse().deserializeResponse(mapper, json);
@@ -32,7 +33,7 @@ class TelegramMethodTest {
     }
 
     @Test
-    void shouldCorrectDeserializeObjectType() {
+    void shouldCorrectDeserializeObjectType() throws IOException {
         final String json = "{\"ok\": true, \"result\": true}";
 
         boolean result = (boolean) new ObjectResponse().deserializeResponse(mapper, json);
@@ -41,7 +42,7 @@ class TelegramMethodTest {
     }
 
     @Test
-    void shouldCorrectDeserializeCollectionType() {
+    void shouldCorrectDeserializeCollectionType() throws IOException {
         final String json = "{\"ok\": true, \"result\":[{\"name\": \"Scott\", \"value\": 1111}, {\"name\": \"Mary\", \"value\": 2222}]}";
 
         List<TestResponse> testResponses = new CollectionResponse().deserializeResponse(mapper, json);
@@ -78,6 +79,7 @@ class TelegramMethodTest {
             return null;
         }
     }
+
     static class CollectionResponse implements TelegramMethod<List<TestResponse>> {
         @Override
         public List<TestResponse> determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

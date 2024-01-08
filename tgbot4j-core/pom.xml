@@ -38,7 +38,7 @@
         <profile>
             <id>api-specification-check</id>
             <build>
-                <finalName>api-specification-check2</finalName>
+                <finalName>api-specification-check</finalName>
                 <plugins>
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>

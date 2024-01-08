@@ -2,6 +2,10 @@ package ru.loolzaaa.tgbot4j.core;
 
 import java.util.List;
 
+/**
+ * Common library constants
+ */
+
 public class Constants {
     public static final String BASE_URL = "https://api.telegram.org/bot";
     public static final String SECRET_TOKEN_HEADER = "X-Telegram-Bot-Api-Secret-Token";
