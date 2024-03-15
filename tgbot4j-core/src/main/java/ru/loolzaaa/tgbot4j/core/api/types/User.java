@@ -66,7 +66,7 @@ public class User {
      * Optional. True, if this user added the bot to the attachment menu
      */
     @JsonProperty("added_to_attachment_menu")
-    private String addedToAttachmentMenu;
+    private Boolean addedToAttachmentMenu;
 
     /**
      * Optional. True, if the bot can be invited to groups.

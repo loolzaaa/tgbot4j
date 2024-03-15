@@ -23,5 +23,5 @@ public class Story {
      * Unique identifier for the story in the chat
      */
     @JsonProperty("id")
-    private String id;
+    private Long id;
 }

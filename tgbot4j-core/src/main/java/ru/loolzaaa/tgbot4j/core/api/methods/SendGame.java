@@ -24,7 +24,7 @@ public class SendGame implements TelegramMethod<Message> {
      * Unique identifier for the target chat
      */
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Unique identifier for the target message thread (topic)

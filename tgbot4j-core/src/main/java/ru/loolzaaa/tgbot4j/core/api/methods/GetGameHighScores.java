@@ -39,7 +39,7 @@ public class GetGameHighScores implements TelegramMethod<List<GameHighScore>> {
      * Unique identifier for the target chat
      */
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Required if inline_message_id is not specified.

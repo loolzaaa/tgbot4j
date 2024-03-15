@@ -141,5 +141,5 @@ public class ChatMemberAdministrator implements ChatMember {
      * Optional. Custom title for this user
      */
     @JsonProperty("custom_title")
-    private Boolean customTitle;
+    private String customTitle;
 }

@@ -18,5 +18,5 @@ public class ChatBoostAdded {
      * Number of boosts added by the user
      */
     @JsonProperty("boost_count")
-    private String boostCount;
+    private Integer boostCount;
 }

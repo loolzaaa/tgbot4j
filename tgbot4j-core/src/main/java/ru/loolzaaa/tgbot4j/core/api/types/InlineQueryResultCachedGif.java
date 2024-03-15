@@ -36,7 +36,7 @@ public class InlineQueryResultCachedGif implements InlineQueryResult {
      * A valid file identifier for the GIF file
      */
     @JsonProperty("gif_file_id")
-    private Integer gifFileId;
+    private String gifFileId;
 
     /**
      * Optional. Title for the result
