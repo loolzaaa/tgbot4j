@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -97,6 +98,32 @@ public class ApiSpecificationChecker {
         }
     }
 
+    /**
+     * This check compares application object/method
+     * field parameters with official documentation.
+     * <p>
+     * Executing next checks:
+     * <ul>
+     *     <li>Total field count</li>
+     *     <li>Compares existing field names</li>
+     *     <li>Compares field types</li>
+     *     <li>Show unknown required flags</li>
+     *     <li>Existence {@link Required} annotation when needed</li>
+     * </ul>
+     * <p>
+     * Scan only main classes, not interfaces, anonymous or local classes.
+     * Also, skip classes that are marked {@link IgnoreCheck}.
+     * <p>
+     * Scan type supported for API objects and methods separately.
+     *
+     * @param packageName name of package for class scanning
+     * @param scanPath    common path contains package for scanning
+     * @param converter   bi-consumer for converting Jsoup element
+     *                    to api entity and it to entity map
+     * @param scanType    type of class scanning
+     * @throws ClassNotFoundException if class not found
+     * @throws IOException            if file I/O errors
+     */
     public void compareFieldsWithDocumentation(
             String packageName, String scanPath,
             BiConsumer<Map<String, ApiEntity>, Element> converter,
@@ -105,6 +132,8 @@ public class ApiSpecificationChecker {
         List<String> incorrectFieldsCount = new ArrayList<>();
         List<String> invalidFields = new ArrayList<>();
         List<String> incorrectFieldType = new ArrayList<>();
+        List<String> unknownRequiredFlags = new ArrayList<>();
+        List<String> invalidRequiredFlags = new ArrayList<>();
 
         Document doc = Jsoup.connect("https://core.telegram.org/bots/api").get();
         Elements devPageContent = doc.selectFirst("#dev_page_content").children();
@@ -146,12 +175,13 @@ public class ApiSpecificationChecker {
                             if (!equalTypes && !apiTypeContainsJavaType && !complexType) {
                                 incorrectFieldType.add(format("%s -> %s. Docs: %s. App: %s", className, propertyValue, apiEntity.getType(), fieldType));
                             }
-                            //TODO: implement required flag checks
-//                            if (apiMethod.getJavaRequiredFlag() == null) {
-//                                System.out.printf("%s -> %s. Unknown required flag: %s%n", className, propertyValue, apiMethod.required);
-//                            } else if (apiMethod.getJavaRequiredFlag() && !field.isAnnotationPresent(Required.class)) {
-//                                System.out.printf("%s -> %s need to be required%n", className, propertyValue);
-//                            }
+                            if (apiEntity.getJavaRequiredFlag() == null) {
+                                unknownRequiredFlags.add(format("%s ?-> %s", className, propertyValue));
+                            } else if (apiEntity.getJavaRequiredFlag() && !field.isAnnotationPresent(Required.class)) {
+                                invalidRequiredFlags.add(format("%s !-> %s", className, propertyValue));
+                            } else if (!apiEntity.getJavaRequiredFlag() && field.isAnnotationPresent(Required.class)) {
+                                invalidRequiredFlags.add(format("%s ->x %s", className, propertyValue));
+                            }
                         }
                     }
                 }
@@ -171,6 +201,16 @@ public class ApiSpecificationChecker {
                 format("#### All %s contains correct field types :+1:", scanType) :
                 format("#### %s with incorrect field types :x:: ", scanType));
         incorrectFieldType.forEach(s -> System.out.println("- " + s));
+
+        System.out.println(invalidRequiredFlags.isEmpty() ?
+                format("#### All %s have correct required flags :+1:", scanType) :
+                format("#### %s must be (un-)marked with required flags :x:: ", scanType));
+        invalidRequiredFlags.forEach(s -> System.out.println("- " + s));
+
+        if (!unknownRequiredFlags.isEmpty()) {
+            System.out.println("#### Unknown required flags :x:: ");
+            unknownRequiredFlags.forEach(s -> System.out.println("- " + s));
+        }
     }
 
     /**
@@ -305,6 +345,11 @@ public class ApiSpecificationChecker {
         String type;
         String description;
 
+        @Override
+        public Boolean getJavaRequiredFlag() {
+            return false;
+        }
+
         static void addElementToEntityMap(Map<String, ApiEntity> apiEntityMap, Element row) {
             String field = row.select("td").get(0).text();
             String type = row.select("td").get(1).text();
@@ -322,7 +367,8 @@ public class ApiSpecificationChecker {
         String required;
         String description;
 
-        Boolean getJavaRequiredFlag() {
+        @Override
+        public Boolean getJavaRequiredFlag() {
             String lowerValue = required.toLowerCase();
             if (lowerValue.equals("optional")) {
                 return false;
@@ -342,5 +388,7 @@ public class ApiSpecificationChecker {
 
     public interface ApiEntity {
         String getType();
+
+        Boolean getJavaRequiredFlag();
     }
 }
