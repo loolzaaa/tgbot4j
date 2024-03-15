@@ -6,22 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This object represents a story.
+ * This object represents a service message
+ * about a user boosting a chat.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Story {
+public class ChatBoostAdded {
     /**
-     * Chat that posted the story
+     * Number of boosts added by the user
      */
-    @JsonProperty("chat")
-    private Chat chat;
-
-    /**
-     * Unique identifier for the story in the chat
-     */
-    @JsonProperty("id")
-    private String id;
+    @JsonProperty("boost_count")
+    private String boostCount;
 }

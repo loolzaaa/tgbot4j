@@ -248,6 +248,18 @@ public class Chat {
     private Integer slowModeDelay;
 
     /**
+     * Optional. For supergroups, the minimum number
+     * of boosts that a non-administrator user needs
+     * to add in order to ignore slow mode
+     * and chat permissions.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+
+    @JsonProperty("unrestrict_boost_count")
+    private Integer unrestrictBoostCount;
+
+    /**
      * Optional. The time after which all messages sent
      * to the chat will be automatically deleted; in seconds.
      * <p>
@@ -308,6 +320,19 @@ public class Chat {
      */
     @JsonProperty("can_set_sticker_set")
     private Boolean canSetStickerSet;
+
+    /**
+     * Optional. For supergroups, the name of the group's
+     * custom emoji sticker set.
+     * <p>
+     * Custom emoji from this set can be used by all users
+     * and bots in the group.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+
+    @JsonProperty("custom_emoji_sticker_set_name")
+    private String customEmojiStickerSetName;
 
     /**
      * Optional. Unique identifier for the linked chat,
