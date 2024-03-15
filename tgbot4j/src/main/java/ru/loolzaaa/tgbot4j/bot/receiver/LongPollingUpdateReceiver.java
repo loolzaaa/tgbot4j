@@ -114,6 +114,7 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
         private int receiverTaskDelay = 500;
         private int connectTimeout = 30 * 1000;
         private int requestTimeout = 30 * 1000;
+        private int maxThreads = 1;
         private int updateTimeout = 50;
         private int updateLimit = 100;
         private List<String> updateAllowedUpdates;
@@ -156,7 +157,15 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private class DefaultUpdateSupplier implements Supplier<List<Update>> {
 
-        private final MethodSender methodSender = new DefaultMethodSender(botToken, null);
+        private final MethodSender methodSender;
+
+        public DefaultUpdateSupplier() {
+            DefaultMethodSender.SenderOptions senderOptions = new DefaultMethodSender.SenderOptions();
+            senderOptions.setConnectTimeout(options.getConnectTimeout());
+            senderOptions.setRequestTimeout(options.getRequestTimeout());
+            senderOptions.setMaxThreads(options.getMaxThreads());
+            this.methodSender = new DefaultMethodSender(botToken, senderOptions);
+        }
 
         @Override
         public List<Update> get() {
