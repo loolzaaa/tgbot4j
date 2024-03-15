@@ -1,16 +1,21 @@
 package ru.loolzaaa.tgbot4j.core.check;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -33,10 +38,14 @@ public class ApiSpecificationChecker {
 
         ApiSpecificationChecker apiSpecificationChecker = new ApiSpecificationChecker();
         apiSpecificationChecker.checkAllClassesShouldHaveDataAndConstructorsAnnotations(filesPath);
+        apiSpecificationChecker.compareFieldsWithDocumentation(typesPackageName, typeScanPath, ApiObject::addElementToEntityMap, "Types");
+        apiSpecificationChecker.compareFieldsWithDocumentation(methodsPackageName, methodScanPath, ApiMethod::addElementToEntityMap, "Methods");
         apiSpecificationChecker.checkAllFieldsShouldHaveJsonPropertyAnnotations(typesPackageName, typeScanPath, "Types");
         apiSpecificationChecker.checkAllFieldsShouldHaveJsonPropertyAnnotations(methodsPackageName, methodScanPath, "Methods");
         apiSpecificationChecker.checkAllJsonPropertiesValuesAreCorrect(typesPackageName, typeScanPath, "Types");
         apiSpecificationChecker.checkAllJsonPropertiesValuesAreCorrect(methodsPackageName, methodScanPath, "Methods");
+        apiSpecificationChecker.showAllClassesWithIgnoredCheckAnnotation(typesPackageName, typeScanPath, "Types");
+        apiSpecificationChecker.showAllClassesWithIgnoredCheckAnnotation(methodsPackageName, methodScanPath, "Methods");
     }
 
     /**
@@ -86,6 +95,82 @@ public class ApiSpecificationChecker {
             System.out.println("#### Classes without lombok annotations :x::");
             invalidClasses.forEach(s -> System.out.println("- " + s));
         }
+    }
+
+    public void compareFieldsWithDocumentation(
+            String packageName, String scanPath,
+            BiConsumer<Map<String, ApiEntity>, Element> converter,
+            String scanType
+    ) throws ClassNotFoundException, IOException {
+        List<String> incorrectFieldsCount = new ArrayList<>();
+        List<String> invalidFields = new ArrayList<>();
+        List<String> incorrectFieldType = new ArrayList<>();
+
+        Document doc = Jsoup.connect("https://core.telegram.org/bots/api").get();
+        Elements devPageContent = doc.selectFirst("#dev_page_content").children();
+
+        for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
+            if (clazz.isInterface() || clazz.isMemberClass() || clazz.isAnnotationPresent(IgnoreCheck.class)) {
+                continue;
+            }
+            if (!(clazz.getDeclaredFields().length == 0)) {
+                String className = clazz.getSimpleName();
+                Map<String, ApiEntity> apiEntityMap = new HashMap<>();
+                devPageContent.stream()
+                        .filter(element -> element.normalName().equals("h4"))
+                        .filter(element -> element.textNodes().stream().anyMatch(textNode -> textNode.text().equalsIgnoreCase(className)))
+                        .findAny()
+                        .orElseThrow(() -> new NoSuchElementException("No value for " + className))
+                        .nextElementSiblings()
+                        .select("table")
+                        .first()
+                        .select("tr")
+                        .stream()
+                        .skip(1)
+                        .forEach(row -> converter.accept(apiEntityMap, row));
+                if (apiEntityMap.size() != clazz.getDeclaredFields().length) {
+                    incorrectFieldsCount.add(format("%s. Docs: %d. App: %d", className, apiEntityMap.size(), clazz.getDeclaredFields().length));
+                }
+                for (Field field : clazz.getDeclaredFields()) {
+                    if (field.isAnnotationPresent(JsonProperty.class)) {
+                        String propertyValue = field.getAnnotation(JsonProperty.class).value();
+                        if (!apiEntityMap.containsKey(propertyValue)) {
+                            invalidFields.add(format("%s x-> %s", className, propertyValue));
+                        } else {
+                            ApiEntity apiEntity = apiEntityMap.get(propertyValue);
+                            String fieldType = field.getType().getSimpleName();
+                            String apiEntityJavaType = getJavaType(apiEntity.getType());
+                            boolean equalTypes = apiEntityJavaType.equalsIgnoreCase(fieldType);
+                            boolean apiTypeContainsJavaType = apiEntityJavaType.contains(fieldType.toLowerCase());
+                            boolean complexType = apiEntityJavaType.equalsIgnoreCase("complex");
+                            if (!equalTypes && !apiTypeContainsJavaType && !complexType) {
+                                incorrectFieldType.add(format("%s -> %s. Docs: %s. App: %s", className, propertyValue, apiEntity.getType(), fieldType));
+                            }
+                            //TODO: implement required flag checks
+//                            if (apiMethod.getJavaRequiredFlag() == null) {
+//                                System.out.printf("%s -> %s. Unknown required flag: %s%n", className, propertyValue, apiMethod.required);
+//                            } else if (apiMethod.getJavaRequiredFlag() && !field.isAnnotationPresent(Required.class)) {
+//                                System.out.printf("%s -> %s need to be required%n", className, propertyValue);
+//                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(incorrectFieldsCount.isEmpty() ?
+                format("#### All %s have correct field count :+1:", scanType) :
+                format("#### %s without incorrect field count :x:: ", scanType));
+        incorrectFieldsCount.forEach(s -> System.out.println("- " + s));
+
+        System.out.println(invalidFields.isEmpty() ?
+                format("#### All %s contains correct fields :+1:", scanType) :
+                format("#### %s with incorrect fields :x:: ", scanType));
+        invalidFields.forEach(s -> System.out.println("- " + s));
+
+        System.out.println(incorrectFieldType.isEmpty() ?
+                format("#### All %s contains correct field types :+1:", scanType) :
+                format("#### %s with incorrect field types :x:: ", scanType));
+        incorrectFieldType.forEach(s -> System.out.println("- " + s));
     }
 
     /**
@@ -166,6 +251,19 @@ public class ApiSpecificationChecker {
         invalidPropertyValues.forEach(s -> System.out.println("- " + s));
     }
 
+    public void showAllClassesWithIgnoredCheckAnnotation(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
+        List<String> ignoredClasses = new ArrayList<>();
+        for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
+            if (clazz.isAnnotationPresent(IgnoreCheck.class)) {
+                ignoredClasses.add(clazz.getSimpleName());
+            }
+        }
+        if (!ignoredClasses.isEmpty()) {
+            System.out.printf("#### Ignored checks %s classes: %n", scanType);
+            ignoredClasses.forEach(s -> System.out.println("- " + s));
+        }
+    }
+
     private Set<Class<?>> getAllClassesFromApiPackage(String packageName, String scanPath) throws ClassNotFoundException {
         File[] files = new File(scanPath).listFiles();
         Set<Class<?>> classes = new HashSet<>();
@@ -182,5 +280,67 @@ public class ApiSpecificationChecker {
         }
 
         return classes;
+    }
+
+    private String getJavaType(String type) {
+        String lowerType = type.toLowerCase();
+        if (lowerType.equals("boolean") || lowerType.equals("true")) {
+            return "boolean";
+        } else if (lowerType.equals("float")) {
+            return "double";
+        } else if (lowerType.equals("integer")) {
+            return "integer|long";
+        } else if (lowerType.startsWith("array of")) {
+            return "list";
+        } else if (lowerType.contains(" or ")) {
+            return "complex";
+        } else return lowerType;
+    }
+
+    @ToString
+    @AllArgsConstructor
+    static class ApiObject implements ApiEntity {
+        String field;
+        @Getter
+        String type;
+        String description;
+
+        static void addElementToEntityMap(Map<String, ApiEntity> apiEntityMap, Element row) {
+            String field = row.select("td").get(0).text();
+            String type = row.select("td").get(1).text();
+            String description = row.select("td").get(2).text();
+            apiEntityMap.putIfAbsent(field, new ApiObject(field, type, description));
+        }
+    }
+
+    @ToString
+    @AllArgsConstructor
+    static class ApiMethod implements ApiEntity {
+        String parameter;
+        @Getter
+        String type;
+        String required;
+        String description;
+
+        Boolean getJavaRequiredFlag() {
+            String lowerValue = required.toLowerCase();
+            if (lowerValue.equals("optional")) {
+                return false;
+            } else if (lowerValue.equals("yes")) {
+                return true;
+            } else return null;
+        }
+
+        static void addElementToEntityMap(Map<String, ApiEntity> apiEntityMap, Element row) {
+            String parameter = row.select("td").get(0).text();
+            String type = row.select("td").get(1).text();
+            String required = row.select("td").get(2).text();
+            String description = row.select("td").get(3).text();
+            apiEntityMap.putIfAbsent(parameter, new ApiMethod(parameter, type, required, description));
+        }
+    }
+
+    public interface ApiEntity {
+        String getType();
     }
 }
