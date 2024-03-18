@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 
@@ -26,6 +27,7 @@ public class AnswerPreCheckoutQuery implements TelegramMethod<Boolean> {
     /**
      * Unique identifier for the query to be answered
      */
+    @Required
     @JsonProperty("pre_checkout_query_id")
     private String preCheckoutQueryId;
 
@@ -34,6 +36,7 @@ public class AnswerPreCheckoutQuery implements TelegramMethod<Boolean> {
      * and the bot is ready to proceed with the order.
      * Use False if there are any problems.
      */
+    @Required
     @JsonProperty("ok")
     private Boolean ok;
 

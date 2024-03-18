@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
@@ -33,6 +34,7 @@ public class SendChatAction implements TelegramMethod<Boolean> {
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -53,6 +55,7 @@ public class SendChatAction implements TelegramMethod<Boolean> {
      * find_location for {@link SendLocation}, record_video_note
      * or upload_video_note for {@link SendVideoNote}.
      */
+    @Required
     @JsonProperty("action")
     private String action;
 

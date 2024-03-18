@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.BotCommand;
 import ru.loolzaaa.tgbot4j.core.api.types.BotCommandScope;
@@ -28,6 +29,7 @@ public class SetMyCommands implements TelegramMethod<Boolean> {
      * A JSON-serialized list of bot commands to be set as the list of the bot's commands.
      * At most 100 commands can be specified.
      */
+    @Required
     @JsonProperty("commands")
     private List<BotCommand> commands;
 

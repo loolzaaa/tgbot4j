@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.StickerSet;
 
@@ -21,6 +22,7 @@ public class GetStickerSet implements TelegramMethod<StickerSet> {
     /**
      * Name of the sticker set
      */
+    @Required
     @JsonProperty("name")
     private String name;
 

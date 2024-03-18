@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.*;
 
@@ -24,6 +25,7 @@ public class SendMessage implements TelegramMethod<Message> {
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -38,6 +40,7 @@ public class SendMessage implements TelegramMethod<Message> {
      * Text of the message to be sent,
      * 1-4096 characters after entities parsing
      */
+    @Required
     @JsonProperty("text")
     private String text;
 

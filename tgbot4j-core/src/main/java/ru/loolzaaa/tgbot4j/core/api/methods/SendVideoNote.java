@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -38,6 +39,7 @@ public class SendVideoNote implements TelegramMultipartMethod<Message> {
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -57,6 +59,7 @@ public class SendVideoNote implements TelegramMultipartMethod<Message> {
      *
      * @apiNote Sending video notes by a URL is currently unsupported
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("video_note")
     private InputFile videoNote;

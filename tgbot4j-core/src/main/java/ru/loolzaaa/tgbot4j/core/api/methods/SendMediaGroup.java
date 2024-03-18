@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputMedia;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -30,6 +31,7 @@ public class SendMediaGroup implements TelegramMethod<List<Message>> {
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -45,6 +47,7 @@ public class SendMediaGroup implements TelegramMethod<List<Message>> {
      * A JSON-serialized array describing messages
      * to be sent, must include 2-10 items
      */
+    @Required
     @JsonProperty("media")
     private List<InputMedia> media;
 

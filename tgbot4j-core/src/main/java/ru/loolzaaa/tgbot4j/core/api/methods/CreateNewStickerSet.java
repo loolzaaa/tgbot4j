@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputSticker;
 
@@ -24,6 +25,7 @@ public class CreateNewStickerSet implements TelegramMethod<Boolean> {
     /**
      * User identifier of created sticker set owner
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 
@@ -34,12 +36,14 @@ public class CreateNewStickerSet implements TelegramMethod<Boolean> {
      * and must end in {@code "_by_<bot_username>"}. {@code <bot_username>}
      *     is case insensitive. 1-64 characters.
      */
+    @Required
     @JsonProperty("name")
     private String name;
 
     /**
      * Sticker set title, 1-64 characters
      */
+    @Required
     @JsonProperty("title")
     private String title;
 
@@ -47,6 +51,7 @@ public class CreateNewStickerSet implements TelegramMethod<Boolean> {
      * A JSON-serialized list of 1-50 initial stickers
      * to be added to the sticker set
      */
+    @Required
     @JsonProperty("stickers")
     private List<InputSticker> stickers;
 
@@ -54,6 +59,7 @@ public class CreateNewStickerSet implements TelegramMethod<Boolean> {
      * Format of stickers in the set, must be one of “static”,
      * “animated”, “video”
      */
+    @Required
     @JsonProperty("sticker_format")
     private String stickerFormat;
 

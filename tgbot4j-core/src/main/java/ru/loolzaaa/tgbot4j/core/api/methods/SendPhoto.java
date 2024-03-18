@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -33,6 +34,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -54,6 +56,7 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      * Width and height ratio must be at most 20.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("photo")
     private InputFile photo;

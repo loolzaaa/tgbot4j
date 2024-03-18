@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
@@ -59,6 +60,7 @@ public class SetWebhook implements TelegramMultipartMethod<Boolean> {
      * HTTPS URL to send updates to. Use an empty string
      * to remove webhook integration
      */
+    @Required
     @JsonProperty("url")
     private String url;
 

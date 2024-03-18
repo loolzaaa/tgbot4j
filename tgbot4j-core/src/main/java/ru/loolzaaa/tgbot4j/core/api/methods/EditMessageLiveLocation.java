@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -50,12 +51,14 @@ public class EditMessageLiveLocation implements TelegramMethod<Object> {
     /**
      * Latitude of new location
      */
+    @Required
     @JsonProperty("latitude")
     private Double latitude;
 
     /**
      * Longitude of new location
      */
+    @Required
     @JsonProperty("longitude")
     private Double longitude;
 

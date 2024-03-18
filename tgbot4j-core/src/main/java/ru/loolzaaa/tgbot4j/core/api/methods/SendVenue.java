@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
@@ -26,6 +27,7 @@ public class SendVenue implements TelegramMethod<Message> {
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -40,24 +42,28 @@ public class SendVenue implements TelegramMethod<Message> {
     /**
      * Latitude of the venue
      */
+    @Required
     @JsonProperty("latitude")
     private Double latitude;
 
     /**
      * Longitude of the venue
      */
+    @Required
     @JsonProperty("longitude")
     private Double longitude;
 
     /**
      * Name of the venue
      */
+    @Required
     @JsonProperty("title")
     private String title;
 
     /**
      * Address of the venue
      */
+    @Required
     @JsonProperty("address")
     private String address;
 

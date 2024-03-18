@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.LabeledPrice;
@@ -27,6 +28,7 @@ public class SendInvoice implements TelegramMethod<Message> {
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -40,12 +42,14 @@ public class SendInvoice implements TelegramMethod<Message> {
     /**
      * Product name, 1-32 characters
      */
+    @Required
     @JsonProperty("title")
     private String title;
 
     /**
      * Product description, 1-255 characters
      */
+    @Required
     @JsonProperty("description")
     private String description;
 
@@ -54,12 +58,14 @@ public class SendInvoice implements TelegramMethod<Message> {
      * This will not be displayed to the user,
      * use for your internal processes.
      */
+    @Required
     @JsonProperty("payload")
     private String payload;
 
     /**
      * Payment provider token, obtained via @BotFather
      */
+    @Required
     @JsonProperty("provider_token")
     private String providerToken;
 
@@ -67,6 +73,7 @@ public class SendInvoice implements TelegramMethod<Message> {
      * Three-letter ISO 4217 currency code,
      * see <a href="https://core.telegram.org/bots/payments#supported-currencies">more on currencies</a>
      */
+    @Required
     @JsonProperty("currency")
     private String currency;
 
@@ -75,6 +82,7 @@ public class SendInvoice implements TelegramMethod<Message> {
      * (e.g. product price, tax, discount, delivery cost,
      * delivery tax, bonus, etc.)
      */
+    @Required
     @JsonProperty("prices")
     private List<LabeledPrice> prices;
 

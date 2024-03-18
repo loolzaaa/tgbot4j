@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 
 /**
@@ -33,12 +34,14 @@ public class DeleteMessage implements TelegramMethod<Boolean> {
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
     /**
      * Identifier of the message to delete
      */
+    @Required
     @JsonProperty("message_id")
     private Integer messageId;
 

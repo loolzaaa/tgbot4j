@@ -66,7 +66,7 @@ public final class DefaultMethodSender implements MethodSender {
     @Override
     public <T, M extends TelegramMethod<T>> T send(M method) {
         try {
-            method.validate();
+            method.validateProperties();
             final String url = BASE_URL + botToken + "/" + method.getClass().getSimpleName();
 
             String contentType;

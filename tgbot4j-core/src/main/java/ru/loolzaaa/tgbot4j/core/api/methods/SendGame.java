@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -23,6 +24,7 @@ public class SendGame implements TelegramMethod<Message> {
     /**
      * Unique identifier for the target chat
      */
+    @Required
     @JsonProperty("chat_id")
     private Integer chatId;
 
@@ -37,6 +39,7 @@ public class SendGame implements TelegramMethod<Message> {
      * Short name of the game, serves as the unique identifier
      * for the game. Set up your games via @BotFather.
      */
+    @Required
     @JsonProperty("game_short_name")
     private String gameShortName;
 
