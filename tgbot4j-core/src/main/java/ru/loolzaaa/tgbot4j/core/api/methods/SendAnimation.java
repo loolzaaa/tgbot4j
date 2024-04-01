@@ -33,6 +33,13 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 @AllArgsConstructor
 public class SendAnimation implements TelegramMultipartMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})

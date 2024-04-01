@@ -22,6 +22,13 @@ import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
 @AllArgsConstructor
 public class SendGame implements TelegramMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      */
     @Required

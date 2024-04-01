@@ -77,4 +77,22 @@ public class KeyboardButtonRequestChat {
      */
     @JsonProperty("bot_is_member")
     private Boolean botIsMember;
+
+    /**
+     * Optional. Pass True to request the chat's title
+     */
+    @JsonProperty("request_title")
+    private Boolean requestTitle;
+
+    /**
+     * Optional. Pass True to request the chat's username
+     */
+    @JsonProperty("request_username")
+    private Boolean requestUsername;
+
+    /**
+     * Optional. Pass True to request the chat's photo
+     */
+    @JsonProperty("request_photo")
+    private Boolean requestPhoto;
 }

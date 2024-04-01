@@ -34,6 +34,13 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 @AllArgsConstructor
 public class SendSticker implements TelegramMultipartMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})
@@ -51,11 +58,11 @@ public class SendSticker implements TelegramMultipartMethod<Message> {
     private Integer messageThreadId;
 
     /**
-     * Sticker to send. Pass a file_id as String to send a file
-     * that exists on the Telegram servers (recommended),
+     * Sticker to send. Pass a file_id as String
+     * to send a file that exists on the Telegram servers (recommended),
      * pass an HTTP URL as a String for Telegram to get a .WEBP sticker
-     * from the Internet, or upload a new .WEBP
-     * or .TGS sticker using multipart/form-data.
+     * from the Internet, or upload a new .WEBP, .TGS,
+     * or .WEBM sticker using multipart/form-data.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @Required

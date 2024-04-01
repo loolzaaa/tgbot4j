@@ -46,4 +46,22 @@ public class KeyboardButtonRequestUsers {
      */
     @JsonProperty("max_quantity")
     private Integer maxQuantity;
+
+    /**
+     * Optional. Pass True to request the users' first and last name
+     */
+    @JsonProperty("request_name")
+    private Boolean requestName;
+
+    /**
+     * Optional. Pass True to request the users' username
+     */
+    @JsonProperty("request_username")
+    private Boolean requestUsername;
+
+    /**
+     * Optional. Pass True to request the users' photo
+     */
+    @JsonProperty("request_photo")
+    private Boolean requestPhoto;
 }

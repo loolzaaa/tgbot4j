@@ -86,6 +86,51 @@ public class Chat {
     private List<String> activeUsernames;
 
     /**
+     * Optional. For private chats, the date of birth
+     * of the user.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("birthdate")
+    private Birthdate birthdate;
+
+    /**
+     * Optional. For private chats with business accounts,
+     * the intro of the business.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("business_intro")
+    private BusinessIntro businessIntro;
+
+    /**
+     * Optional. For private chats with business accounts,
+     * the location of the business.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("business_location")
+    private BusinessLocation businessLocation;
+
+    /**
+     * Optional. For private chats with business accounts,
+     * the opening hours of the business.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("business_opening_hours")
+    private BusinessOpeningHours businessOpeningHours;
+
+    /**
+     * Optional. For private chats, the personal channel
+     * of the user.
+     * <p>
+     * Returned only in {@link GetChat}.
+     */
+    @JsonProperty("personal_chat")
+    private Chat personalChat;
+
+    /**
      * Optional. List of available reactions allowed in the chat.
      * If omitted, then all {@link ReactionTypeEmoji} are allowed.
      * <p>

@@ -35,7 +35,7 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * Pass True if the administrator's presence in the chat is hidden

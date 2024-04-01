@@ -89,4 +89,12 @@ public class User {
      */
     @JsonProperty("supports_inline_queries")
     private Boolean supportsInlineQueries;
+
+    /**
+     * Optional. True, if the bot can be connected
+     * to a Telegram Business account to receive its messages.
+     * Returned only in {@link GetMe}.
+     */
+    @JsonProperty("can_connect_to_business")
+    private Boolean canConnectToBusiness;
 }

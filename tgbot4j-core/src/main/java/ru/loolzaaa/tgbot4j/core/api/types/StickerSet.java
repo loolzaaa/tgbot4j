@@ -34,18 +34,6 @@ public class StickerSet {
     private String stickerType;
 
     /**
-     * True, if the sticker set contains <a href="https://telegram.org/blog/animated-stickers">animated stickers</a>
-     */
-    @JsonProperty("is_animated")
-    private Boolean isAnimated;
-
-    /**
-     * True, if the sticker set contains <a href="https://telegram.org/blog/video-stickers-better-reactions">video stickers</a>
-     */
-    @JsonProperty("is_video")
-    private Boolean isVideo;
-
-    /**
      * List of all set stickers
      */
     @JsonProperty("stickers")

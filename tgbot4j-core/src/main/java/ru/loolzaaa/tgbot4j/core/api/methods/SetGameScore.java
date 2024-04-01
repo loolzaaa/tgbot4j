@@ -30,7 +30,7 @@ public class SetGameScore implements TelegramMethod<Object> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * New score, must be non-negative

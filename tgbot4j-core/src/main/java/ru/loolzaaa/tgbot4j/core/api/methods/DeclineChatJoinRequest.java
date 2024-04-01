@@ -34,7 +34,7 @@ public class DeclineChatJoinRequest implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

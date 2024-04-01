@@ -36,7 +36,7 @@ public class BanChatMember implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * Date when the user will be unbanned; Unix time.

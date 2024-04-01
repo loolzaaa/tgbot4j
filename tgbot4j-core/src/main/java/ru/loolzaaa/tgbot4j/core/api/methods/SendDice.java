@@ -24,6 +24,13 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 @AllArgsConstructor
 public class SendDice implements TelegramMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})

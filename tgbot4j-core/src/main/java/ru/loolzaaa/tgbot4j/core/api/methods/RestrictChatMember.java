@@ -36,7 +36,7 @@ public class RestrictChatMember implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * A JSON-serialized object for new user permissions

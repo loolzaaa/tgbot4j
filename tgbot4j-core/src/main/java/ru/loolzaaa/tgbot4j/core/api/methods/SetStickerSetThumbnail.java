@@ -66,6 +66,15 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
     @JsonProperty("thumbnail")
     private InputFile thumbnail;
 
+    /**
+     * Format of the added sticker, must be one of “static”
+     * for a <b>.WEBP</b> or <b>.PNG</b> image, “animated”
+     * for a <b>.TGS</b> animation, “video” for a <b>WEBM</b> video
+     */
+    @Required
+    @JsonProperty("format")
+    private String format;
+
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
         return deserializeObjectResponse(mapper, resultNode, Boolean.class);

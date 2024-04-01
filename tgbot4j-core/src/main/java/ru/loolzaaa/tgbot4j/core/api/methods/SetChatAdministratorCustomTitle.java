@@ -32,7 +32,7 @@ public class SetChatAdministratorCustomTitle implements TelegramMethod<Boolean> 
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * New custom title for the administrator;

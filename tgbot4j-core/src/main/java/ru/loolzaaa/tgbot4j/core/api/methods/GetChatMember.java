@@ -35,7 +35,7 @@ public class GetChatMember implements TelegramMethod<ChatMember> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     @Override
     public ChatMember determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

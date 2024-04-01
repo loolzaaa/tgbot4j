@@ -38,7 +38,7 @@ public class UnbanChatMember implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * Do nothing if the user is not banned

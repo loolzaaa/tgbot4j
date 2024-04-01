@@ -58,6 +58,35 @@ public class Update {
     private Message editedChannelPost;
 
     /**
+     * Optional. The bot was connected to or disconnected
+     * from a business account, or a user edited
+     * an existing connection with the bot
+     */
+    @JsonProperty("business_connection")
+    private BusinessConnection businessConnection;
+
+    /**
+     * Optional. New non-service message from a connected
+     * business account
+     */
+    @JsonProperty("business_message")
+    private Message businessMessage;
+
+    /**
+     * Optional. New version of a message
+     * from a connected business account
+     */
+    @JsonProperty("edited_business_message")
+    private Message editedBusinessMessage;
+
+    /**
+     * Optional. Messages were deleted from a connected
+     * business account
+     */
+    @JsonProperty("deleted_business_messages")
+    private BusinessMessagesDeleted deletedBusinessMessages;
+
+    /**
      * Optional. A reaction to a message was changed by a user.
      * The bot must be an administrator in the chat
      * and must explicitly specify {@code "message_reaction"}

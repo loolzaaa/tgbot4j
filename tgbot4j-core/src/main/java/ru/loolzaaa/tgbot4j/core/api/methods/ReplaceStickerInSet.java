@@ -11,18 +11,19 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputSticker;
 
 /**
- * Use this method to add a new sticker to a set
- * created by the bot. Emoji sticker sets can have
- * up to 200 stickers. Other sticker sets can have
- * up to 120 stickers. Returns True on success.
+ * Use this method to replace an existing sticker
+ * in a sticker set with a new one.
+ * The method is equivalent to calling {@link DeleteStickerFromSet},
+ * then {@link AddStickerToSet}, then {@link SetStickerPositionInSet}.
+ * Returns True on success.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddStickerToSet implements TelegramMethod<Boolean> {
+public class ReplaceStickerInSet implements TelegramMethod<Boolean> {
     /**
-     * User identifier of sticker set owner
+     * User identifier of the sticker set owner
      */
     @Required
     @JsonProperty("user_id")
@@ -36,9 +37,17 @@ public class AddStickerToSet implements TelegramMethod<Boolean> {
     private String name;
 
     /**
-     * A JSON-serialized object with information about the added sticker.
-     * If exactly the same sticker had already been added to the set,
-     * then the set isn't changed.
+     * File identifier of the replaced sticker
+     */
+    @Required
+    @JsonProperty("old_sticker")
+    private String oldSticker;
+
+    /**
+     * A JSON-serialized object with information
+     * about the added sticker. If exactly the same sticker
+     * had already been added to the set,
+     * then the set remains unchanged.
      */
     @Required
     @JsonProperty("sticker")

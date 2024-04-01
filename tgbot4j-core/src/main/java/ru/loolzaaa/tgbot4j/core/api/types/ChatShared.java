@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * This object contains information
  * about the chat whose identifier
@@ -35,4 +37,25 @@ public class ChatShared {
      */
     @JsonProperty("chat_id")
     private Long chatId;
+
+    /**
+     * Optional. Title of the chat, if the title
+     * was requested by the bot.
+     */
+    @JsonProperty("title")
+    private String title;
+
+    /**
+     * Optional. Username of the chat, if the username
+     * was requested by the bot and available.
+     */
+    @JsonProperty("username")
+    private String username;
+
+    /**
+     * Optional. Available sizes of the chat photo,
+     * if the photo was requested by the bot
+     */
+    @JsonProperty("photo")
+    private List<PhotoSize> photo;
 }

@@ -56,14 +56,6 @@ public class CreateNewStickerSet implements TelegramMethod<Boolean> {
     private List<InputSticker> stickers;
 
     /**
-     * Format of stickers in the set, must be one of “static”,
-     * “animated”, “video”
-     */
-    @Required
-    @JsonProperty("sticker_format")
-    private String stickerFormat;
-
-    /**
      * Type of stickers in the set, pass “regular”, “mask”,
      * or “custom_emoji”. By default, a regular sticker set is created.
      */
