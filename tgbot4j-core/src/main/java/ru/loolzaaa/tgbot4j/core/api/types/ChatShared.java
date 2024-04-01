@@ -9,8 +9,7 @@ import java.util.List;
 
 /**
  * This object contains information
- * about the chat whose identifier
- * was shared with the bot
+ * about a chat that was shared with the bot
  * using a {@link KeyboardButtonRequestChat} button.
  */
 

@@ -95,8 +95,9 @@ public class SendMessage implements TelegramMethod<Message> {
     /**
      * Additional interface options.
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
-     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard
+     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
+     * Not supported for messages sent on behalf of a business account
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;

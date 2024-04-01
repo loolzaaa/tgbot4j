@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * This object defines the criteria used to request a suitable user.
- * The identifier of the selected user will be shared with the bot
+ * Information about the selected user will be shared with the bot
  * when the corresponding button is pressed.
  * <a href="https://core.telegram.org/bots/features#chat-and-user-selection">More about requesting users »</a>
  */

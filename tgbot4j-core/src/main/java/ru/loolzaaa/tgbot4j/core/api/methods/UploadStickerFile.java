@@ -21,9 +21,9 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
 
 /**
  * Use this method to upload a file with a sticker
- * for later use in the {@link CreateNewStickerSet}
- * and {@link AddStickerToSet} methods (the file
- * can be used multiple times).
+ * for later use in the {@link CreateNewStickerSet},
+ * {@link AddStickerToSet}, or {@link ReplaceStickerInSet}
+ * methods (the file can be used multiple times).
  * Returns the uploaded {@link File} on success.
  */
 
