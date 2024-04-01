@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,7 +62,136 @@ class TelegramMethodTest {
         assertThrows(RuntimeException.class, () -> new ConcreteTypeResponse().deserializeResponse(mapper, json));
     }
 
+    @Test
+    void shouldThrowExceptionWhileMethodValidationWithoutConstraints() {
+        ConcreteTypeResponse concreteTypeResponse = new ConcreteTypeResponse();
+
+        concreteTypeResponse.stringValue = "TEST";
+        concreteTypeResponse.intValue = 1;
+        concreteTypeResponse.longValue = 1L;
+        concreteTypeResponse.integerListValue = List.of(1);
+        concreteTypeResponse.testObject = new TestObject(-200); // WRONG
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "TEST";
+        concreteTypeResponse.intValue = 1;
+        concreteTypeResponse.longValue = 1L;
+        concreteTypeResponse.integerListValue = List.of(1);
+        concreteTypeResponse.testObject = new TestObject(200); // WRONG
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = ""; // WRONG
+        concreteTypeResponse.intValue = 1;
+        concreteTypeResponse.longValue = 1L;
+        concreteTypeResponse.integerListValue = List.of(1);
+        concreteTypeResponse.testObject = new TestObject(100);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "TEST";
+        concreteTypeResponse.intValue = null; // WRONG
+        concreteTypeResponse.longValue = 1L;
+        concreteTypeResponse.integerListValue = List.of(1);
+        concreteTypeResponse.testObject = new TestObject(100);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "TEST";
+        concreteTypeResponse.intValue = 1;
+        concreteTypeResponse.longValue = null; // WRONG
+        concreteTypeResponse.integerListValue = List.of(1);
+        concreteTypeResponse.testObject = new TestObject(100);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "TEST";
+        concreteTypeResponse.intValue = 1;
+        concreteTypeResponse.longValue = 1L;
+        concreteTypeResponse.integerListValue = null; // WRONG
+        concreteTypeResponse.testObject = new TestObject(100);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+    }
+
+    @Test
+    void shouldThrowExceptionWhileMethodValidationWithConstraints() {
+        ConcreteTypeConstraintResponse concreteTypeResponse = new ConcreteTypeConstraintResponse();
+
+        concreteTypeResponse.stringValue = "A"; // WRONG
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAAAA"; // WRONG
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 1; // WRONG
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 5; // WRONG
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 1L; // WRONG
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 5L; // WRONG
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3);
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1); // WRONG
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+
+        concreteTypeResponse.stringValue = "AAA";
+        concreteTypeResponse.intValue = 3;
+        concreteTypeResponse.longValue = 3L;
+        concreteTypeResponse.integerListValue = List.of(1, 2, 3, 4, 5); // WRONG
+        assertThrows(ApiValidationException.class, concreteTypeResponse::validateProperties);
+    }
+
     static class ConcreteTypeResponse implements TelegramMethod<TestResponse> {
+
+        @Required
+        private String stringValue;
+        @Required
+        private Integer intValue;
+        @Required
+        private Long longValue;
+        @Required
+        private List<Integer> integerListValue;
+
+        private TestObject testObject;
+
+        @Override
+        public TestResponse determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
+            return  deserializeObjectResponse(mapper, resultNode, TestResponse.class);
+        }
+    }
+
+    static class ConcreteTypeConstraintResponse implements TelegramMethod<TestResponse> {
+
+        @Required(useConstraints = true, min = 2, max = 4)
+        private String stringValue;
+        @Required(useConstraints = true, min = 2, max = 4)
+        private Integer intValue;
+        @Required(useConstraints = true, min = 2, max = 4)
+        private Long longValue;
+        @Required(useConstraints = true, min = 2, max = 4)
+        private List<Integer> integerListValue;
+
         @Override
         public TestResponse determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
             return  deserializeObjectResponse(mapper, resultNode, TestResponse.class);
@@ -93,5 +223,20 @@ class TelegramMethodTest {
     static class TestResponse {
         String name;
         Integer value;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class TestObject implements Validated {
+
+        Integer value;
+
+        @Override
+        public void validate() {
+            if (value == null || value < 0 || value > 128) {
+                throw new ApiValidationException("value must not be null, less than 0 or greater than 128", this);
+            }
+        }
     }
 }

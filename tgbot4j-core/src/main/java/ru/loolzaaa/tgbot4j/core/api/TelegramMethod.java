@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.core.exception.ApiRequestException;
+import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A common interface for those API methods
@@ -94,5 +97,57 @@ public interface TelegramMethod<T> extends Validated {
     default <K> T deserializeCollectionResponse(ObjectMapper mapper, JsonNode resultNode, Class<K> resultType) {
         CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, resultType);
         return mapper.convertValue(resultNode, collectionType);
+    }
+
+    default void validateProperties() {
+        for (Field field : getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            Object fieldValue;
+            try {
+                fieldValue = field.get(this);
+            } catch (IllegalAccessException e) {
+                throw new ApiValidationException(e.getLocalizedMessage(), this);
+            }
+            if (field.isAnnotationPresent(Required.class)) {
+                Required requiredAnnotation = field.getAnnotation(Required.class);
+                if (fieldValue == null) {
+                    throw new ApiValidationException(field.getName() + " parameter can't be null", this);
+                }
+                if (!requiredAnnotation.useConstraints()) {
+                    if (field.getType() == String.class) {
+                        String value = (String) fieldValue;
+                        if (value.isEmpty()) {
+                            throw new ApiValidationException(field.getName() + " parameter can't be empty", this);
+                        }
+                    }
+                } else {
+                    long value = getValue(field, requiredAnnotation, fieldValue);
+                    if (value < requiredAnnotation.min() || value > requiredAnnotation.max()) {
+                        throw new ApiValidationException(
+                                String.format("%s parameter value/length must be in [%d..%d] range",
+                                        field.getName(), requiredAnnotation.min(), requiredAnnotation.min()),
+                                this);
+                    }
+                }
+            }
+            if (Validated.class.isAssignableFrom(field.getType())) {
+                ((Validated) fieldValue).validate();
+            }
+        }
+        validate();
+    }
+
+    private static long getValue(Field field, Required requiredAnnotation, Object fieldValue) {
+        long value = requiredAnnotation.min();
+        if (field.getType() == String.class) {
+            value = ((String) fieldValue).length();
+        } else if (field.getType() == Integer.class) {
+            value = (int) fieldValue;
+        } else if (field.getType() == Long.class) {
+            value = (long) fieldValue;
+        } else if (field.getType() == List.class) {
+            value = ((List<?>) fieldValue).size();
+        }
+        return value;
     }
 }

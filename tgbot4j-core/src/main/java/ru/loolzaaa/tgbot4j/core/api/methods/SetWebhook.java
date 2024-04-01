@@ -126,9 +126,6 @@ public class SetWebhook implements TelegramMultipartMethod<Boolean> {
 
     @Override
     public void validate() {
-        if (url == null || url.isEmpty()) {
-            throw new ApiValidationException("URL parameter can't be empty", this);
-        }
         if (maxConnections != null && (maxConnections < 1 || maxConnections > 100)) {
             throw new ApiValidationException("Max connections parameter must be in 1..100 range", this);
         }
