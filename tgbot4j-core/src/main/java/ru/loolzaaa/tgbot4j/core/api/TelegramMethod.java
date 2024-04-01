@@ -99,6 +99,17 @@ public interface TelegramMethod<T> extends Validated {
         return mapper.convertValue(resultNode, collectionType);
     }
 
+    /**
+     * Method for validating the properties of the method being sent.
+     * <p>
+     * In addition to running the standard {@link Validated#validate()} method,
+     * the validation method is also launched on any property
+     * whose type implements the {@link Validated} interface.
+     * <p>
+     * It also checks the values of properties
+     * that are annotated with the {@link Required} annotation.
+     * None of the required properties can be null.
+     */
     default void validateProperties() {
         for (Field field : getClass().getDeclaredFields()) {
             field.setAccessible(true);

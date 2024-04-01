@@ -17,9 +17,24 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Required {
+    /**
+     * This parameter determines the need to use min/max constraints.
+     *
+     * @return use min/max constraint or not
+     */
     boolean useConstraints() default false;
 
+    /**
+     * Minimum parameter value depending on its type
+     *
+     * @return minimum parameter value
+     */
     long min() default 0;
 
+    /**
+     * Maximum parameter value depending on its type
+     *
+     * @return maximum parameter value
+     */
     long max() default 0;
 }
