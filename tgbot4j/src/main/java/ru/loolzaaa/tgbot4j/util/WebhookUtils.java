@@ -8,20 +8,26 @@ import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
 public final class WebhookUtils {
-    public static WebhookInfo getWebhook(String botToken) {
+    public static WebhookInfo getWebhook(String botToken, MethodSender methodSender) {
         GetWebhookInfo getWebhookInfo = new GetWebhookInfo();
-        MethodSender methodSender = new DefaultMethodSender(botToken, null);
+        if (methodSender == null) {
+            methodSender = new DefaultMethodSender(botToken, null);
+        }
         return methodSender.send(getWebhookInfo);
     }
 
-    public static boolean setWebhook(String botToken, SetWebhook setWebhook) {
-        MethodSender methodSender = new DefaultMethodSender(botToken, null);
+    public static boolean setWebhook(String botToken, SetWebhook setWebhook, MethodSender methodSender) {
+        if (methodSender == null) {
+            methodSender = new DefaultMethodSender(botToken, null);
+        }
         return methodSender.send(setWebhook);
     }
 
-    public static boolean deleteWebhook(String botToken, boolean dropPendingUpdated) {
+    public static boolean deleteWebhook(String botToken, boolean dropPendingUpdated, MethodSender methodSender) {
         DeleteWebhook deleteWebhook = new DeleteWebhook(dropPendingUpdated);
-        MethodSender methodSender = new DefaultMethodSender(botToken, null);
+        if (methodSender == null) {
+            methodSender = new DefaultMethodSender(botToken, null);
+        }
         return methodSender.send(deleteWebhook);
     }
 }

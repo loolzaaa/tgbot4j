@@ -54,10 +54,10 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
             throw new IllegalStateException(botName + " receiver already running!");
         }
 
-        WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken);
+        WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, null);
         if (options.clearWebhookIfExist) {
             if (webhookInfo.getUrl() != null && !webhookInfo.getUrl().isEmpty()) {
-                boolean deleteWebhookResult = WebhookUtils.deleteWebhook(botToken, false);
+                boolean deleteWebhookResult = WebhookUtils.deleteWebhook(botToken, false, null);
                 log.info("Webhook for {} delete result: {}", botName, deleteWebhookResult);
             }
         } else {

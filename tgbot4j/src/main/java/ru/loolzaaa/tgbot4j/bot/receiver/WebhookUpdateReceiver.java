@@ -60,7 +60,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         }
 
         if (setWebhook != null) {
-            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook);
+            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook, null);
             if (setWebhookResult) {
                 log.info("Webhook for {} successfully set", botName);
             } else {
@@ -68,7 +68,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
                 throw new IllegalStateException("Cannot set webhook for " + botName);
             }
         } else {
-            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken);
+            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, null);
             if (webhookInfo.getUrl() == null || webhookInfo.getUrl().isEmpty()) {
                 throw new IllegalStateException("You need to set webhook before start webhook receiver");
             } else {
