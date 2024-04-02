@@ -150,14 +150,14 @@ public final class TelegramBotImpl implements TelegramBot {
             }
             log.debug("{} update handler stopped", name);
         }
-    }
 
-    private List<Update> getUpdateList() {
-        List<Update> updates = new ArrayList<>();
-        for (Iterator<Update> it = this.updates.iterator(); it.hasNext(); ) {
-            updates.add(it.next());
-            it.remove();
+        private List<Update> getUpdateList() {
+            List<Update> transferredUpdates = new ArrayList<>();
+            for (Iterator<Update> it = TelegramBotImpl.this.updates.iterator(); it.hasNext(); ) {
+                transferredUpdates.add(it.next());
+                it.remove();
+            }
+            return transferredUpdates;
         }
-        return updates;
     }
 }

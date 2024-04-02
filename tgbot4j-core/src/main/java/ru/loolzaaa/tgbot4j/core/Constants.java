@@ -25,4 +25,7 @@ public class Constants {
     public static final int HTTP_CODE_OK = 200;
     public static final int HTTP_CODE_UNAUTHORIZED = 401;
     public static final int HTTP_CODE_METHOD_NOT_ALLOWED = 405;
+
+    private Constants() {
+    }
 }

@@ -81,23 +81,23 @@ public class ApiSpecificationChecker {
             if (path.getFileName().toString().contains("InputFile")) {
                 continue;
             }
-            FileInputStream inputStream = new FileInputStream(path.toString());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String s = reader.lines().collect(Collectors.joining("\n"));
-            // Interface exclusions
-            if (s.contains("public interface")) {
-                continue;
-            }
-            if (!s.contains("@Data") || !s.contains("@NoArgsConstructor") || !s.contains("@AllArgsConstructor")) {
-                String classPath = path.toString()
-                        .substring(path.toString().indexOf("ru"))
-                        .replace(".java", "")
-                        .replaceAll("[\\\\/]", ".");
-                invalidClasses.add(classPath);
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toString())))) {
+                String s = reader.lines().collect(Collectors.joining("\n"));
+                // Interface exclusions
+                if (s.contains("public interface") || s.contains("IgnoreCheck")) {
+                    continue;
+                }
+                if (!s.contains("@Data") || !s.contains("@NoArgsConstructor") || !s.contains("@AllArgsConstructor")) {
+                    String classPath = path.toString()
+                            .substring(path.toString().indexOf("ru"))
+                            .replace(".java", "")
+                            .replaceAll("[\\\\/]", ".");
+                    invalidClasses.add(classPath);
+                }
             }
         }
         if (invalidClasses.isEmpty()) {
-            System.out.println("#### All classes have correct lombok annotations :+1:");
+            System.out.printf("#### All %d classes have correct lombok annotations :+1:%n", files.size());
         } else {
             System.out.println("#### Classes without lombok annotations :x::");
             invalidClasses.forEach(s -> System.out.println("- " + s));
@@ -144,72 +144,71 @@ public class ApiSpecificationChecker {
         Document doc = Jsoup.connect("https://core.telegram.org/bots/api").get();
         Elements devPageContent = doc.selectFirst("#dev_page_content").children();
 
-        for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
-            if (clazz.isInterface() || clazz.isMemberClass() || clazz.isAnnotationPresent(IgnoreCheck.class)) {
+        Set<Class<?>> allClassesFromApiPackage = getAllClassesFromApiPackage(packageName, scanPath);
+        for (Class<?> clazz : allClassesFromApiPackage) {
+            if (clazz.isInterface() || clazz.isMemberClass() || clazz.isAnnotationPresent(IgnoreCheck.class) || clazz.getDeclaredFields().length == 0) {
                 continue;
             }
-            if (!(clazz.getDeclaredFields().length == 0)) {
-                String className = clazz.getSimpleName();
-                Map<String, ApiEntity> apiEntityMap = new HashMap<>();
-                devPageContent.stream()
-                        .filter(element -> element.normalName().equals("h4"))
-                        .filter(element -> element.textNodes().stream().anyMatch(textNode -> textNode.text().equalsIgnoreCase(className)))
-                        .findAny()
-                        .orElseThrow(() -> new NoSuchElementException("No value for " + className))
-                        .nextElementSiblings()
-                        .select("table")
-                        .first()
-                        .select("tr")
-                        .stream()
-                        .skip(1)
-                        .forEach(row -> converter.accept(apiEntityMap, row));
-                if (apiEntityMap.size() != clazz.getDeclaredFields().length) {
-                    incorrectFieldsCount.add(format("%s. Docs: %d. App: %d", className, apiEntityMap.size(), clazz.getDeclaredFields().length));
-                }
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(JsonProperty.class)) {
-                        String propertyValue = field.getAnnotation(JsonProperty.class).value();
-                        if (!apiEntityMap.containsKey(propertyValue)) {
-                            invalidFields.add(format("%s x-> %s", className, propertyValue));
-                        } else {
-                            ApiEntity apiEntity = apiEntityMap.get(propertyValue);
-                            String fieldType = field.getType().getSimpleName();
-                            String apiEntityJavaType = getJavaType(apiEntity.getType());
-                            boolean equalTypes = apiEntityJavaType.equalsIgnoreCase(fieldType);
-                            boolean apiTypeContainsJavaType = apiEntityJavaType.contains(fieldType.toLowerCase());
-                            boolean complexType = apiEntityJavaType.equalsIgnoreCase("complex");
-                            if (!equalTypes && !apiTypeContainsJavaType && !complexType) {
-                                incorrectFieldType.add(format("%s -> %s. Docs: %s. App: %s", className, propertyValue, apiEntity.getType(), fieldType));
-                            }
-                            if (apiEntity.getJavaRequiredFlag() == null) {
-                                unknownRequiredFlags.add(format("%s ?-> %s", className, propertyValue));
-                            } else if (apiEntity.getJavaRequiredFlag() && !field.isAnnotationPresent(Required.class)) {
-                                invalidRequiredFlags.add(format("%s !-> %s", className, propertyValue));
-                            } else if (!apiEntity.getJavaRequiredFlag() && field.isAnnotationPresent(Required.class)) {
-                                invalidRequiredFlags.add(format("%s ->x %s", className, propertyValue));
-                            }
+            String className = clazz.getSimpleName();
+            Map<String, ApiEntity> apiEntityMap = new HashMap<>();
+            devPageContent.stream()
+                    .filter(element -> element.normalName().equals("h4"))
+                    .filter(element -> element.textNodes().stream().anyMatch(textNode -> textNode.text().equalsIgnoreCase(className)))
+                    .findAny()
+                    .orElseThrow(() -> new NoSuchElementException("No value for " + className))
+                    .nextElementSiblings()
+                    .select("table")
+                    .first()
+                    .select("tr")
+                    .stream()
+                    .skip(1)
+                    .forEach(row -> converter.accept(apiEntityMap, row));
+            if (apiEntityMap.size() != clazz.getDeclaredFields().length) {
+                incorrectFieldsCount.add(format("%s. Docs: %d. App: %d", className, apiEntityMap.size(), clazz.getDeclaredFields().length));
+            }
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(JsonProperty.class)) {
+                    String propertyValue = field.getAnnotation(JsonProperty.class).value();
+                    if (!apiEntityMap.containsKey(propertyValue)) {
+                        invalidFields.add(format("%s x-> %s", className, propertyValue));
+                    } else {
+                        ApiEntity apiEntity = apiEntityMap.get(propertyValue);
+                        String fieldType = field.getType().getSimpleName();
+                        String apiEntityJavaType = getJavaType(apiEntity.getType());
+                        boolean equalTypes = apiEntityJavaType.equalsIgnoreCase(fieldType);
+                        boolean apiTypeContainsJavaType = apiEntityJavaType.contains(fieldType.toLowerCase());
+                        boolean complexType = apiEntityJavaType.equalsIgnoreCase("complex");
+                        if (!equalTypes && !apiTypeContainsJavaType && !complexType) {
+                            incorrectFieldType.add(format("%s -> %s. Docs: %s. App: %s", className, propertyValue, apiEntity.getType(), fieldType));
+                        }
+                        if (apiEntity.getJavaRequiredFlag() == null) {
+                            unknownRequiredFlags.add(format("%s ?-> %s", className, propertyValue));
+                        } else if (apiEntity.getJavaRequiredFlag() && !field.isAnnotationPresent(Required.class)) {
+                            invalidRequiredFlags.add(format("%s !-> %s", className, propertyValue));
+                        } else if (!apiEntity.getJavaRequiredFlag() && field.isAnnotationPresent(Required.class)) {
+                            invalidRequiredFlags.add(format("%s ->x %s", className, propertyValue));
                         }
                     }
                 }
             }
         }
         System.out.println(incorrectFieldsCount.isEmpty() ?
-                format("#### All %s have correct field count :+1:", scanType) :
+                format("#### All %d %s have correct field count :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s without incorrect field count :x:: ", scanType));
         incorrectFieldsCount.forEach(s -> System.out.println("- " + s));
 
         System.out.println(invalidFields.isEmpty() ?
-                format("#### All %s contains correct fields :+1:", scanType) :
+                format("#### All %d %s contains correct fields :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s with incorrect fields :x:: ", scanType));
         invalidFields.forEach(s -> System.out.println("- " + s));
 
         System.out.println(incorrectFieldType.isEmpty() ?
-                format("#### All %s contains correct field types :+1:", scanType) :
+                format("#### All %d %s contains correct field types :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s with incorrect field types :x:: ", scanType));
         incorrectFieldType.forEach(s -> System.out.println("- " + s));
 
         System.out.println(invalidRequiredFlags.isEmpty() ?
-                format("#### All %s have correct required flags :+1:", scanType) :
+                format("#### All %d %s have correct required flags :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s must be (un-)marked with required flags :x:: ", scanType));
         invalidRequiredFlags.forEach(s -> System.out.println("- " + s));
 
@@ -235,20 +234,19 @@ public class ApiSpecificationChecker {
      */
     public void checkAllFieldsShouldHaveJsonPropertyAnnotations(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidFields = new ArrayList<>();
-        for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
+        Set<Class<?>> allClassesFromApiPackage = getAllClassesFromApiPackage(packageName, scanPath);
+        for (Class<?> clazz : allClassesFromApiPackage) {
             if (clazz.isAnonymousClass() || clazz.isAnnotationPresent(IgnoreCheck.class)) {
                 continue;
             }
-            if (!(clazz.getDeclaredFields().length == 0)) {
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (!field.isAnnotationPresent(JsonProperty.class)) {
-                        invalidFields.add(field.getDeclaringClass().getCanonicalName() + "." + field.getName());
-                    }
+            for (Field field : clazz.getDeclaredFields()) {
+                if (!field.isAnnotationPresent(JsonProperty.class)) {
+                    invalidFields.add(field.getDeclaringClass().getCanonicalName() + "." + field.getName());
                 }
             }
         }
         System.out.println(invalidFields.isEmpty() ?
-                format("#### All %s have JsonProperty annotation :+1:", scanType) :
+                format("#### All %d %s have JsonProperty annotation :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s without JsonProperty annotation :x:: ", scanType));
         invalidFields.forEach(s -> System.out.println("- " + s));
     }
@@ -267,32 +265,31 @@ public class ApiSpecificationChecker {
      */
     public void checkAllJsonPropertiesValuesAreCorrect(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> invalidPropertyValues = new ArrayList<>();
-        for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
-            if (!(clazz.getDeclaredFields().length == 0)) {
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(JsonProperty.class)) {
-                        String value = field.getAnnotation(JsonProperty.class).value().toLowerCase();
-                        String[] arr = value.split("_");
-                        if (arr.length == 0) {
+        Set<Class<?>> allClassesFromApiPackage = getAllClassesFromApiPackage(packageName, scanPath);
+        for (Class<?> clazz : allClassesFromApiPackage) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(JsonProperty.class)) {
+                    String value = field.getAnnotation(JsonProperty.class).value().toLowerCase();
+                    String[] arr = value.split("_");
+                    if (arr.length == 0) {
+                        invalidPropertyValues.add(field.getDeclaringClass().getCanonicalName() + "." + field.getName());
+                    } else {
+                        String propertyName = "";
+                        propertyName = propertyName.concat(arr[0]);
+                        if (arr.length > 1) {
+                            for (int i = 1; i < arr.length; i++) {
+                                propertyName = propertyName.concat((char) (arr[i].charAt(0) - 32) + arr[i].substring(1));
+                            }
+                        }
+                        if (!propertyName.equals(field.getName())) {
                             invalidPropertyValues.add(field.getDeclaringClass().getCanonicalName() + "." + field.getName());
-                        } else {
-                            String propertyName = "";
-                            propertyName = propertyName.concat(arr[0]);
-                            if (arr.length > 1) {
-                                for (int i = 1; i < arr.length; i++) {
-                                    propertyName = propertyName.concat((char) ((int) arr[i].charAt(0) - 32) + arr[i].substring(1));
-                                }
-                            }
-                            if (!propertyName.equals(field.getName())) {
-                                invalidPropertyValues.add(field.getDeclaringClass().getCanonicalName() + "." + field.getName());
-                            }
                         }
                     }
                 }
             }
         }
         System.out.println(invalidPropertyValues.isEmpty() ?
-                format("#### All %s have correct JsonProperty value :+1:", scanType) :
+                format("#### All %d %s have correct JsonProperty value :+1:", allClassesFromApiPackage.size(), scanType) :
                 format("#### %s has incorrect JsonProperty value :x:: ", scanType));
         invalidPropertyValues.forEach(s -> System.out.println("- " + s));
     }

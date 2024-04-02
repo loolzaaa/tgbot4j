@@ -14,7 +14,7 @@ import ru.loolzaaa.tgbot4j.core.api.Validated;
 @Getter
 public class ApiValidationException extends RuntimeException {
 
-    private final Validated target;
+    private transient final Validated target;
 
     public ApiValidationException(String message, Validated target) {
         super(message);

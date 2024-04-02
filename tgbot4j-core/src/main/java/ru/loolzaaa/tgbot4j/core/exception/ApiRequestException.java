@@ -14,8 +14,8 @@ import ru.loolzaaa.tgbot4j.core.api.types.ResponseParameters;
 @Getter
 public class ApiRequestException extends RuntimeException {
 
-    private Integer errorCode;
-    private ResponseParameters responseParameters;
+    private final Integer errorCode;
+    private transient final ResponseParameters responseParameters;
 
     public ApiRequestException(ResponseWrapper responseWrapper) {
         super(responseWrapper.getDescription());
@@ -25,5 +25,7 @@ public class ApiRequestException extends RuntimeException {
 
     public ApiRequestException(String message) {
         super(message);
+        this.errorCode = null;
+        this.responseParameters = null;
     }
 }

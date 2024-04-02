@@ -119,7 +119,7 @@ public final class ServerlessWebhookUpdateReceiver implements UpdateReceiver {
     @Override
     public void stop() {
         if (!isRunning) {
-            log.info(botName + " receiver not started or already stopped");
+            log.info("{} receiver not started or already stopped", botName);
             return;
         }
 

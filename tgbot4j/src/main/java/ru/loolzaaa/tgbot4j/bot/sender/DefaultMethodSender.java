@@ -143,6 +143,7 @@ public final class DefaultMethodSender implements MethodSender {
             return method.deserializeResponse(mapper, response.body());
         } catch (InterruptedException e) {
             log.info("{} request interrupted with message: {}", method.getClass().getSimpleName(), e.getLocalizedMessage());
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(), e);
