@@ -9,10 +9,23 @@ import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessor;
 import ru.loolzaaa.tgbot4j.core.bot.processor.UpdateProcessorChain;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 
+/**
+ * Simple echo implementation of update processor.
+ * <p>
+ * May be useful for development purposes.
+ */
+
 public class EchoMessageUpdateProcessor implements UpdateProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EchoMessageUpdateProcessor.class);
 
+    /**
+     * This method just send new message to sender with echo message.
+     *
+     * @param update       fresh update from API server
+     * @param methodSender sender for API server communication
+     * @param chain        update processors chain
+     */
     @Override
     public void process(Update update, MethodSender methodSender, UpdateProcessorChain chain) {
         if (update.getMessage() != null) {

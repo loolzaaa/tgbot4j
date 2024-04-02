@@ -25,6 +25,11 @@ public class UserActivity {
 
     private LocalDateTime lastActivity = LocalDateTime.now();
 
+    /**
+     * Constructor that creates new user activity based on another.
+     *
+     * @param userActivity already existing user activity
+     */
     public UserActivity(UserActivity userActivity) {
         CommandState<?> originalCommandState = userActivity.getCommandState();
 
@@ -33,10 +38,20 @@ public class UserActivity {
         this.lastActivity = userActivity.getLastActivity();
     }
 
+    /**
+     * Setting new command state of current user activity.
+     *
+     * @param commandState new command state
+     */
     public void setCommandState(@NonNull CommandState<?> commandState) {
         this.commandState = commandState;
     }
 
+    /**
+     * Refresh last user activity date/time.
+     *
+     * @param lastActivity new last user activity value
+     */
     public void setLastActivity(@NonNull LocalDateTime lastActivity) {
         this.lastActivity = lastActivity;
     }

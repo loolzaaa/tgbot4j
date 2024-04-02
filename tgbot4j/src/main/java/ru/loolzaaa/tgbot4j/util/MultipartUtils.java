@@ -11,6 +11,8 @@ import static java.lang.String.format;
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
 /**
+ * Utilizing creation process for multipart body.
+ * <p>
  * Returning Values from Forms: multipart/form-data
  * <p>
  * Details: <a href="https://datatracker.ietf.org/doc/html/rfc7578">https://datatracker.ietf.org/doc/html/rfc7578</a>
@@ -30,15 +32,25 @@ public final class MultipartUtils {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
 
+    /**
+     * Creating multipart body.
+     * <p>
+     * Creation process based on parameters of multipart type.
+     *
+     * @param boundary generated boundary
+     * @param parts    body parts
+     * @return list of byte arrays with multipart parts
+     * @see MultipartBodyPart
+     */
     public static List<byte[]> createMultipartBody(String boundary, List<MultipartBodyPart> parts) {
         List<byte[]> byteArrays = new ArrayList<>();
 
         // Set default charset for every part
         String defaultCharset = format(BOUNDARY_PATTERN, boundary) +
-                "\r\n" +
-                format(CONTENT_DISPOSITION_PATTERN, "_charset_") +
-                "\r\n\r\n" +
-                DEFAULT_CHARSET;
+                                "\r\n" +
+                                format(CONTENT_DISPOSITION_PATTERN, "_charset_") +
+                                "\r\n\r\n" +
+                                DEFAULT_CHARSET;
         byteArrays.add(defaultCharset.getBytes(StandardCharsets.UTF_8));
 
         // Add main parts
@@ -67,6 +79,11 @@ public final class MultipartUtils {
         return byteArrays;
     }
 
+    /**
+     * Generating multipart boundary.
+     *
+     * @return generated boundary
+     */
     public static String generateBoundary() {
         final StringBuilder buffer = new StringBuilder();
         final Random rand = new Random();
