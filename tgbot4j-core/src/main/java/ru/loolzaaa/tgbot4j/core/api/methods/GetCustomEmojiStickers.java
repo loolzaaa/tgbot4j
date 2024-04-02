@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Sticker;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -26,6 +27,7 @@ public class GetCustomEmojiStickers implements TelegramMethod<List<Sticker>> {
      * List of custom emoji identifiers.
      * At most 200 custom emoji identifiers can be specified.
      */
+    @Required
     @JsonProperty("custom_emoji_ids")
     private List<String> customEmojiIds;
 

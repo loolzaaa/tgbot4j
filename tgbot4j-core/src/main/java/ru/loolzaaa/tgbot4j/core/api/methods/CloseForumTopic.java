@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
@@ -25,12 +26,14 @@ public class CloseForumTopic implements TelegramMethod<Boolean> {
      * Unique identifier for the target group or username
      * of the target supergroup or channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
     /**
      * Unique identifier for the target message thread of the forum topic
      */
+    @Required
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
 

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.File;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
@@ -20,9 +21,9 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
 
 /**
  * Use this method to upload a file with a sticker
- * for later use in the {@link CreateNewStickerSet}
- * and {@link AddStickerToSet} methods (the file
- * can be used multiple times).
+ * for later use in the {@link CreateNewStickerSet},
+ * {@link AddStickerToSet}, or {@link ReplaceStickerInSet}
+ * methods (the file can be used multiple times).
  * Returns the uploaded {@link File} on success.
  */
 
@@ -33,6 +34,7 @@ public class UploadStickerFile implements TelegramMultipartMethod<File> {
     /**
      * User identifier of sticker file owner
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 
@@ -41,6 +43,7 @@ public class UploadStickerFile implements TelegramMultipartMethod<File> {
      * See <a href="https://core.telegram.org/stickers">https://core.telegram.org/stickers</a> for technical requirements.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("sticker")
     private InputFile sticker;
@@ -49,6 +52,7 @@ public class UploadStickerFile implements TelegramMultipartMethod<File> {
      * Format of the sticker, must be one of “static”,
      * “animated”, “video”
      */
+    @Required
     @JsonProperty("sticker_format")
     private String stickerFormat;
 

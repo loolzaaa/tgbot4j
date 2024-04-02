@@ -10,8 +10,9 @@ package ru.loolzaaa.tgbot4j.bot.processor.activitystate.command;
  * <pre>
  * {@code
  *     @Override
- *     public CommandState<?> processMessage(AbsSender absSender, Message message, String[] arguments, CommandState<?> commandState) {
- *          CommandState<State> currentState = (CommandState<State>) commandState;
+ *     public CommandState<State> processMessage(MethodSender methodSender, Message message, String[] arguments, CommandState<?> currentState) {
+ *          //CommandState<State> someState = (CommandState<State>) currentState; <--- NOT RECOMMEND
+ *          State state = (State) currentState.state();
  *     }
  *
  *     private static enum State {

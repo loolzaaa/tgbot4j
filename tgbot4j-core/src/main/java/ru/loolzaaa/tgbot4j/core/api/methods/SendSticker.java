@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -33,10 +34,18 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 @AllArgsConstructor
 public class SendSticker implements TelegramMultipartMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -49,13 +58,14 @@ public class SendSticker implements TelegramMultipartMethod<Message> {
     private Integer messageThreadId;
 
     /**
-     * Sticker to send. Pass a file_id as String to send a file
-     * that exists on the Telegram servers (recommended),
+     * Sticker to send. Pass a file_id as String
+     * to send a file that exists on the Telegram servers (recommended),
      * pass an HTTP URL as a String for Telegram to get a .WEBP sticker
-     * from the Internet, or upload a new .WEBP
-     * or .TGS sticker using multipart/form-data.
+     * from the Internet, or upload a new .WEBP, .TGS,
+     * or .WEBM sticker using multipart/form-data.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("sticker")
     private InputFile sticker;
@@ -93,6 +103,7 @@ public class SendSticker implements TelegramMultipartMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard
      * or to force a reply from the user.
+     * Not supported for messages sent on behalf of a business account
      */
     @MultipartType(JSON)
     @JsonProperty("reply_markup")

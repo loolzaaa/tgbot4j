@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
@@ -31,12 +32,14 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
     /**
      * Sticker set name
      */
+    @Required
     @JsonProperty("name")
     private String name;
 
     /**
      * User identifier of the sticker set owner
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 
@@ -62,6 +65,15 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
     @MultipartType(BINARY)
     @JsonProperty("thumbnail")
     private InputFile thumbnail;
+
+    /**
+     * Format of the added sticker, must be one of “static”
+     * for a <b>.WEBP</b> or <b>.PNG</b> image, “animated”
+     * for a <b>.TGS</b> animation, “video” for a <b>WEBM</b> video
+     */
+    @Required
+    @JsonProperty("format")
+    private String format;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

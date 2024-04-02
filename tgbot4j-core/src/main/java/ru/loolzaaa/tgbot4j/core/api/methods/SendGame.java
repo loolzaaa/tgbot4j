@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
@@ -21,10 +22,18 @@ import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
 @AllArgsConstructor
 public class SendGame implements TelegramMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      */
+    @Required
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Unique identifier for the target message thread (topic)
@@ -37,6 +46,7 @@ public class SendGame implements TelegramMethod<Message> {
      * Short name of the game, serves as the unique identifier
      * for the game. Set up your games via @BotFather.
      */
+    @Required
     @JsonProperty("game_short_name")
     private String gameShortName;
 
@@ -64,6 +74,7 @@ public class SendGame implements TelegramMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>.
      * If empty, one 'Play game_title' button will be shown.
      * If not empty, the first button must launch the game.
+     * Not supported for messages sent on behalf of a business account.
      */
     @JsonProperty("reply_markup")
     private InlineKeyboardMarkup replyMarkup;

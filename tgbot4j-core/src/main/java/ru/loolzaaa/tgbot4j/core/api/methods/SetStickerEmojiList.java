@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 
 import java.util.List;
@@ -24,11 +25,14 @@ public class SetStickerEmojiList implements TelegramMethod<Boolean> {
     /**
      * File identifier of the sticker
      */
+    @Required
     @JsonProperty("sticker")
     private String sticker;
+
     /**
      * A JSON-serialized list of 1-20 emoji associated with the sticker
      */
+    @Required
     @JsonProperty("emoji_list")
     private List<String> emojiList;
 

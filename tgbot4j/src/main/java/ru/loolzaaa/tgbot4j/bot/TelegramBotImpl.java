@@ -16,6 +16,14 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Base implementation of Telegram bot logic.
+ * <p>
+ * Every bot must firstly register all update processors and init bot.
+ * <p>
+ * After all, developer must stop the bot to clean resources.
+ */
+
 public final class TelegramBotImpl implements TelegramBot {
 
     private static final Logger log = LoggerFactory.getLogger(TelegramBotImpl.class);
@@ -35,12 +43,29 @@ public final class TelegramBotImpl implements TelegramBot {
     private final UpdateProcessorChain.Builder processorChainBuilder = new UpdateProcessorChain.Builder();
     private UpdateProcessorChain updateProcessorChain;
 
+    /**
+     * Constructor creates new Telegram bot with some name,
+     * method sender and update receiver.
+     *
+     * @param name           bot name
+     * @param methodSender   API method sender for communication
+     * @param updateReceiver bot update receiver
+     */
     public TelegramBotImpl(String name, MethodSender methodSender, UpdateReceiver updateReceiver) {
         this.name = name;
         this.methodSender = methodSender;
         this.updateReceiver = updateReceiver;
     }
 
+    /**
+     * Registering update processor for the bot
+     * in processor chain.
+     * <p>
+     * Allows only before initialization.
+     *
+     * @param updateProcessor registered update processor
+     * @param order           processor order number
+     */
     @Override
     public synchronized void registerUpdateProcessor(UpdateProcessor updateProcessor, int order) {
         if (runStatus.get() != 0) {
@@ -49,6 +74,14 @@ public final class TelegramBotImpl implements TelegramBot {
         processorChainBuilder.addUpdateProcessor(updateProcessor, order);
     }
 
+    /**
+     * Initializing Telegram bot.
+     * <p>
+     * Build update processor chain, set run status to 1,
+     * start update receiver and update handler thread.
+     * <p>
+     * There is no way to run two instances or more of same bot.
+     */
     @Override
     public synchronized void init() {
         if (runStatus.get() == 1) {
@@ -63,6 +96,12 @@ public final class TelegramBotImpl implements TelegramBot {
         updateHandler.start();
     }
 
+    /**
+     * Stops Telegram bot.
+     * <p>
+     * Set run status to -1, interrupt update handler thread
+     * and stops update receiver.
+     */
     @Override
     public synchronized void destroy() {
         if (runStatus.get() <= 0) {
@@ -74,6 +113,17 @@ public final class TelegramBotImpl implements TelegramBot {
         updateReceiver.stop();
     }
 
+    /**
+     * Separate thread for handle new updates
+     * and run processor chain.
+     * <p>
+     * This thread wait notify about new updates from update receiver.
+     * After that, it processes every update with update processor chain.
+     * <p>
+     * Works only if run status = 1 and not interrupted.
+     * <p>
+     * All updates copying to new list before processing.
+     */
     private class UpdateHandler extends Thread {
         @Override
         public void run() {
@@ -100,14 +150,14 @@ public final class TelegramBotImpl implements TelegramBot {
             }
             log.debug("{} update handler stopped", name);
         }
-    }
 
-    private List<Update> getUpdateList() {
-        List<Update> updates = new ArrayList<>();
-        for (Iterator<Update> it = this.updates.iterator(); it.hasNext();) {
-            updates.add(it.next());
-            it.remove();
+        private List<Update> getUpdateList() {
+            List<Update> transferredUpdates = new ArrayList<>();
+            for (Iterator<Update> it = TelegramBotImpl.this.updates.iterator(); it.hasNext(); ) {
+                transferredUpdates.add(it.next());
+                it.remove();
+            }
+            return transferredUpdates;
         }
-        return updates;
     }
 }

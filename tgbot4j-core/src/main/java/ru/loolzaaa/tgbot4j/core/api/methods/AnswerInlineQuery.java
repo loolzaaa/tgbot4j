@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineQueryResult;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineQueryResultsButton;
@@ -26,12 +27,14 @@ public class AnswerInlineQuery implements TelegramMethod<Boolean> {
     /**
      * Unique identifier for the answered query
      */
+    @Required
     @JsonProperty("inline_query_id")
     private String inlineQueryId;
 
     /**
      * A JSON-serialized array of results for the inline query
      */
+    @Required
     @JsonProperty("results")
     private List<InlineQueryResult> results;
 

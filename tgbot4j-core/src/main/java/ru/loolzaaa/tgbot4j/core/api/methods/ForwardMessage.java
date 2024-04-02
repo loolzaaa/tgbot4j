@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -24,6 +25,7 @@ public class ForwardMessage implements TelegramMethod<Message> {
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -38,6 +40,7 @@ public class ForwardMessage implements TelegramMethod<Message> {
      * Unique identifier for the chat where the original message
      * was sent (or channel username in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("from_chat_id")
     private String fromChatId;
 
@@ -58,6 +61,7 @@ public class ForwardMessage implements TelegramMethod<Message> {
     /**
      * Message identifier in the chat specified in from_chat_id
      */
+    @Required
     @JsonProperty("message_id")
     private Integer messageId;
 

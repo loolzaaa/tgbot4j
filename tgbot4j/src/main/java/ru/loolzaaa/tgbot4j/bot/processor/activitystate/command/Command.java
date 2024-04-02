@@ -15,6 +15,16 @@ public interface Command<T> {
      */
     String getIdentifier();
 
+    /**
+     * A command handler that operates on the current state
+     * of the command.
+     *
+     * @param methodSender API method sender for communications
+     * @param message      incoming message
+     * @param arguments    command arguments
+     * @param currentState current command state
+     * @return new command state
+     */
     CommandState<T> processCommand(MethodSender methodSender,
                                    Message message,
                                    String[] arguments,

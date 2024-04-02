@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.ShippingOption;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
@@ -26,6 +27,7 @@ public class AnswerShippingQuery implements TelegramMethod<Boolean> {
     /**
      * Unique identifier for the query to be answered
      */
+    @Required
     @JsonProperty("shipping_query_id")
     private String shippingQueryId;
 
@@ -34,6 +36,7 @@ public class AnswerShippingQuery implements TelegramMethod<Boolean> {
      * and False if there are any problems (for example,
      * if delivery to the specified address is not possible)
      */
+    @Required
     @JsonProperty("ok")
     private Boolean ok;
 

@@ -52,10 +52,36 @@ public class Message implements MaybeInaccessibleMessage {
     private Chat senderChat;
 
     /**
+     * Optional. If the sender of the message boosted the chat,
+     * the number of boosts added by the user
+     */
+    @JsonProperty("sender_boost_count")
+    private Integer senderBoostCount;
+
+    /**
+     * Optional. The bot that actually sent the message
+     * on behalf of the business account.
+     * Available only for outgoing messages sent
+     * on behalf of the connected business account.
+     */
+    @JsonProperty("sender_business_bot")
+    private User senderBusinessBot;
+
+    /**
      * Date the message was sent in Unix time
      */
     @JsonProperty("date")
     private Integer date;
+
+    /**
+     * Optional. Unique identifier of the business connection
+     * from which the message was received. If non-empty,
+     * the message belongs to a chat of the corresponding
+     * business account that is independent from any potential
+     * bot chat which might share the same identifier.
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
 
     /**
      * Conversation the message belongs to
@@ -110,6 +136,12 @@ public class Message implements MaybeInaccessibleMessage {
     private TextQuote quote;
 
     /**
+     * Optional. For replies to a story, the original story
+     */
+    @JsonProperty("reply_to_story")
+    private Story replyToStory;
+
+    /**
      * Optional. Bot through which the message was sent
      */
     @JsonProperty("via_bot")
@@ -126,6 +158,14 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("has_protected_content")
     private Boolean hasProtectedContent;
+
+    /**
+     * Optional. True, if the message was sent by an implicit action,
+     * for example, as an away or a greeting business message,
+     * or as a scheduled message
+     */
+    @JsonProperty("is_from_offline")
+    private Boolean isFromOffline;
 
     /**
      * Optional. The unique identifier of a media message group
@@ -441,6 +481,12 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("proximity_alert_triggered")
     private ProximityAlertTriggered proximityAlertTriggered;
+
+    /**
+     * Optional. Service message: user boosted the chat
+     */
+    @JsonProperty("boost_added")
+    private ChatBoostAdded boostAdded;
 
     /**
      * Optional. Service message: forum topic created

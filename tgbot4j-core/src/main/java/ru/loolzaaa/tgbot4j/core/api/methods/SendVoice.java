@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -35,10 +36,18 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
 @AllArgsConstructor
 public class SendVoice implements TelegramMultipartMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -57,6 +66,7 @@ public class SendVoice implements TelegramMultipartMethod<Message> {
      * from the Internet, or upload a new one using multipart/form-data.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("voice")
     private InputFile voice;
@@ -114,8 +124,9 @@ public class SendVoice implements TelegramMultipartMethod<Message> {
     /**
      * Additional interface options.
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
-     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard
+     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
+     * Not supported for messages sent on behalf of a business account
      */
     @MultipartType(JSON)
     @JsonProperty("reply_markup")

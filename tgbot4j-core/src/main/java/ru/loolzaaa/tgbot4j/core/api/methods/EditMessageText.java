@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.LinkPreviewOptions;
@@ -52,6 +53,7 @@ public class EditMessageText implements TelegramMethod<Object> {
     /**
      * New text of the message, 1-4096 characters after entities parsing
      */
+    @Required
     @JsonProperty("text")
     private String text;
 

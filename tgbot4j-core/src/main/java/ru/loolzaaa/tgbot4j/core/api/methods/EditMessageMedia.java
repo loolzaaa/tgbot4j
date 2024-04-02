@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.InputMedia;
@@ -56,6 +57,7 @@ public class EditMessageMedia implements TelegramMethod<Object> {
      * A JSON-serialized object for a new media
      * content of the message
      */
+    @Required
     @JsonProperty("media")
     private InputMedia media;
 

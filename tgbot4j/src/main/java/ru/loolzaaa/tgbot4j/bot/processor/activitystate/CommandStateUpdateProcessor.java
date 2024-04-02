@@ -26,6 +26,9 @@ import java.util.Objects;
 import static ru.loolzaaa.tgbot4j.bot.processor.activitystate.command.CommandRegistry.*;
 
 /**
+ * Implementation of update processor for work
+ * with command state and user activity.
+ *
  * @apiNote Works only if the button that originated
  * the query was attached to a message sent by the bot
  */
@@ -44,6 +47,15 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
     @Setter
     private int userInactivityMaxTime = 20;
 
+    /**
+     * Constructor creates new command state processor.
+     * <p>
+     * If some argument is null, default implementation is used.
+     *
+     * @param commandRegistry         registry for command storing
+     * @param userActivityHandler     handler for storing user activity
+     * @param commandExceptionHandler handler for command exceptions
+     */
     public CommandStateUpdateProcessor(CommandRegistry commandRegistry,
                                        UserActivityHandler userActivityHandler,
                                        CommandExceptionHandler commandExceptionHandler) {
@@ -53,6 +65,22 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         });
     }
 
+    /**
+     * Incoming message handler for command state processing.
+     * <p>
+     * Process only one of {@link Message} or {@link CallbackQuery}.
+     * <p>
+     * Command can be start only from incoming {@link Message} object.
+     * <p>
+     * Command always should be continued from {@link CallbackQuery} object.
+     * From {@link Message} object command would be continued
+     * only if message not start with command pattern,
+     * else it starts new command process.
+     *
+     * @param update       fresh update from API server
+     * @param methodSender sender for API server communication
+     * @param chain        update processors chain
+     */
     @Override
     public void process(Update update, MethodSender methodSender, UpdateProcessorChain chain) {
         if (log.isTraceEnabled()) {
@@ -98,6 +126,15 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         chain.doProcess(update, methodSender);
     }
 
+    /**
+     * Start new command processing from {@link Message} object.
+     * <p>
+     * Creates and saves new user activity,
+     * execute command with null command state.
+     *
+     * @param methodSender sender for API server communication
+     * @param message      incoming message
+     */
     private void startCommandProcess(MethodSender methodSender, Message message) {
         long userId = message.getFrom().getId();
         UserActivity userActivity = new UserActivity(userId);
@@ -107,6 +144,16 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         log.info("Complete new command for user {} with result state: {}", userId, resultState);
     }
 
+    /**
+     * Continue command processing from {@link Message} object.
+     * <p>
+     * Loads saved user activity, validate it and
+     * execute command with saved command state.
+     * After all, validate new command state.
+     *
+     * @param methodSender sender for API server communication
+     * @param message      incoming message
+     */
     private void continueCommandProcessWithMessage(MethodSender methodSender, Message message) {
         long userId = message.getFrom().getId();
         UserActivity userActivity = userActivityHandler.loadUserActivity(userId);
@@ -116,6 +163,16 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         log.info("Continued command complete for user {} with result state: {}", userId, resultState);
     }
 
+    /**
+     * Continue command processing from {@link Message} object.
+     * <p>
+     * Loads saved user activity, validate it and
+     * execute command with saved command state.
+     * After all, validate new command state.
+     *
+     * @param methodSender  sender for API server communication
+     * @param callbackQuery incoming callback query
+     */
     private void continueCommandProcessWithCallbackQuery(MethodSender methodSender, CallbackQuery callbackQuery) {
         long userId = callbackQuery.getFrom().getId();
         UserActivity userActivity = userActivityHandler.loadUserActivity(userId);
@@ -125,6 +182,23 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         log.info("Continued command complete for user {} with result state: {}", userId, resultState);
     }
 
+    /**
+     * Executing command from {@link Message} object.
+     * <p>
+     * Text of message must not be null and can,
+     * but not must starts with command start character.
+     * <p>
+     * Command start character means start new command,
+     * else continue command with simple message.
+     * <p>
+     * If command not contains in command registry,
+     * method return completed null command.
+     *
+     * @param message      incoming message
+     * @param methodSender sender for API server communication
+     * @param commandState current command state
+     * @return new command state
+     */
     private CommandState<?> executeCommand(Message message, MethodSender methodSender, CommandState<?> commandState) {
         if (message.getText() == null || message.getText().isEmpty()) {
             throw new ProcessCommandException("The message does not contain text to continue the command",
@@ -165,6 +239,19 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         return new CommandState<>(null, null);
     }
 
+    /**
+     * Executing command from {@link CallbackQuery} object.
+     * <p>
+     * Text of message of callback must not be null.
+     * <p>
+     * If command not contains in command registry,
+     * method return completed null command.
+     *
+     * @param callbackQuery incoming callback query
+     * @param methodSender  sender for API server communication
+     * @param commandState  current command state
+     * @return new command state
+     */
     private CommandState<?> executeCommand(CallbackQuery callbackQuery, MethodSender methodSender, CommandState<?> commandState) {
         String callbackQueryId = callbackQuery.getId();
         if (!(callbackQuery.getMessage() instanceof Message message)) {
@@ -193,6 +280,16 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         return new CommandState<>(null, null);
     }
 
+    /**
+     * User activity validation.
+     * <p>
+     * It must not be null and last activity date/time
+     * must not exceed limit.
+     * <p>
+     * If success validation, update last activity value.
+     *
+     * @param userActivity validating user activity
+     */
     private void validateUserActivity(UserActivity userActivity) {
         if (userActivity == null) {
             throw new ProcessCommandException("User activity is null, cannot validate", null, null);
@@ -209,6 +306,21 @@ public class CommandStateUpdateProcessor implements UpdateProcessor {
         userActivity.setLastActivity(now);
     }
 
+    /**
+     * Command state validation.
+     * <p>
+     * It must not be null. If validation fails,
+     * remove user activity from handler.
+     * <p>
+     * If state actually is null, that means finish
+     * command processing, allow remove user activity.
+     * <p>
+     * If state actually some value, need to continue
+     * command processing later, so save user activity.
+     *
+     * @param commandState validating command state
+     * @param userActivity existing user activity
+     */
     private void validateResultState(CommandState<?> commandState, UserActivity userActivity) {
         if (commandState != null) {
             if (commandState.state() != null) {

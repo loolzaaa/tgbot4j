@@ -66,7 +66,7 @@ public class User {
      * Optional. True, if this user added the bot to the attachment menu
      */
     @JsonProperty("added_to_attachment_menu")
-    private String addedToAttachmentMenu;
+    private Boolean addedToAttachmentMenu;
 
     /**
      * Optional. True, if the bot can be invited to groups.
@@ -89,4 +89,12 @@ public class User {
      */
     @JsonProperty("supports_inline_queries")
     private Boolean supportsInlineQueries;
+
+    /**
+     * Optional. True, if the bot can be connected
+     * to a Telegram Business account to receive its messages.
+     * Returned only in {@link GetMe}.
+     */
+    @JsonProperty("can_connect_to_business")
+    private Boolean canConnectToBusiness;
 }

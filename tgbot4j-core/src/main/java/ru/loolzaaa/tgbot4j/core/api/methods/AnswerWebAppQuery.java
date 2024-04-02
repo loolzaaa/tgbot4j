@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineQueryResult;
 import ru.loolzaaa.tgbot4j.core.api.types.SentWebAppMessage;
@@ -26,12 +27,14 @@ public class AnswerWebAppQuery implements TelegramMethod<SentWebAppMessage> {
     /**
      * Unique identifier for the query to be answered
      */
+    @Required
     @JsonProperty("web_app_query_id")
     private String webAppQueryId;
 
     /**
      * A JSON-serialized object describing the message to be sent
      */
+    @Required
     @JsonProperty("result")
     private InlineQueryResult result;
 

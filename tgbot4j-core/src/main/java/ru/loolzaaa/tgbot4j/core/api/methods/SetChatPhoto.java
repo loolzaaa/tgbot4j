@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.*;
+import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.BINARY;
 
 /**
  * Use this method to set a new profile photo for the chat.
@@ -34,12 +35,14 @@ public class SetChatPhoto implements TelegramMultipartMethod<Boolean> {
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
     /**
      * New chat photo, uploaded using multipart/form-data
      */
+    @Required
     @MultipartType(BINARY)
     @JsonProperty("photo")
     private InputFile photo;

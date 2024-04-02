@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
@@ -22,10 +23,18 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 @AllArgsConstructor
 public class SendVenue implements TelegramMethod<Message> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat
      * or username of the target channel
      * (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
@@ -40,24 +49,28 @@ public class SendVenue implements TelegramMethod<Message> {
     /**
      * Latitude of the venue
      */
+    @Required
     @JsonProperty("latitude")
     private Double latitude;
 
     /**
      * Longitude of the venue
      */
+    @Required
     @JsonProperty("longitude")
     private Double longitude;
 
     /**
      * Name of the venue
      */
+    @Required
     @JsonProperty("title")
     private String title;
 
     /**
      * Address of the venue
      */
+    @Required
     @JsonProperty("address")
     private String address;
 
@@ -111,8 +124,9 @@ public class SendVenue implements TelegramMethod<Message> {
     /**
      * Additional interface options.
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
-     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove reply keyboard
+     * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
+     * Not supported for messages sent on behalf of a business account
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;

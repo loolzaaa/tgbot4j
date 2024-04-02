@@ -7,6 +7,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.types.ResponseParameters;
 
+/**
+ * Response API object.
+ * <p>
+ * Always has a Boolean field 'ok' and may have an optional
+ * String field 'description' with a human-readable
+ * description of the result.
+ * <p>
+ * If 'ok' equals True, the request was successful
+ * and the result of the query can be found in the 'result' field.
+ * <p>
+ * In case of an unsuccessful request, 'ok' equals false
+ * and the error is explained in the 'description'.
+ * <p>
+ * An Integer 'error_code' field is also returned,
+ * but its contents are subject to change in the future.
+ * <p>
+ * Some errors may also have an optional field 'parameters'
+ * of the type {@link ResponseParameters}, which can help
+ * to automatically handle the error.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

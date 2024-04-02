@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.UserChatBoosts;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -24,12 +25,14 @@ public class GetUserChatBoosts implements TelegramMethod<UserChatBoosts> {
      * Unique identifier for the chat or username
      * of the channel (in the format {@code @channelusername})
      */
+    @Required
     @JsonProperty("chat_id")
     private String chatId;
 
     /**
      * Unique identifier of the target user
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 

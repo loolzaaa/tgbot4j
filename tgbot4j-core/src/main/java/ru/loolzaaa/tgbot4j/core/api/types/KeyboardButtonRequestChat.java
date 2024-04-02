@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * This object defines the criteria used to request a suitable chat.
- * The identifier of the selected chat will be shared
+ * Information about the selected chat will be shared
  * with the bot when the corresponding button is pressed.
+ * The bot will be granted requested rights in the сhat if appropriate
  * <a href="https://core.telegram.org/bots/features#chat-and-user-selection">More about requesting chats »</a>
  */
 
@@ -77,4 +78,22 @@ public class KeyboardButtonRequestChat {
      */
     @JsonProperty("bot_is_member")
     private Boolean botIsMember;
+
+    /**
+     * Optional. Pass True to request the chat's title
+     */
+    @JsonProperty("request_title")
+    private Boolean requestTitle;
+
+    /**
+     * Optional. Pass True to request the chat's username
+     */
+    @JsonProperty("request_username")
+    private Boolean requestUsername;
+
+    /**
+     * Optional. Pass True to request the chat's photo
+     */
+    @JsonProperty("request_photo")
+    private Boolean requestPhoto;
 }

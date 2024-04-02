@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Game;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardButton;
@@ -32,6 +33,7 @@ public class AnswerCallbackQuery implements TelegramMethod<Boolean> {
     /**
      * 	Unique identifier for the query to be answered
      */
+    @Required
     @JsonProperty("callback_query_id")
     private String callbackQueryId;
 

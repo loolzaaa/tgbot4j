@@ -28,15 +28,20 @@ public class ReplyParameters {
      * Optional. If the message to be replied to is
      * from a different chat, unique identifier
      * for the chat or username of the channel
-     * (in the format {@code @channelusername})
+     * (in the format {@code @channelusername}).
+     * Not supported for messages sent on behalf
+     * of a business account.
      */
     @JsonProperty("chat_id")
     private String chatId;
 
     /**
      * Optional. Pass True if the message should be sent
-     * even if the specified message to be replied to is not found;
-     * can be used only for replies in the same chat and forum topic.
+     * even if the specified message to be replied to is not found.
+     * Always <em>False</em> for replies in another chat
+     * or forum topic.
+     * Always <em>True</em> for messages sent
+     * on behalf of a business account.
      */
     @JsonProperty("allow_sending_without_reply")
     private Boolean allowSendingWithoutReply;

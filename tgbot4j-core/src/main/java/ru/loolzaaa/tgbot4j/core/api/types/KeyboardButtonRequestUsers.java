@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * This object defines the criteria used to request a suitable user.
- * The identifier of the selected user will be shared with the bot
+ * Information about the selected user will be shared with the bot
  * when the corresponding button is pressed.
  * <a href="https://core.telegram.org/bots/features#chat-and-user-selection">More about requesting users »</a>
  */
@@ -46,4 +46,22 @@ public class KeyboardButtonRequestUsers {
      */
     @JsonProperty("max_quantity")
     private Integer maxQuantity;
+
+    /**
+     * Optional. Pass True to request the users' first and last name
+     */
+    @JsonProperty("request_name")
+    private Boolean requestName;
+
+    /**
+     * Optional. Pass True to request the users' username
+     */
+    @JsonProperty("request_username")
+    private Boolean requestUsername;
+
+    /**
+     * Optional. Pass True to request the users' photo
+     */
+    @JsonProperty("request_photo")
+    private Boolean requestPhoto;
 }

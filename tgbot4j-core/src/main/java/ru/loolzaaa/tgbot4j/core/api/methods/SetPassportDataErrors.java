@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.PassportElementError;
 
@@ -34,12 +35,14 @@ public class SetPassportDataErrors implements TelegramMethod<Boolean> {
     /**
      * User identifier
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 
     /**
      * A JSON-serialized array describing the errors
      */
+    @Required
     @JsonProperty("errors")
     private List<PassportElementError> errors;
 

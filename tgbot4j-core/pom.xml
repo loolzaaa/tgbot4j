@@ -8,7 +8,7 @@
     <parent>
         <groupId>ru.loolzaaa.tgbot4j</groupId>
         <artifactId>tgbot4j-parent</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
     </parent>
 
     <artifactId>tgbot4j-core</artifactId>
@@ -32,13 +32,19 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.17.2</version>
+        </dependency>
     </dependencies>
 
     <profiles>
         <profile>
             <id>api-specification-check</id>
             <build>
-                <finalName>api-specification-check2</finalName>
+                <finalName>api-specification-check</finalName>
                 <plugins>
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
@@ -27,12 +28,14 @@ public class SetGameScore implements TelegramMethod<Object> {
     /**
      * User identifier
      */
+    @Required
     @JsonProperty("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * New score, must be non-negative
      */
+    @Required
     @JsonProperty("score")
     private Integer score;
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.GameHighScore;
 
@@ -31,6 +32,7 @@ public class GetGameHighScores implements TelegramMethod<List<GameHighScore>> {
     /**
      * Target user id
      */
+    @Required
     @JsonProperty("user_id")
     private Long userId;
 
@@ -39,7 +41,7 @@ public class GetGameHighScores implements TelegramMethod<List<GameHighScore>> {
      * Unique identifier for the target chat
      */
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Required if inline_message_id is not specified.

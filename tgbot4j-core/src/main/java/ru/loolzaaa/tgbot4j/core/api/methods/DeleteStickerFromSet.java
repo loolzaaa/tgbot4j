@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 
 /**
@@ -21,6 +22,7 @@ public class DeleteStickerFromSet implements TelegramMethod<Boolean> {
     /**
      * File identifier of the sticker
      */
+    @Required
     @JsonProperty("sticker")
     private String sticker;
 

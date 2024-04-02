@@ -24,6 +24,13 @@ import java.util.concurrent.Executor;
 
 import static ru.loolzaaa.tgbot4j.core.Constants.*;
 
+/**
+ * Webhook implementation of update receiver.
+ * <p>
+ * Allows set custom set webhook API object
+ * and customize receiver options.
+ */
+
 public final class WebhookUpdateReceiver implements UpdateReceiver {
 
     private static final Logger log = LoggerFactory.getLogger(WebhookUpdateReceiver.class);
@@ -39,6 +46,18 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
 
     private HttpServer server;
 
+    /**
+     * Constructor creates new webhook update receiver.
+     * <p>
+     * If receiver options is null, creates default.
+     * <p>
+     * Also, prepare some sanitizing for context path.
+     *
+     * @param botName    bot token
+     * @param botToken   bot name
+     * @param setWebhook set webhook API object
+     * @param options    update receiver options
+     */
     public WebhookUpdateReceiver(@NonNull String botName,
                                  @NonNull String botToken,
                                  SetWebhook setWebhook,
@@ -53,6 +72,25 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         sanitizeContextPath();
     }
 
+    /**
+     * Start receiving updates with webhook.
+     * <p>
+     * There is no way to run two or more instances
+     * of same update receiver.
+     * <p>
+     * If set webhook defined for bot, send it and check result.
+     * if set webhook not defined, check already existing webhook,
+     * else throw exception if there is not existing webhook.
+     * <p>
+     * Receive updates in standard JDK http server
+     * with customizable options as well
+     * as custom server instance.
+     * <p>
+     * Also, check server port for webhook
+     * if default server instance.
+     *
+     * @param updates queue for fresh updates
+     */
     @Override
     public void start(ConcurrentLinkedDeque<Update> updates) {
         if (isRunning) {
@@ -60,7 +98,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         }
 
         if (setWebhook != null) {
-            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook);
+            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook, null);
             if (setWebhookResult) {
                 log.info("Webhook for {} successfully set", botName);
             } else {
@@ -68,7 +106,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
                 throw new IllegalStateException("Cannot set webhook for " + botName);
             }
         } else {
-            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken);
+            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, null);
             if (webhookInfo.getUrl() == null || webhookInfo.getUrl().isEmpty()) {
                 throw new IllegalStateException("You need to set webhook before start webhook receiver");
             } else {
@@ -100,10 +138,17 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         log.info("{} webhook receiver started with next options: {}", botName, options);
     }
 
+    /**
+     * Stop receiving updates with webhook.
+     * <p>
+     * If already stops, do nothing.
+     * <p>
+     * Shutdown server and set run flag to false.
+     */
     @Override
     public void stop() {
         if (!isRunning) {
-            log.info(botName + " receiver not started or already stopped");
+            log.info("{} receiver not started or already stopped", botName);
             return;
         }
 
@@ -115,6 +160,11 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         log.info("{} webhook receiver stopped", botName);
     }
 
+    /**
+     * Get current run status of update receiver.
+     *
+     * @return current run status
+     */
     @Override
     public boolean isRunning() {
         return isRunning;
@@ -135,6 +185,17 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         options.botPath = contextPath;
     }
 
+    /**
+     * Webhook update receiver options.
+     *
+     * <ul>
+     *     <li>server - custom http server instance</li>
+     *     <li>serverPort - custom http server port for webhook</li>
+     *     <li>botPath - bot mapping context path for incoming request</li>
+     *     <li>executor - custom executor for server request processing</li>
+     *     <li>secretToken - token for incoming webhook request</li>
+     * </ul>
+     */
     @Getter
     @Setter
     @ToString
@@ -146,6 +207,9 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         private String secretToken = null;
     }
 
+    /**
+     * Update handler for incoming updates.
+     */
     @RequiredArgsConstructor
     private class UpdateHandler implements HttpHandler {
 
@@ -154,6 +218,21 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
 
         private final ConcurrentLinkedDeque<Update> receivedUpdates;
 
+        /**
+         * Handler incoming request with new update.
+         * <p>
+         * Allows only POST request methods,
+         * check secret token header if needed,
+         * deserialize request and notify bot to handle its.
+         * <p>
+         * If secret token check fails, answer 401.
+         * <p>
+         * If all ok, answer with empty body.
+         *
+         * @param exchange the exchange containing the request from the
+         *                 client and used to send the response
+         * @throws IOException if request/response error
+         */
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             int responseCode = HTTP_CODE_OK;
