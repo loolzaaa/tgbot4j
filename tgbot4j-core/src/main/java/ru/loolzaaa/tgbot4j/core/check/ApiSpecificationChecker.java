@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -31,11 +32,14 @@ import static java.lang.String.format;
 public class ApiSpecificationChecker {
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
-        String typesPackageName = "ru.loolzaaa.tgbot4j.core.api.types";
-        String methodsPackageName = "ru.loolzaaa.tgbot4j.core.api.methods";
-        String typeScanPath = ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api/types").getPath();
-        String methodScanPath = ApiSpecificationChecker.class.getResource("/ru/loolzaaa/tgbot4j/core/api/methods").getPath();
-        String filesPath = "./tgbot4j-core/src/main/java/ru/loolzaaa/tgbot4j/core/api";
+        final String filesPath = "./tgbot4j-core/src/main/java/ru/loolzaaa/tgbot4j/core/api";
+        final String apiPackageName = "ru.loolzaaa.tgbot4j.core.api";
+        final String typesPackageName = apiPackageName + ".types";
+        final String methodsPackageName = apiPackageName + ".methods";
+        final String typeScanPath = Objects.requireNonNull(
+                ApiSpecificationChecker.class.getResource("/" + typesPackageName.replaceAll("\\.", "/"))).getPath();
+        final String methodScanPath = Objects.requireNonNull(
+                ApiSpecificationChecker.class.getResource("/" + methodsPackageName.replaceAll("\\.", "/"))).getPath();
 
         ApiSpecificationChecker apiSpecificationChecker = new ApiSpecificationChecker();
         apiSpecificationChecker.checkAllClassesShouldHaveDataAndConstructorsAnnotations(filesPath);
@@ -61,12 +65,14 @@ public class ApiSpecificationChecker {
      * @throws IOException if file I/O errors
      */
     public void checkAllClassesShouldHaveDataAndConstructorsAnnotations(String filesPath) throws IOException {
-        List<Path> types = Files.walk(Paths.get(filesPath + "/types"))
-                .filter(Files::isRegularFile)
-                .toList();
-        List<Path> methods = Files.walk(Paths.get(filesPath + "/methods"))
-                .filter(Files::isRegularFile)
-                .toList();
+        List<Path> types;
+        try (Stream<Path> typesStream = Files.walk(Paths.get(filesPath + "/types"))) {
+            types = typesStream.filter(Files::isRegularFile).toList();
+        }
+        List<Path> methods;
+        try (Stream<Path> methodsStream = Files.walk(Paths.get(filesPath + "/methods"))) {
+            methods = methodsStream.filter(Files::isRegularFile).toList();
+        }
         List<Path> files = new ArrayList<>(types);
         files.addAll(methods);
         List<String> invalidClasses = new ArrayList<>();
@@ -291,6 +297,17 @@ public class ApiSpecificationChecker {
         invalidPropertyValues.forEach(s -> System.out.println("- " + s));
     }
 
+    /**
+     * This check shows those classes that are marked
+     * with an {@link IgnoreCheck} annotation.
+     * <p>
+     * Scan type supported for API objects and methods separately.
+     *
+     * @param packageName name of package for class scanning
+     * @param scanPath    common path contains package for scanning
+     * @param scanType    type of class scanning
+     * @throws ClassNotFoundException if class not found
+     */
     public void showAllClassesWithIgnoredCheckAnnotation(String packageName, String scanPath, String scanType) throws ClassNotFoundException {
         List<String> ignoredClasses = new ArrayList<>();
         for (Class<?> clazz : getAllClassesFromApiPackage(packageName, scanPath)) {
@@ -337,6 +354,10 @@ public class ApiSpecificationChecker {
         } else return lowerType;
     }
 
+    /**
+     * POJO represents API object from documentation
+     */
+
     @ToString
     @AllArgsConstructor
     static class ApiObject implements ApiEntity {
@@ -357,6 +378,10 @@ public class ApiSpecificationChecker {
             apiEntityMap.putIfAbsent(field, new ApiObject(field, type, description));
         }
     }
+
+    /**
+     * POJO represents API method from documentation
+     */
 
     @ToString
     @AllArgsConstructor
@@ -385,6 +410,12 @@ public class ApiSpecificationChecker {
             apiEntityMap.putIfAbsent(parameter, new ApiMethod(parameter, type, required, description));
         }
     }
+
+    /**
+     * Common interface for API object/method from documentation.
+     * <p>
+     * Internal use only.
+     */
 
     public interface ApiEntity {
         String getType();
