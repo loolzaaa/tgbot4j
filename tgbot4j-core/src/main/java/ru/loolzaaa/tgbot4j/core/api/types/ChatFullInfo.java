@@ -68,6 +68,14 @@ public class ChatFullInfo {
     private Boolean isForum;
 
     /**
+     * Identifier of the accent color for the chat name
+     * and backgrounds of the chat photo, reply header,
+     * and link preview. See <a href="https://core.telegram.org/bots/api#accent-colors">accent colors</a> for more details.
+     */
+    @JsonProperty("accent_color_id")
+    private Integer accent_color_id;
+
+    /**
      * The maximum number of reactions that can be set
      * on a message in the chat
      */
@@ -275,6 +283,14 @@ public class ChatFullInfo {
      */
     @JsonProperty("permissions")
     private ChatPermissions permissions;
+
+    /**
+     * Optional. True, if paid media messages can be sent
+     * or forwarded to the channel chat.
+     * The field is available only for channel chats.
+     */
+    @JsonProperty("can_send_paid_media")
+    private Boolean canSendPaidMedia;
 
     /**
      * Optional. For supergroups, the minimum allowed delay
