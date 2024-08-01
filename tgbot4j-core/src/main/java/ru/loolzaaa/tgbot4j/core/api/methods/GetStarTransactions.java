@@ -39,10 +39,8 @@ public class GetStarTransactions implements TelegramMethod<StarTransactions> {
 
     @Override
     public void validate() {
-        if (limit != null) {
-            if (limit < 1 || limit > 100) {
-                throw new ApiValidationException("Limit parameter must be in 1..100 is specified", this);
-            }
+        if (limit != null && (limit < 1 || limit > 100)) {
+            throw new ApiValidationException("Limit parameter must be in 1..100 is specified", this);
         }
     }
 }
