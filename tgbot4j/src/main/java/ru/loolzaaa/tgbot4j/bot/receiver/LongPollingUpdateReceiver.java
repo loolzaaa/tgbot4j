@@ -177,7 +177,7 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
         private int connectTimeout = 30 * 1000;
         private int requestTimeout = 30 * 1000;
         private int maxThreads = 1;
-        private int updateTimeout = 50;
+        private int updateTimeout = 20;
         private int updateLimit = 100;
         private List<String> updateAllowedUpdates;
     }
