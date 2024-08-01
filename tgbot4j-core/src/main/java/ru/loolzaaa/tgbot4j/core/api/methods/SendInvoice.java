@@ -65,7 +65,6 @@ public class SendInvoice implements TelegramMethod<Message> {
     /**
      * Payment provider token, obtained via @BotFather
      */
-    @Required
     @JsonProperty("provider_token")
     private String providerToken;
 

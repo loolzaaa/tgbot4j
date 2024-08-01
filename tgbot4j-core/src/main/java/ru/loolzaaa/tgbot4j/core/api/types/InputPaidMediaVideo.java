@@ -67,5 +67,5 @@ public class InputPaidMediaVideo implements InputPaidMedia {
      * is suitable for streaming
      */
     @JsonProperty("supports_streaming")
-    private Integer supportsStreaming;
+    private Boolean supportsStreaming;
 }

@@ -47,7 +47,6 @@ public class CreateInvoiceLink implements TelegramMethod<String> {
     /**
      * Payment provider token, obtained via @BotFather
      */
-    @Required
     @JsonProperty("provider_token")
     private String providerToken;
 

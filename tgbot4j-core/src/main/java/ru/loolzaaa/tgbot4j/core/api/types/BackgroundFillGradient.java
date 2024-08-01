@@ -35,6 +35,6 @@ public class BackgroundFillGradient implements BackgroundFill {
      * Clockwise rotation angle of the background fill
      * in degrees; 0-359
      */
-    @JsonProperty("rotation_angle\t")
+    @JsonProperty("rotation_angle")
     private Integer rotationAngle;
 }

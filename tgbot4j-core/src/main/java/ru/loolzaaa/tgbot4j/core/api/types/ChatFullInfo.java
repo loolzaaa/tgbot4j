@@ -73,7 +73,7 @@ public class ChatFullInfo {
      * and link preview. See <a href="https://core.telegram.org/bots/api#accent-colors">accent colors</a> for more details.
      */
     @JsonProperty("accent_color_id")
-    private Integer accent_color_id;
+    private Integer accentColorId;
 
     /**
      * The maximum number of reactions that can be set
