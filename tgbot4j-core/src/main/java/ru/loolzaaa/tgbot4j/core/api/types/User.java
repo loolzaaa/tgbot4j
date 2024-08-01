@@ -97,4 +97,11 @@ public class User {
      */
     @JsonProperty("can_connect_to_business")
     private Boolean canConnectToBusiness;
+
+    /**
+     * Optional. True, if the bot has a main Web App.
+     * Returned only in {@link GetMe}.
+     */
+    @JsonProperty("has_main_web_app")
+    private Boolean hasMainWebApp;
 }

@@ -22,12 +22,23 @@ import java.util.List;
  * On success, if the edited message is not an inline message,
  * the edited {@link ru.loolzaaa.tgbot4j.core.api.types.Message} is returned,
  * otherwise True is returned.
+ * <p>
+ * Note that business messages that were not sent by the bot
+ * and do not contain an inline keyboard can only be edited
+ * within <b>48 hours</b> from the time they were sent.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EditMessageText implements TelegramMethod<Object> {
+    /**
+     * Unique identifier of the business connection on behalf
+     * of which the message to be edited was sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
     /**
      * Required if inline_message_id is not specified.
      * Unique identifier for the target chat or username
@@ -88,7 +99,7 @@ public class EditMessageText implements TelegramMethod<Object> {
     public Object determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
         if (resultNode instanceof ObjectNode) {
             return deserializeObjectResponse(mapper, resultNode, Message.class);
-        } else if (resultNode instanceof BooleanNode){
+        } else if (resultNode instanceof BooleanNode) {
             return deserializeObjectResponse(mapper, resultNode, Boolean.class);
         }
         return null;

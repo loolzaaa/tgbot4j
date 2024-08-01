@@ -8,10 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.MessageEntity;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 import java.util.List;
@@ -57,12 +54,27 @@ public class SendPoll implements TelegramMethod<Message> {
     private String question;
 
     /**
-     * A JSON-serialized list of answer options,
-     * 2-10 strings 1-100 characters each
+     * Mode for parsing entities in the question.
+     * See <a href="https://core.telegram.org/bots/api#formatting-options">formatting options</a> for more details.
+     * Currently, only custom emoji entities are allowed
+     */
+    @JsonProperty("question_parse_mode")
+    private String questionParseMode;
+
+    /**
+     *  A JSON-serialized list of special entities that appear
+     *  in the poll question. It can be specified instead
+     *  of question_parse_mode
+     */
+    @JsonProperty("question_entities")
+    private List<MessageEntity> questionEntities;
+
+    /**
+     * A JSON-serialized list of 2-10 answer options
      */
     @Required
     @JsonProperty("options")
-    private List<String> options;
+    private List<InputPollOption> options;
 
     /**
      * True, if the poll needs to be anonymous, defaults to True
@@ -107,8 +119,8 @@ public class SendPoll implements TelegramMethod<Message> {
 
     /**
      * A JSON-serialized list of special entities
-     * that appear in the poll explanation,
-     * which can be specified instead of parse_mode
+     * that appear in the poll explanation.
+     * It can be specified instead of explanation_parse_mode
      */
     @JsonProperty("explanation_entities")
     private List<MessageEntity> explanationEntities;
@@ -151,6 +163,13 @@ public class SendPoll implements TelegramMethod<Message> {
     private Boolean protectContent;
 
     /**
+     * Unique identifier of the message effect to be added
+     * to the message; for private chats only
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
+
+    /**
      * Description of the message to reply to
      */
     @JsonProperty("reply_parameters")
@@ -161,7 +180,6 @@ public class SendPoll implements TelegramMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
-     * Not supported for messages sent on behalf of a business account
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;
@@ -187,9 +205,6 @@ public class SendPoll implements TelegramMethod<Message> {
         }
         if (options.size() < 2 || options.size() > 10) {
             throw new ApiValidationException("Options size parameter must be in 2..10 range", this);
-        }
-        if (options.stream().allMatch(option -> !option.isEmpty() && option.length() <= 100)) {
-            throw new ApiValidationException("Every options length must be in 1..100 range", this);
         }
         if (closeDate != null && openPeriod != null) {
             throw new ApiValidationException("Only one parameter allowed: closeDate, openPeriod", this);

@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * No description
+ * Contains information about the start page settings
+ * of a Telegram Business account.
  */
 
 @Data

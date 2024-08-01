@@ -8,20 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.Chat;
+import ru.loolzaaa.tgbot4j.core.api.types.ChatFullInfo;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to get up to date information
- * about the chat (current name of the user for one-on-one conversations,
- * current username of a user, group or channel, etc.).
- * Returns a {@link Chat} object on success.
+ * Use this method to get up-to-date information
+ * about the chat.
+ * Returns a {@link ChatFullInfo} object on success.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetChat implements TelegramMethod<Chat> {
+public class GetChat implements TelegramMethod<ChatFullInfo> {
     /**
      * Unique identifier for the target chat or username
      * of the target supergroup or channel (in the format {@code @channelusername})
@@ -31,8 +30,8 @@ public class GetChat implements TelegramMethod<Chat> {
     private String chatId;
 
     @Override
-    public Chat determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
-        return deserializeObjectResponse(mapper, resultNode, Chat.class);
+    public ChatFullInfo determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
+        return deserializeObjectResponse(mapper, resultNode, ChatFullInfo.class);
     }
 
     @Override

@@ -206,6 +206,13 @@ public class Message implements MaybeInaccessibleMessage {
     private LinkPreviewOptions linkPreviewOptions;
 
     /**
+     * Optional. Unique identifier of the message effect
+     * added to the message
+     */
+    @JsonProperty("effect_id")
+    private String effectId;
+
+    /**
      * Optional. Message is an animation, information about the animation.
      * For backward compatibility, when this field is set,
      * the document field will also be set
@@ -224,6 +231,13 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("document")
     private Document document;
+
+    /**
+     * Optional. Message contains paid media;
+     * information about the paid media
+     */
+    @JsonProperty("paid_media")
+    private PaidMediaInfo paidMedia;
 
     /**
      * Optional. Message is a photo, available sizes of the photo
@@ -264,7 +278,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Caption for the animation, audio, document,
-     * photo, video or voice
+     * paid media, photo, video or voice
      */
     @JsonProperty("caption")
     private String caption;
@@ -275,6 +289,12 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("caption_entities")
     private List<MessageEntity> captionEntities;
+
+    /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
 
     /**
      * Optional. True, if the message media is covered by a spoiler animation
@@ -439,6 +459,14 @@ public class Message implements MaybeInaccessibleMessage {
     private SuccessfulPayment successfulPayment;
 
     /**
+     * Optional. Message is a service message about a refunded payment,
+     * information about the payment.
+     * <a href="https://core.telegram.org/bots/api#payments">More about payments »</a>
+     */
+    @JsonProperty("refunded_payment")
+    private RefundedPayment refundedPayment;
+
+    /**
      * Optional. Service message: a user was shared with the bot
      */
     @JsonProperty("users_shared")
@@ -487,6 +515,12 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("boost_added")
     private ChatBoostAdded boostAdded;
+
+    /**
+     * Optional. Service message: chat background set
+     */
+    @JsonProperty("chat_background_set")
+    private ChatBackground chatBackgroundSet;
 
     /**
      * Optional. Service message: forum topic created

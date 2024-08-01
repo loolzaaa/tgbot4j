@@ -48,10 +48,10 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
      * must be up to 128 kilobytes in size and have a width
      * and height of exactly 100px, or a <b>.TGS</b> animation
      * with a thumbnail up to 32 kilobytes in size
-     * (see <a href="https://core.telegram.org/stickers#animated-sticker-requirements">https://core.telegram.org/stickers#animated-sticker-requirements</a>
+     * (see <a href="https://core.telegram.org/stickers#animation-requirements">https://core.telegram.org/stickers#animation-requirements</a>
      * for animated sticker technical requirements),
      * or a <b>WEBM</b> video with the thumbnail up to 32 kilobytes in size;
-     * see <a href="https://core.telegram.org/stickers#video-sticker-requirements">https://core.telegram.org/stickers#video-sticker-requirements</a>
+     * see <a href="https://core.telegram.org/stickers#video-requirements">https://core.telegram.org/stickers#video-requirements</a>
      * for video sticker technical requirements.
      * Pass a file_id as a String to send a file that already exists
      * on the Telegram servers, pass an HTTP URL as a String

@@ -66,7 +66,7 @@ public class Update {
     private BusinessConnection businessConnection;
 
     /**
-     * Optional. New non-service message from a connected
+     * Optional. New message from a connected
      * business account
      */
     @JsonProperty("business_message")

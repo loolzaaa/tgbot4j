@@ -22,6 +22,13 @@ import ru.loolzaaa.tgbot4j.core.api.types.Poll;
 @AllArgsConstructor
 public class StopPoll implements TelegramMethod<Poll> {
     /**
+     * Unique identifier of the business connection on behalf
+     * of which the message to be edited was sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
      */

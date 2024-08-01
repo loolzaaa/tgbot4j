@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * No description
+ * Describes an interval of time during which a business is open.
  */
 
 @Data
@@ -17,7 +17,7 @@ public class BusinessOpeningHoursInterval {
      * The minute's sequence number in a week,
      * starting on Monday, marking the start
      * of the time interval during which the business
-     * is open; 0 - 7 24 60
+     * is open; 0 - 7 * 24 * 60
      */
     @JsonProperty("opening_minute")
     private Integer openingMinute;
@@ -26,7 +26,7 @@ public class BusinessOpeningHoursInterval {
      * The minute's sequence number in a week,
      * starting on Monday, marking the end
      * of the time interval during which the business
-     * is open; 0 - 8 24 60
+     * is open; 0 - 8 * 24 * 60
      */
     @JsonProperty("closing_minute")
     private Integer closingMinute;

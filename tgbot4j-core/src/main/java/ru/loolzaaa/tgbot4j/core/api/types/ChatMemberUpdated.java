@@ -51,6 +51,14 @@ public class ChatMemberUpdated {
     private ChatInviteLink inviteLink;
 
     /**
+     * Optional. True, if the user joined the chat after sending
+     * a direct join request without using an invite link
+     * and being approved by an administrator
+     */
+    @JsonProperty("via_join_request")
+    private Boolean viaJoinRequest;
+
+    /**
      * Optional. True, if the user joined the chat via a chat folder invite link
      */
     @JsonProperty("via_chat_folder_invite_link")

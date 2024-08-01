@@ -27,6 +27,13 @@ import ru.loolzaaa.tgbot4j.core.api.types.Message;
 @AllArgsConstructor
 public class EditMessageLiveLocation implements TelegramMethod<Object> {
     /**
+     * Unique identifier of the business connection on behalf
+     * of which the message to be edited was sent
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Required if inline_message_id is not specified.
      * Unique identifier for the target chat or username
      * of the target channel (in the format {@code @channelusername})
@@ -61,6 +68,18 @@ public class EditMessageLiveLocation implements TelegramMethod<Object> {
     @Required
     @JsonProperty("longitude")
     private Double longitude;
+
+    /**
+     * New period in seconds during which the location can be updated,
+     * starting from the message send date. If 0x7FFFFFFF is specified,
+     * then the location can be updated forever.
+     * Otherwise, the new value must not exceed the current live_period
+     * by more than a day, and the live location expiration date
+     * must remain within the next 90 days.
+     * If not specified, then live_period remains unchanged
+     */
+    @JsonProperty("live_period")
+    private Integer livePeriod;
 
     /**
      * The radius of uncertainty for the location,

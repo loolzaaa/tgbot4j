@@ -98,6 +98,12 @@ public class InlineQueryResultGif implements InlineQueryResult {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Optional. Pass True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Optional. <a href="https://core.telegram.org/bots/features#inline-keyboards">Inline keyboard</a> attached to the message
      */
     @JsonProperty("reply_markup")

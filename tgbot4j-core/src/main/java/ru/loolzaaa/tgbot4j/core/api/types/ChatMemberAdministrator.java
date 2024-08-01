@@ -118,7 +118,8 @@ public class ChatMemberAdministrator implements ChatMember {
 
     /**
      * Optional. True, if the administrator can edit stories
-     * posted by other users; channels only
+     * posted by other users, post stories to the chat page,
+     * pin chat stories, and access the chat's story archive; channels only
      */
     @JsonProperty("can_edit_stories")
     private Boolean canEditStories;

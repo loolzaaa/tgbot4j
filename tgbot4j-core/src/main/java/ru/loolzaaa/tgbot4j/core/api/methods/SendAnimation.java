@@ -127,6 +127,12 @@ public class SendAnimation implements TelegramMultipartMethod<Message> {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Pass True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Pass True if the video needs to be covered
      * with a spoiler animation
      */
@@ -148,6 +154,13 @@ public class SendAnimation implements TelegramMultipartMethod<Message> {
     private Boolean protectContent;
 
     /**
+     * Unique identifier of the message effect to be added
+     * to the message; for private chats only
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
+
+    /**
      * Description of the message to reply to
      */
     @MultipartType(JSON)
@@ -159,7 +172,6 @@ public class SendAnimation implements TelegramMultipartMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
-     * Not supported for messages sent on behalf of a business account
      */
     @MultipartType(JSON)
     @JsonProperty("reply_markup")

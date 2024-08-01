@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Location {
     /**
-     * Longitude as defined by sender
+     * Longitude as defined by the sender
      */
     @JsonProperty("longitude")
     private Double longitude;
 
     /**
-     * Latitude as defined by sender
+     * Latitude as defined by the sender
      */
     @JsonProperty("latitude")
     private Double latitude;

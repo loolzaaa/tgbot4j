@@ -32,7 +32,8 @@ public class Invoice {
     private String startParameter;
 
     /**
-     * Three-letter ISO 4217 <a href="https://core.telegram.org/bots/payments#supported-currencies">currency code</a>
+     * Three-letter ISO 4217 <a href="https://core.telegram.org/bots/payments#supported-currencies">currency code</a>,
+     * or “XTR” for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>
      */
     @JsonProperty("currency")
     private String currency;

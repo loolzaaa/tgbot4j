@@ -29,13 +29,14 @@ public class VideoNote {
     private String fileUniqueId;
 
     /**
-     * Video width and height (diameter of the video message) as defined by sender
+     * Video width and height (diameter of the video message)
+     * as defined by the sender
      */
     @JsonProperty("length")
     private Integer length;
 
     /**
-     * Duration of the video in seconds as defined by sender
+     * Duration of the video in seconds as defined by the sender
      */
     @JsonProperty("duration")
     private Integer duration;

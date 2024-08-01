@@ -66,6 +66,13 @@ public class ExternalReplyInfo {
     private Document document;
 
     /**
+     * Optional. Message contains paid media;
+     * information about the paid media
+     */
+    @JsonProperty("paid_media")
+    private PaidMediaInfo paidMedia;
+
+    /**
      * Optional. Message is a photo,
      * available sizes of the photo
      */

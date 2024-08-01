@@ -23,6 +23,13 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 @AllArgsConstructor
 public class UnpinChatMessage implements TelegramMethod<Boolean> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the message will be unpinned
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Unique identifier for the target group or username
      * of the target supergroup or channel (in the format {@code @channelusername})
      */
@@ -31,7 +38,8 @@ public class UnpinChatMessage implements TelegramMethod<Boolean> {
     private String chatId;
 
     /**
-     * Identifier of a message to unpin.
+     * Identifier of the message to unpin.
+     * Required if <i>business_connection_id</i> is specified.
      * If not specified, the most recent pinned message
      * (by sending date) will be unpinned.
      */

@@ -15,6 +15,8 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
  * An exception is made for one-time keyboards
  * that are hidden immediately after the user presses
  * a button (see {@link ReplyKeyboardMarkup}).
+ * Not supported in channels and for messages sent
+ * on behalf of a Telegram Business account.
  */
 
 @Data

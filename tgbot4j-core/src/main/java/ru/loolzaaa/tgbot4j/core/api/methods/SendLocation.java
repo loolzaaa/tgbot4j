@@ -68,9 +68,10 @@ public class SendLocation implements TelegramMethod<Message> {
     private Double horizontalAccuracy;
 
     /**
-     * Period in seconds for which the location
+     * Period in seconds during which the location
      * will be updated (see <a href="https://telegram.org/blog/live-locations">Live Locations</a>,
-     * should be between 60 and 86400.
+     * should be between 60 and 86400, or 0x7FFFFFFF for live locations
+     * that can be edited indefinitely.
      */
     @JsonProperty("live_period")
     private Integer livePeriod;
@@ -105,6 +106,13 @@ public class SendLocation implements TelegramMethod<Message> {
     private Boolean protectContent;
 
     /**
+     * Unique identifier of the message effect to be added
+     * to the message; for private chats only
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
+
+    /**
      * Description of the message to reply to
      */
     @JsonProperty("reply_parameters")
@@ -115,7 +123,6 @@ public class SendLocation implements TelegramMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
-     * Not supported for messages sent on behalf of a business account
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;

@@ -15,7 +15,8 @@ import java.util.List;
 
 /**
  * Use this method to copy messages of any kind.
- * Service messages and invoice messages can't be copied.
+ * Service messages, paid media messages, giveaway messages,
+ * giveaway winners messages, and invoice messages can't be copied.
  * A quiz {@link Poll} can be copied only if the value of the field
  * correct_option_id is known to the bot.
  * The method is analogous to the method {@link ForwardMessage},
@@ -79,6 +80,13 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Pass True, if the caption must be shown above the message media.
+     * Ignored if a new caption isn't specified.
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>.
      * Users will receive a notification with no sound.
      */
@@ -101,7 +109,7 @@ public class CopyMessage implements TelegramMethod<MessageId> {
      * Additional interface options.
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>,
-     * instructions to remove reply keyboard or to force a reply from the user.
+     * instructions to remove a reply keyboard or to force a reply from the user
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;

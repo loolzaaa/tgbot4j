@@ -83,6 +83,12 @@ public class InlineQueryResultVideo implements InlineQueryResult {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Optional. Pass True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Optional. Video width
      */
     @JsonProperty("video_width")
