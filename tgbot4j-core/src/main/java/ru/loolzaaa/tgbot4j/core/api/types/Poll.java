@@ -28,6 +28,13 @@ public class Poll {
     private String question;
 
     /**
+     * Optional. Special entities that appear in the question.
+     * Currently, only custom emoji entities are allowed in poll questions
+     */
+    @JsonProperty("question_entities")
+    private List<MessageEntity> questionEntities;
+
+    /**
      * List of poll options
      */
     @JsonProperty("options")

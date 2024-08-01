@@ -489,6 +489,12 @@ public class Message implements MaybeInaccessibleMessage {
     private ChatBoostAdded boostAdded;
 
     /**
+     * Optional. Service message: chat background set
+     */
+    @JsonProperty("chat_background_set")
+    private ChatBackground chatBackgroundSet;
+
+    /**
      * Optional. Service message: forum topic created
      */
     @JsonProperty("forum_topic_created")
