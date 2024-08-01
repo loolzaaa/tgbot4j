@@ -10,7 +10,8 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * This object represents one button of an inline keyboard.
- * You must use exactly one of the optional fields.
+ * Exactly one of the optional fields must be used
+ * to specify type of the button.
  */
 
 @Data
@@ -34,7 +35,7 @@ public class InlineKeyboardButton implements Validated {
 
     /**
      * Optional. Data to be sent in a {@link CallbackQuery}
-     * to the bot when button is pressed, 1-64 bytes
+     * to the bot when the button is pressed, 1-64 bytes
      */
     @JsonProperty("callback_data")
     private String callbackData;
@@ -45,6 +46,8 @@ public class InlineKeyboardButton implements Validated {
      * an arbitrary message on behalf of the user
      * using the method {@link AnswerWebAppQuery}.
      * Available only in private chats between a user and the bot.
+     * Not supported for messages sent on behalf
+     * of a Telegram Business account.
      */
     @JsonProperty("web_app")
     private WebAppInfo webApp;
@@ -62,6 +65,8 @@ public class InlineKeyboardButton implements Validated {
      * and insert the bot's username and the specified inline query
      * in the input field. May be empty, in which case
      * just the bot's username will be inserted.
+     * Not supported for messages sent on behalf
+     * of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query")
     private String switchInlineQuery;
@@ -74,6 +79,9 @@ public class InlineKeyboardButton implements Validated {
      * This offers a quick way for the user to open your bot
      * in inline mode in the same chat - good for selecting
      * something from multiple options.
+     * <p>
+     * Not supported for messages sent on behalf
+     * of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query_current_chat")
     private String switchInlineQueryCurrentChat;
@@ -83,6 +91,9 @@ public class InlineKeyboardButton implements Validated {
      * to select one of their chats of the specified type,
      * open that chat and insert the bot's username
      * and the specified inline query in the input field
+     * <p>
+     * Not supported for messages sent on behalf
+     * of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query_chosen_chat")
     private SwitchInlineQueryChosenChat switchInlineQueryChosenChat;
@@ -99,6 +110,9 @@ public class InlineKeyboardButton implements Validated {
 
     /**
      * Optional. Specify True, to send a <a href="https://core.telegram.org/bots/api#payments">Pay button</a>.
+     * <p>
+     * Substrings “⭐” and “XTR” in the buttons's text
+     * will be replaced with a Telegram Star icon.
      *
      * @apiNote This type of button <b>must</b> always be the first button
      * in the first row and can only be used in invoice messages.

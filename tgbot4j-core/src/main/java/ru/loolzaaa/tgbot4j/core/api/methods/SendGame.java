@@ -81,7 +81,6 @@ public class SendGame implements TelegramMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>.
      * If empty, one 'Play game_title' button will be shown.
      * If not empty, the first button must launch the game.
-     * Not supported for messages sent on behalf of a business account.
      */
     @JsonProperty("reply_markup")
     private InlineKeyboardMarkup replyMarkup;

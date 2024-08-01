@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * No description
+ * Describes the birthdate of a user.
  */
 
 @Data

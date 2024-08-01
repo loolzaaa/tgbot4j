@@ -28,13 +28,13 @@ public class Voice {
     private String fileUniqueId;
 
     /**
-     * 	Duration of the audio in seconds as defined by sender
+     * 	Duration of the audio in seconds as defined by the sender
      */
     @JsonProperty("duration")
     private Integer duration;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by the sender
      */
     @JsonProperty("mime_type")
     private String mimeType;

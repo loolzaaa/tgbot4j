@@ -119,8 +119,8 @@ public class SendPoll implements TelegramMethod<Message> {
 
     /**
      * A JSON-serialized list of special entities
-     * that appear in the poll explanation,
-     * which can be specified instead of parse_mode
+     * that appear in the poll explanation.
+     * It can be specified instead of explanation_parse_mode
      */
     @JsonProperty("explanation_entities")
     private List<MessageEntity> explanationEntities;
@@ -180,7 +180,6 @@ public class SendPoll implements TelegramMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
-     * Not supported for messages sent on behalf of a business account
      */
     @JsonProperty("reply_markup")
     private ReplyMarkup replyMarkup;

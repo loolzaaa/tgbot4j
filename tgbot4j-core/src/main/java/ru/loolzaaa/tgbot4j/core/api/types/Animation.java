@@ -28,37 +28,37 @@ public class Animation {
     private String fileUniqueId;
 
     /**
-     * 	Video width as defined by sender
+     * 	Video width as defined by the sender
      */
     @JsonProperty("width")
     private Integer width;
 
     /**
-     * Video height as defined by sender
+     * Video height as defined by the sender
      */
     @JsonProperty("height")
     private Integer height;
 
     /**
-     * Duration of the video in seconds as defined by sender
+     * Duration of the video in seconds as defined by the sender
      */
     @JsonProperty("duration")
     private Integer duration;
 
     /**
-     * Optional. Animation thumbnail as defined by sender
+     * Optional. Animation thumbnail as defined by the sender
      */
     @JsonProperty("thumbnail")
     private PhotoSize thumbnail;
 
     /**
-     * Optional. Original animation filename as defined by sender
+     * Optional. Original animation filename as defined by the sender
      */
     @JsonProperty("file_name")
     private String fileName;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by the sender
      */
     @JsonProperty("mime_type")
     private String mimeType;

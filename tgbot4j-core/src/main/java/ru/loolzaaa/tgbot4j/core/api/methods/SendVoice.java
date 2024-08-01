@@ -25,7 +25,8 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
  * if you want Telegram clients to display the file
  * as a playable voice message. For this to work,
  * your audio must be in an .OGG file encoded
- * with OPUS (other formats may be sent as {@link Audio} or {@link Document}).
+ * with OPUS, or in .MP3 format, or in .M4A format
+ * (other formats may be sent as {@link Audio} or {@link Document}).
  * On success, the sent {@link Message} is returned.
  * Bots can currently send voice messages of up to 50 MB in size,
  * this limit may be changed in the future.
@@ -133,7 +134,6 @@ public class SendVoice implements TelegramMultipartMethod<Message> {
      * A JSON-serialized object for an <a href="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>,
      * <a href="https://core.telegram.org/bots/features#keyboards">custom reply keyboard</a>, instructions to remove a reply keyboard
      * or to force a reply from the user.
-     * Not supported for messages sent on behalf of a business account
      */
     @MultipartType(JSON)
     @JsonProperty("reply_markup")

@@ -31,7 +31,7 @@ public class BusinessMessagesDeleted {
     private Chat chat;
 
     /**
-     * A JSON-serialized list of identifiers of deleted messages
+     * The list of identifiers of deleted messages
      * in the chat of the business account
      */
     @JsonProperty("message_ids")

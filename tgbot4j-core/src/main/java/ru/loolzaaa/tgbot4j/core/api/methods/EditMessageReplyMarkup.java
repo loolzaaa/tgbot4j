@@ -16,6 +16,10 @@ import ru.loolzaaa.tgbot4j.core.api.types.Message;
  * Use this method to edit only the reply markup of messages.
  * On success, if the edited message is not an inline message,
  * the edited {@link Message} is returned, otherwise True is returned.
+ * <p>
+ * Note that business messages that were not sent by the bot
+ * and do not contain an inline keyboard can only be edited
+ * within <b>48 hours</b> from the time they were sent.
  */
 
 @Data
@@ -61,7 +65,7 @@ public class EditMessageReplyMarkup implements TelegramMethod<Object> {
     public Object determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
         if (resultNode instanceof ObjectNode) {
             return deserializeObjectResponse(mapper, resultNode, Message.class);
-        } else if (resultNode instanceof BooleanNode){
+        } else if (resultNode instanceof BooleanNode) {
             return deserializeObjectResponse(mapper, resultNode, Boolean.class);
         }
         return null;

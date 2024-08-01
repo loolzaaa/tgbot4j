@@ -38,7 +38,8 @@ public class UnpinChatMessage implements TelegramMethod<Boolean> {
     private String chatId;
 
     /**
-     * Identifier of a message to unpin.
+     * Identifier of the message to unpin.
+     * Required if <i>business_connection_id</i> is specified.
      * If not specified, the most recent pinned message
      * (by sending date) will be unpinned.
      */

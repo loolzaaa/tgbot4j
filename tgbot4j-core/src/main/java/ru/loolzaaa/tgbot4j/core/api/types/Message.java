@@ -278,7 +278,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Caption for the animation, audio, document,
-     * photo, video or voice
+     * paid media, photo, video or voice
      */
     @JsonProperty("caption")
     private String caption;

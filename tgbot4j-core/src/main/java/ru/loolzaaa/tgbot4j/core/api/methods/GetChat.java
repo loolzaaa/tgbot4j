@@ -12,7 +12,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.ChatFullInfo;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to get up to date information
+ * Use this method to get up-to-date information
  * about the chat.
  * Returns a {@link ChatFullInfo} object on success.
  */

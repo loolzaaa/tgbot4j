@@ -28,31 +28,31 @@ public class Audio {
     private String fileUniqueId;
 
     /**
-     * Duration of the audio in seconds as defined by sender
+     * Duration of the audio in seconds as defined by the sender
      */
     @JsonProperty("duration")
     private Integer duration;
 
     /**
-     * Optional. Performer of the audio as defined by sender or by audio tags
+     * Optional. Performer of the audio as defined by the sender or by audio tags
      */
     @JsonProperty("performer")
     private String performer;
 
     /**
-     * Optional. Title of the audio as defined by sender or by audio tags
+     * Optional. Title of the audio as defined by the sender or by audio tags
      */
     @JsonProperty("title")
     private String title;
 
     /**
-     * Optional. Original filename as defined by sender
+     * Optional. Original filename as defined by the sender
      */
     @JsonProperty("file_name")
     private String fileName;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by the sender
      */
     @JsonProperty("mime_type")
     private String mimeType;

@@ -27,7 +27,7 @@ public class ShippingQuery {
     private User from;
 
     /**
-     * Bot specified invoice payload
+     * Bot-specified invoice payload
      */
     @JsonProperty("invoice_payload")
     private String invoicePayload;

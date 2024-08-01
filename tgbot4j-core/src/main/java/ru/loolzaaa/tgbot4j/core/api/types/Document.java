@@ -28,19 +28,19 @@ public class Document {
     private String fileUniqueId;
 
     /**
-     * Optional. Document thumbnail as defined by sender
+     * Optional. Document thumbnail as defined by the sender
      */
     @JsonProperty("thumbnail")
     private PhotoSize thumbnail;
 
     /**
-     * Optional. Original filename as defined by sender
+     * Optional. Original filename as defined by the sender
      */
     @JsonProperty("file_name")
     private String fileName;
 
     /**
-     * Optional. MIME type of the file as defined by sender
+     * Optional. MIME type of the file as defined by the sender
      */
     @JsonProperty("mime_type")
     private String mimeType;

@@ -37,13 +37,15 @@ public class InputInvoiceMessageContent implements InputMessageContent {
     private String payload;
 
     /**
-     * Payment provider token, obtained via @BotFather
+     * Optional. Payment provider token, obtained via @BotFather.
+     * Pass an empty string for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("provider_token")
     private String providerToken;
 
     /**
-     * Three-letter ISO 4217 currency code, see <a href="https://core.telegram.org/bots/payments#supported-currencies">more on currencies</a>
+     * Three-letter ISO 4217 currency code, see <a href="https://core.telegram.org/bots/payments#supported-currencies">more on currencies</a>.
+     * Pass “XTR” for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("currency")
     private String currency;
@@ -51,7 +53,9 @@ public class InputInvoiceMessageContent implements InputMessageContent {
     /**
      * Price breakdown, a JSON-serialized list of components
      * (e.g. product price, tax, discount, delivery cost,
-     * delivery tax, bonus, etc.)
+     * delivery tax, bonus, etc.).
+     * Must contain exactly one item for payments
+     * in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("prices")
     private List<LabeledPrice> prices;
@@ -62,7 +66,8 @@ public class InputInvoiceMessageContent implements InputMessageContent {
      * For example, for a maximum tip of {@code US$ 1.45} pass {@code max_tip_amount = 145}.
      * See the exp parameter in currencies.json, it shows the number of digits
      * past the decimal point for each currency (2 for the majority of currencies).
-     * Defaults to 0
+     * Defaults to 0.
+     * Not supported for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("max_tip_amount")
     private Integer maxTipAmount;
@@ -114,48 +119,55 @@ public class InputInvoiceMessageContent implements InputMessageContent {
 
     /**
      * Optional. Pass True if you require the user's full name
-     * to complete the order
+     * to complete the order.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("need_name")
     private Boolean needName;
 
     /**
      * Optional. Pass True if you require the user's phone number
-     * to complete the order
+     * to complete the order.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("need_phone_number")
     private Boolean needPhoneNumber;
 
     /**
      * Optional. Pass True if you require the user's email address
-     * to complete the order
+     * to complete the order.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("need_email")
     private Boolean needEmail;
 
     /**
      * Optional. Pass True if you require the user's shipping address
-     * to complete the order
+     * to complete the order.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("need_shipping_address")
     private Boolean needShippingAddress;
 
     /**
      * Optional. Pass True if the user's phone number should be sent
-     * to provider
+     * to the provider.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("send_phone_number_to_provider")
     private Boolean sendPhoneNumberToProvider;
 
     /**
      * Optional. Pass True if the user's email address should be sent
-     * to provider
+     * to the provider.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("send_email_to_provider")
     private Boolean sendEmailToProvider;
 
     /**
-     * Optional. Pass True if the final price depends on the shipping method
+     * Optional. Pass True if the final price depends on the shipping method.
+     * Ignored for payments in <a href="https://t.me/BotNews/90">Telegram Stars</a>.
      */
     @JsonProperty("is_flexible")
     private Boolean isFlexible;

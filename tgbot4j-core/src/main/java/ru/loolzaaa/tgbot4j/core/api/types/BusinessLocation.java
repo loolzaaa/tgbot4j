@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * No description
+ * Contains information about the location of a Telegram Business account.
  */
 
 @Data

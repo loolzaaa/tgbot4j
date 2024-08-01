@@ -121,8 +121,9 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
     private Boolean canPostStories;
 
     /**
-     * Pass True if the administrator can edit stories posted by other users;
-     * channels only
+     * Pass True if the administrator can edit stories posted by other users,
+     * post stories to the chat page, pin chat stories,
+     * and access the chat's story archive
      */
     @JsonProperty("can_edit_stories")
     private Boolean canEditStories;

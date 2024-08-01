@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * No description
+ * Describes the opening hours of a business.
  */
 
 @Data
