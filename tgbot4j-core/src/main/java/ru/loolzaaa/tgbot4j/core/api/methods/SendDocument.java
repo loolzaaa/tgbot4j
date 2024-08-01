@@ -130,6 +130,13 @@ public class SendDocument implements TelegramMultipartMethod<Message> {
     private Boolean protectContent;
 
     /**
+     * Unique identifier of the message effect to be added
+     * to the message; for private chats only
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
+
+    /**
      * Description of the message to reply to
      */
     @MultipartType(JSON)

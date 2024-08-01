@@ -70,6 +70,13 @@ public class EditMessageCaption implements TelegramMethod<Object> {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Pass True, if the caption must be shown above the message media.
+     * Supported only for animation, photo and video messages.
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * A JSON-serialized object for an <a hred="https://core.telegram.org/bots/features#inline-keyboards">inline keyboard</a>.
      */
     @JsonProperty("reply_markup")

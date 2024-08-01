@@ -206,6 +206,13 @@ public class Message implements MaybeInaccessibleMessage {
     private LinkPreviewOptions linkPreviewOptions;
 
     /**
+     * Optional. Unique identifier of the message effect
+     * added to the message
+     */
+    @JsonProperty("effect_id")
+    private String effectId;
+
+    /**
      * Optional. Message is an animation, information about the animation.
      * For backward compatibility, when this field is set,
      * the document field will also be set
@@ -275,6 +282,12 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("caption_entities")
     private List<MessageEntity> captionEntities;
+
+    /**
+     * Optional. True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
 
     /**
      * Optional. True, if the message media is covered by a spoiler animation

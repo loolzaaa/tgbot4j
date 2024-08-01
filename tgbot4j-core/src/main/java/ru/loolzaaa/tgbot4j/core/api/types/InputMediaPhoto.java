@@ -54,6 +54,12 @@ public class InputMediaPhoto implements InputMedia {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Optional. Pass True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Optional. Pass True if the photo needs to be covered
      * with a spoiler animation
      */

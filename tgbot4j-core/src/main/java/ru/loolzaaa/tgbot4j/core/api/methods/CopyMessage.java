@@ -79,6 +79,13 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Pass True, if the caption must be shown above the message media.
+     * Ignored if a new caption isn't specified.
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>.
      * Users will receive a notification with no sound.
      */

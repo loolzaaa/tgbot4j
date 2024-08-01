@@ -93,6 +93,12 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
     private List<MessageEntity> captionEntities;
 
     /**
+     * Pass True, if the caption must be shown above the message media
+     */
+    @JsonProperty("show_caption_above_media")
+    private Boolean showCaptionAboveMedia;
+
+    /**
      * Pass True if the photo needs to be covered
      * with a spoiler animation
      */
@@ -112,6 +118,13 @@ public class SendPhoto implements TelegramMultipartMethod<Message> {
      */
     @JsonProperty("protect_content")
     private Boolean protectContent;
+
+    /**
+     * Unique identifier of the message effect to be added
+     * to the message; for private chats only
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
 
     /**
      * Description of the message to reply to
