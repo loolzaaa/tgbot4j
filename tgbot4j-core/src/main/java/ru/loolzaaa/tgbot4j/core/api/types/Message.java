@@ -459,6 +459,14 @@ public class Message implements MaybeInaccessibleMessage {
     private SuccessfulPayment successfulPayment;
 
     /**
+     * Optional. Message is a service message about a refunded payment,
+     * information about the payment.
+     * <a href="https://core.telegram.org/bots/api#payments">More about payments »</a>
+     */
+    @JsonProperty("refunded_payment")
+    private RefundedPayment refundedPayment;
+
+    /**
      * Optional. Service message: a user was shared with the bot
      */
     @JsonProperty("users_shared")
