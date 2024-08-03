@@ -62,8 +62,8 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
                                      ReceiverOptions options) {
         this.botName = botName;
         this.botToken = botToken;
-        this.updatesSupplier = Objects.requireNonNullElseGet(updatesSupplier, DefaultUpdateSupplier::new);
         this.options = Objects.requireNonNullElseGet(options, ReceiverOptions::new);
+        this.updatesSupplier = Objects.requireNonNullElseGet(updatesSupplier, DefaultUpdateSupplier::new);
     }
 
     /**
