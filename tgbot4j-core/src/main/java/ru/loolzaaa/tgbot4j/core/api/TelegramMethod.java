@@ -141,7 +141,7 @@ public interface TelegramMethod<T> extends Validated {
                     }
                 }
             }
-            if (Validated.class.isAssignableFrom(field.getType())) {
+            if (fieldValue != null && Validated.class.isAssignableFrom(field.getType())) {
                 ((Validated) fieldValue).validate();
             }
         }
