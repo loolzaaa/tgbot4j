@@ -174,10 +174,10 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
     public static class ReceiverOptions {
         private boolean clearWebhookIfExist = false;
         private int receiverTaskDelay = 500;
-        private int connectTimeout = 30 * 1000;
-        private int requestTimeout = 30 * 1000;
+        private int connectTimeout = 75 * 1000;
+        private int requestTimeout = 100 * 1000;
         private int maxThreads = 1;
-        private int updateTimeout = 20;
+        private int updateTimeout = 50;
         private int updateLimit = 100;
         private List<String> updateAllowedUpdates;
     }
@@ -239,6 +239,10 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
          * Setting options for default method sender.
          */
         public DefaultUpdateSupplier() {
+            if (options.requestTimeout <= (options.updateTimeout * 1000)) {
+                log.warn("Timeout for http request ({}) usually greater than GetUpdates method timeout ({}).",
+                        options.requestTimeout, options.updateTimeout);
+            }
             DefaultMethodSender.SenderOptions senderOptions = new DefaultMethodSender.SenderOptions();
             senderOptions.setConnectTimeout(options.getConnectTimeout());
             senderOptions.setRequestTimeout(options.getRequestTimeout());

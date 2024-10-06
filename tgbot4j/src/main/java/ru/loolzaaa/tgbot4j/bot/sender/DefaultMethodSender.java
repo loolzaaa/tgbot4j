@@ -84,6 +84,7 @@ public final class DefaultMethodSender implements MethodSender {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, SenderOptions::new);
         this.httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(Duration.of(this.options.connectTimeout, ChronoUnit.MILLIS))
                 .build();
         this.executorService = Executors.newFixedThreadPool(this.options.maxThreads);
@@ -200,8 +201,8 @@ public final class DefaultMethodSender implements MethodSender {
     @Setter
     @ToString
     public static class SenderOptions {
-        private int connectTimeout = 30 * 1000;
-        private int requestTimeout = 30 * 1000;
+        private int connectTimeout = 75 * 1000;
+        private int requestTimeout = 100 * 1000;
         private int maxThreads = 1;
     }
 }
