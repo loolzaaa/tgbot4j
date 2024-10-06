@@ -11,6 +11,8 @@ import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.bot.receiver.UpdateReceiver;
 import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.util.WebhookUtils;
+import ru.loolzaaa.tgbot4j.util.backoff.BackOff;
+import ru.loolzaaa.tgbot4j.util.backoff.ExponentialBackOff;
 
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +85,10 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
      */
     @Override
     public void start(ConcurrentLinkedDeque<Update> updates) {
+        if (updates == null){
+            throw new IllegalArgumentException("Updates deque must not be null");
+        }
+
         if (isRunning) {
             throw new IllegalStateException(botName + " receiver already running!");
         }
@@ -233,6 +239,8 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
 
         private final MethodSender methodSender;
 
+        private final BackOff backOff = new ExponentialBackOff();
+
         /**
          * Constructor creates new default update supplier.
          * <p>
@@ -266,8 +274,16 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
                 getUpdates.setAllowedUpdates(options.updateAllowedUpdates);
             }
             try {
-                return methodSender.send(getUpdates);
+                List<Update> updates = methodSender.send(getUpdates);
+                backOff.reset();
+                return updates;
             } catch (Exception e) {
+                long waitInterval = backOff.nextBackOff();
+                try {
+                    Thread.sleep(waitInterval);
+                } catch (InterruptedException ex) {
+                    log.warn("GetUpdates got interrupted while sleeping in backoff mode.", ex);
+                }
                 return Collections.emptyList();
             }
         }
