@@ -7,7 +7,7 @@
 
     <groupId>ru.loolzaaa.tgbot4j</groupId>
     <artifactId>tgbot4j-parent</artifactId>
-    <version>0.3.3-SNAPSHOT</version>
+    <version>0.3.3</version>
 
     <name>Telegram Bot API Java Library</name>
     <description>Library for creating Telegram Bots</description>
