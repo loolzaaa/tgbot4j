@@ -106,6 +106,15 @@ public class SendLocation implements TelegramMethod<Message> {
     private Boolean protectContent;
 
     /**
+     * Pass True to allow up to 1000 messages per second,
+     * ignoring <a href="https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once">
+     * broadcasting limits</a> for a fee of 0.1 Telegram Stars per message.
+     * The relevant Stars will be withdrawn from the bot's balance
+     */
+    @JsonProperty("allow_paid_broadcast")
+    private Boolean allowPaidBroadcast;
+
+    /**
      * Unique identifier of the message effect to be added
      * to the message; for private chats only
      */

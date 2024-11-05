@@ -99,6 +99,13 @@ public class InlineKeyboardButton implements Validated {
     private SwitchInlineQueryChosenChat switchInlineQueryChosenChat;
 
     /**
+     * Optional. Description of the button
+     * that copies the specified text to the clipboard.
+     */
+    @JsonProperty("copy_text")
+    private CopyTextButton copyText;
+
+    /**
      * Optional. Description of the game that will be launched
      * when the user presses the button.
      *

@@ -17,7 +17,8 @@ import ru.loolzaaa.tgbot4j.core.api.methods.GetCustomEmojiStickers;
 public class MessageEntity {
     /**
      * Type of the entity. Currently, can be “mention” ({@code @username}),
-     * “hashtag” ({@code #hashtag}), “cashtag” ({@code $USD}), “bot_command” ({@code /start@jobs_bot}),
+     * “hashtag” ({@code #hashtag} or {@code #hashtag@chatusername}),
+     * “cashtag” ({@code $USD} or {@code $USD@chatusername}), “bot_command” ({@code /start@jobs_bot}),
      * “url” ({@code https://telegram.org}), “email” ({@code do-not-reply@telegram.org}),
      * “phone_number” ({@code +1-212-555-0123}), “bold” (<b>bold text</b>), “italic” (<i>italic text</i>),
      * “underline” (underlined text), “strikethrough” (strikethrough text),
