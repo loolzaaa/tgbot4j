@@ -141,6 +141,13 @@ public class Update {
     private PreCheckoutQuery preCheckoutQuery;
 
     /**
+     * Optional. A user purchased paid media with
+     * a non-empty payload sent by the bot in a non-channel chat
+     */
+    @JsonProperty("purchased_paid_media")
+    private PaidMediaPurchased purchasedPaidMedia;
+
+    /**
      * Optional. New poll state. Bots receive only updates
      * about stopped polls and polls, which are sent by the bot
      */

@@ -39,4 +39,10 @@ public class TransactionPartnerUser implements TransactionPartner {
      */
     @JsonProperty("paid_media")
     private List<PaidMedia> paidMedia;
+
+    /**
+     * Optional. Bot-specified paid media payload
+     */
+    @JsonProperty("paid_media_payload")
+    private String paidMediaPayload;
 }

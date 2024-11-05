@@ -36,6 +36,13 @@ public class ChatBoostSourceGiveaway implements ChatBoostSource {
     private User user;
 
     /**
+     * Optional. The number of Telegram Stars to be split
+     * between giveaway winners; for Telegram Star giveaways only
+     */
+    @JsonProperty("prize_star_count")
+    private Integer prizeStarCount;
+
+    /**
      * Optional. True, if the giveaway was completed,
      * but there was no user to win the prize
      */

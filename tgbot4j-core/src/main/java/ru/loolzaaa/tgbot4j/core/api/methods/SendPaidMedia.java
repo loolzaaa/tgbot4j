@@ -55,6 +55,14 @@ public class SendPaidMedia implements TelegramMethod<Message> {
     private List<InputPaidMedia> media;
 
     /**
+     * Bot-defined paid media payload, 0-128 bytes.
+     * This will not be displayed to the user,
+     * use it for your internal processes.
+     */
+    @JsonProperty("payload")
+    private String payload;
+
+    /**
      * Media caption, 0-1024 characters after entities parsing
      */
     @JsonProperty("caption")
