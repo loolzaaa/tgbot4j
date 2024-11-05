@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  *     <li>{@link TransactionPartnerUser}</li>
  *     <li>{@link TransactionPartnerFragment}</li>
  *     <li>{@link TransactionPartnerTelegramAds}</li>
+ *     <li>{@link TransactionPartnerTelegramApi}</li>
  *     <li>{@link TransactionPartnerOther}</li>
  * </ul>
  */
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = TransactionPartnerUser.class, name = "user"),
         @JsonSubTypes.Type(value = TransactionPartnerFragment.class, name = "fragment"),
         @JsonSubTypes.Type(value = TransactionPartnerTelegramAds.class, name = "telegram_ads"),
+        @JsonSubTypes.Type(value = TransactionPartnerTelegramApi.class, name = "telegram_api"),
         @JsonSubTypes.Type(value = TransactionPartnerOther.class, name = "other"),
 })
 public interface TransactionPartner {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * <ul>
  *     <li>{@link ReactionTypeEmoji}</li>
  *     <li>{@link ReactionTypeCustomEmoji}</li>
+ *     <li>{@link ReactionTypePaid}</li>
  * </ul>
  */
 
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ReactionTypeEmoji.class, name = "emoji"),
         @JsonSubTypes.Type(value = ReactionTypeCustomEmoji.class, name = "custom_emoji"),
+        @JsonSubTypes.Type(value = ReactionTypePaid.class, name = "paid"),
 })
 public interface ReactionType {
 }

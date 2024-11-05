@@ -14,7 +14,7 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 import java.util.List;
 
 /**
- * Use this method to send paid media to channel chats.
+ * Use this method to send paid media.
  * On success, the sent {@link Message} is returned.
  */
 
@@ -32,7 +32,10 @@ public class SendPaidMedia implements TelegramMethod<Message> {
     /**
      * Unique identifier for the target chat
      * or username of the target channel
-     * (in the format {@code @channelusername})
+     * (in the format {@code @channelusername}).
+     * If the chat is a channel, all Telegram Star proceeds
+     * from this media will be credited to the chat's balance.
+     * Otherwise, they will be credited to the bot's balance.
      */
     @Required
     @JsonProperty("chat_id")
@@ -40,7 +43,7 @@ public class SendPaidMedia implements TelegramMethod<Message> {
 
     /**
      * The number of Telegram Stars that must be paid
-     * to buy access to the media
+     * to buy access to the media; 1-2500
      */
     @Required
     @JsonProperty("star_count")

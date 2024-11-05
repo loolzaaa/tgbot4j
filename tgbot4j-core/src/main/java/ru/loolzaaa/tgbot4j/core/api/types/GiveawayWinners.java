@@ -63,7 +63,8 @@ public class GiveawayWinners {
 
     /**
      * Optional. The number of months the Telegram Premium
-     * subscription won from the giveaway will be active for
+     * subscription won from the giveaway will be active for;
+     * for Telegram Premium giveaways only
      */
     @JsonProperty("premium_subscription_month_count")
     private Integer premiumSubscriptionMonthCount;

@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The boost was obtained by the creation of a Telegram Premium giveaway.
+ * The boost was obtained by the creation of a Telegram Premium
+ * or a Telegram Star giveaway.
  * This boosts the chat 4 times for the duration of the corresponding
- * Telegram Premium subscription.
+ * Telegram Premium subscription for Telegram Premium giveaways
+ * and <em>prize_star_count</em> / 500 times for one year
+ * for Telegram Star giveaways.
  */
 
 @Data

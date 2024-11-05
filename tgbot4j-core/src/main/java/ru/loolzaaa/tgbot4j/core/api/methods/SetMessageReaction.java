@@ -17,6 +17,7 @@ import java.util.List;
  * Service messages can't be reacted to. Automatically forwarded
  * messages from a channel to its discussion group have the same
  * available reactions as messages in the channel.
+ * Bots can't use paid reactions.
  * Returns True on success.
  */
 
@@ -47,6 +48,7 @@ public class SetMessageReaction implements TelegramMethod<Boolean> {
      * to one reaction per message. A custom emoji reaction
      * can be used if it is either already present on the message
      * or explicitly allowed by chat administrators.
+     * Paid reactions can't be used by bots.
      */
     @JsonProperty("reaction")
     private List<ReactionType> reaction;

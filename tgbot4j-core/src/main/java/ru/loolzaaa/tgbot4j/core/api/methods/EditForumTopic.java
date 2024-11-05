@@ -13,7 +13,7 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 /**
  * Use this method to edit name and icon of a topic in a forum supergroup chat.
  * The bot must be an administrator in the chat for this to work
- * and must have <i>can_manage_topics</i> administrator rights, unless it is the creator of the topic.
+ * and must have the <i>can_manage_topics</i> administrator rights, unless it is the creator of the topic.
  * Returns True on success.
  */
 

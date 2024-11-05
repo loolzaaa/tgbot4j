@@ -31,7 +31,7 @@ public class InputInvoiceMessageContent implements InputMessageContent {
     /**
      * Bot-defined invoice payload, 1-128 bytes.
      * This will not be displayed to the user,
-     * use for your internal processes.
+     * use it for your internal processes.
      */
     @JsonProperty("payload")
     private String payload;

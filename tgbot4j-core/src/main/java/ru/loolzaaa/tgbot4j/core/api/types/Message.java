@@ -18,7 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 public class Message implements MaybeInaccessibleMessage {
     /**
-     * Unique message identifier inside this chat
+     * Unique message identifier inside this chat.
+     * In specific instances (e.g., message containing a video sent to a big chat),
+     * the server might automatically schedule a message
+     * instead of sending it immediately. In such cases,
+     * this field will be 0 and the relevant message
+     * will be unusable until it is actually sent
      */
     @JsonProperty("message_id")
     private Integer messageId;
@@ -31,22 +36,21 @@ public class Message implements MaybeInaccessibleMessage {
     private Integer messageThreadId;
 
     /**
-     * Optional. Sender of the message; empty for messages
-     * sent to channels. For backward compatibility,
-     * the field contains a fake sender user in non-channel chats,
-     * if the message was sent on behalf of a chat.
+     * Optional. Sender of the message; may be empty for messages sent to channels.
+     * For backward compatibility, if the message was sent on behalf of a chat,
+     * the field contains a fake sender user in non-channel chats
      */
     @JsonProperty("from")
     private User from;
 
     /**
-     * Optional. Sender of the message, sent on behalf of a chat.
-     * For example, the channel itself for channel posts,
-     * the supergroup itself for messages from anonymous group administrators,
-     * the linked channel for messages automatically forwarded
-     * to the discussion group. For backward compatibility,
-     * the field from contains a fake sender user in non-channel chats,
-     * if the message was sent on behalf of a chat.
+     * Optional. Sender of the message when sent on behalf of a chat.
+     * For example, the supergroup itself for messages sent
+     * by its anonymous administrators or a linked channel
+     * for messages automatically forwarded
+     * to the channel's discussion group. For backward compatibility,
+     * if the message was sent on behalf of a chat,
+     * the field from contains a fake sender user in non-channel chats
      */
     @JsonProperty("sender_chat")
     private Chat senderChat;
