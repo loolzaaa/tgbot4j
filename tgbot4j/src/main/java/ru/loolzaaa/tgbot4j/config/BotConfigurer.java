@@ -11,6 +11,13 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public abstract class BotConfigurer<T> implements ComponentConfigurer<T> {
+    /**
+     * Bot name
+     */
     protected final String botName;
+
+    /**
+     * Bot token
+     */
     protected final String botToken;
 }

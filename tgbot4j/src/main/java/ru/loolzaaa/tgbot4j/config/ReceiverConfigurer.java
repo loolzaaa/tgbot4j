@@ -37,6 +37,12 @@ public final class ReceiverConfigurer extends BotConfigurer<UpdateReceiver> {
         super(botName, botToken);
     }
 
+    /**
+     * Apply long polling customizer.
+     *
+     * @param longPollingConfigurerCustomizer long polling customizer
+     * @return current instance of {@link ReceiverConfigurer}
+     */
     public ReceiverConfigurer longPolling(Consumer<LongPollingConfigurer> longPollingConfigurerCustomizer) {
         LongPollingConfigurer longPollingConfigurer = new LongPollingConfigurer();
         updateReceiverConfigurer = longPollingConfigurer;

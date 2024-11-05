@@ -7,7 +7,7 @@ import lombok.ToString;
 
 /**
  * Implementation of {@link BackOff} that increases the back off period for each
- * retry attempt. When the interval has reached the {@linkplain #setMaxInterval
+ * retry attempt. When the interval has reached the {@linkplain #maxInterval
  * max interval}, it is no longer increased.
  *
  * <p>Example: The default interval is {@value #DEFAULT_INITIAL_INTERVAL} ms;

@@ -21,6 +21,8 @@ package ru.loolzaaa.tgbot4j.util.backoff;
 public interface BackOff {
     /**
      * Specify the next backoff interval in milliseconds.
+     *
+     * @return next back off delay
      */
     long nextBackOff();
 

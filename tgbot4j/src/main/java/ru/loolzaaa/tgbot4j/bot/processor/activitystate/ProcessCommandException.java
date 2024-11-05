@@ -12,8 +12,14 @@ import lombok.Getter;
 @Getter
 public class ProcessCommandException extends RuntimeException {
 
+    /**
+     * User identifier
+     */
     private final Long userId;
 
+    /**
+     * Command identifier
+     */
     private final String commandIdentifier;
 
     /**

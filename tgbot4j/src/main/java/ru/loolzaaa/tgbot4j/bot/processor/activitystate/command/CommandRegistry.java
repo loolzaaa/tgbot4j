@@ -11,11 +11,29 @@ import java.util.Collection;
  */
 
 public interface CommandRegistry {
-
+    /**
+     * Max characters length of command.
+     */
     int COMMAND_NAME_MAX_LENGTH = 32;
+
+    /**
+     * Regular expression pattern for command name.
+     */
     String COMMAND_NAME_PATTERN = "[A-Za-z0-9_]+";
+
+    /**
+     * Character that defines start of command.
+     */
     String COMMAND_START_CHARACTER = "/";
+
+    /**
+     * Regular expression pattern for command with user mention.
+     */
     String COMMAND_USERNAME_PATTERN = "(?i)@\\w+?\\s*$";
+
+    /**
+     * Regualr expression separator for commands.
+     */
     String COMMAND_ARGUMENTS_SEPARATOR_PATTERN = "\\s+";
 
     /**
