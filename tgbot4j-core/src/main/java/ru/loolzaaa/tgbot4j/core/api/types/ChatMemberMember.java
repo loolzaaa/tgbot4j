@@ -25,4 +25,11 @@ public class ChatMemberMember implements ChatMember {
      */
     @JsonProperty("user")
     private User user;
+
+    /**
+     * Optional. Date when the user's subscription will expire;
+     * Unix time
+     */
+    @JsonProperty("until_date")
+    private Integer untilDate;
 }

@@ -70,4 +70,19 @@ public class ChatInviteLink {
      */
     @JsonProperty("pending_join_request_count")
     private Integer pendingJoinRequestCount;
+
+    /**
+     * Optional. The number of seconds the subscription
+     * will be active for before the next payment
+     */
+    @JsonProperty("subscription_period")
+    private Integer subscriptionPeriod;
+
+    /**
+     * Optional. The amount of Telegram Stars a user
+     * must pay initially and after each subsequent subscription period
+     * to be a member of the chat using the link
+     */
+    @JsonProperty("subscription_price")
+    private Integer subscriptionPrice;
 }
