@@ -35,6 +35,27 @@ public class SuccessfulPayment {
     private String invoicePayload;
 
     /**
+     * Optional. Expiration date of the subscription,
+     * in Unix time; for recurring payments only
+     */
+    @JsonProperty("subscription_expiration_date")
+    private Integer subscriptionExpirationDate;
+
+    /**
+     * Optional. True, if the payment is a recurring payment
+     * for a subscription
+     */
+    @JsonProperty("is_recurring")
+    private Boolean isRecurring;
+
+    /**
+     * Optional. True, if the payment is the first payment
+     * for a subscription
+     */
+    @JsonProperty("is_first_recurring")
+    private Boolean isFirstRecurring;
+
+    /**
      * Optional. Identifier of the shipping option chosen by the user
      */
     @JsonProperty("shipping_option_id")

@@ -22,6 +22,14 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateInvoiceLink implements TelegramMethod<String> {
     /**
+     * Unique identifier of the business connection
+     * on behalf of which the link will be created.
+     * For payments in <a href="https://t.me/BotNews/90">Telegram Stars</a> only.
+     */
+    @JsonProperty("business_connection_id")
+    private String businessConnectionId;
+
+    /**
      * Product name, 1-32 characters
      */
     @Required
@@ -71,6 +79,19 @@ public class CreateInvoiceLink implements TelegramMethod<String> {
     @Required
     @JsonProperty("prices")
     private List<LabeledPrice> prices;
+
+    /**
+     * The number of seconds the subscription will be active
+     * for before the next payment. The currency must be set
+     * to “XTR” (Telegram Stars) if the parameter is used.
+     * Currently, it must always be 2592000 (30 days) if specified.
+     * Any number of subscriptions can be active for a given bot
+     * at the same time, including multiple concurrent subscriptions
+     * from the same user. Subscription price must
+     * no exceed 10000 Telegram Stars.
+     */
+    @JsonProperty("subscription_period")
+    private Integer subscriptionPeriod;
 
     /**
      * The maximum accepted amount for tips in the smallest
