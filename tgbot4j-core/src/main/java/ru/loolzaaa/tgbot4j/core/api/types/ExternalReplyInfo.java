@@ -121,6 +121,12 @@ public class ExternalReplyInfo {
     private Boolean hasMediaSpoiler;
 
     /**
+     * Optional. Message is a checklist
+     */
+    @JsonProperty("checklist")
+    private Checklist checklist;
+
+    /**
      * Optional. Message is a shared contact,
      * information about the contact
      */

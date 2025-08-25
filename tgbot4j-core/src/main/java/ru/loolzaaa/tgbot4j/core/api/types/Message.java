@@ -314,6 +314,12 @@ public class Message implements MaybeInaccessibleMessage {
     private Boolean hasMediaSpoiler;
 
     /**
+     * Optional. Message is a checklist
+     */
+    @JsonProperty("checklist")
+    private Checklist checklist;
+
+    /**
      * Optional. Message is a shared contact, information about the contact
      */
     @JsonProperty("contact")
@@ -544,6 +550,27 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("chat_background_set")
     private ChatBackground chatBackgroundSet;
+
+    /**
+     * Optional. Service message: some tasks in a checklist
+     * were marked as done or not done
+     */
+    @JsonProperty("checklist_tasks_done")
+    private ChecklistTasksDone checklistTasksDone;
+
+    /**
+     * Optional. Service message: tasks were added to a checklist
+     */
+    @JsonProperty("checklist_tasks_added")
+    private ChecklistTasksAdded checklistTasksAdded;
+
+    /**
+     * Optional. Service message: the price for paid messages
+     * in the corresponding direct messages chat
+     * of a channel has changed
+     */
+    @JsonProperty("direct_message_price_changed ")
+    private DirectMessagePriceChanged directMessagePriceChanged;
 
     /**
      * Optional. Service message: forum topic created
