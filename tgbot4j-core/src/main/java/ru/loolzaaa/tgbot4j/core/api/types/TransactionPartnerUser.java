@@ -28,6 +28,14 @@ public class TransactionPartnerUser implements TransactionPartner {
     private User user;
 
     /**
+     * Optional. Information about the affiliate that received
+     * a commission via this transaction. Can be available
+     * only for “invoice_payment” and “paid_media_payment” transactions.
+     */
+    @JsonProperty("affiliate")
+    private AffiliateInfo affiliate;
+
+    /**
      * Optional. Bot-specified invoice payload
      */
     @JsonProperty("invoice_payload")

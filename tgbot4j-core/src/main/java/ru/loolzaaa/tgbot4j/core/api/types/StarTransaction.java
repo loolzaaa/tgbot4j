@@ -30,6 +30,14 @@ public class StarTransaction {
     private Integer amount;
 
     /**
+     * Optional. The number of 1/1000000000 shares
+     * of Telegram Stars transferred by the transaction;
+     * from 0 to 999999999
+     */
+    @JsonProperty("nanostar_amount")
+    private Integer nanostarAmount;
+
+    /**
      * Date the transaction was created in Unix time
      */
     @JsonProperty("date")
