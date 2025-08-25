@@ -51,6 +51,14 @@ public class SendMediaGroup implements TelegramMethod<List<Message>> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * A JSON-serialized array describing messages
      * to be sent, must include 2-10 items
      */

@@ -79,4 +79,11 @@ public class ReplyParameters {
      */
     @JsonProperty("quote_position")
     private Integer quotePosition;
+
+    /**
+     * Optional. Identifier of the specific checklist task
+     * to be replied to
+     */
+    @JsonProperty("checklist_task_id")
+    private Integer checklistTaskId;
 }

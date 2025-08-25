@@ -47,6 +47,14 @@ public class CopyMessages implements TelegramMethod<List<MessageId>> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Unique identifier for the chat where the original
      * messages were sent (or channel username
      * in the format {@code @channelusername})

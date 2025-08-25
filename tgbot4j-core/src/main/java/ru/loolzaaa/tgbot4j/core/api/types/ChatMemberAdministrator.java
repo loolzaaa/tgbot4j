@@ -139,6 +139,14 @@ public class ChatMemberAdministrator implements ChatMember {
     private Boolean canManageTopics;
 
     /**
+     * Optional. True, if the administrator can manage
+     * direct messages of the channel and decline suggested posts;
+     * for channels only
+     */
+    @JsonProperty("can_manage_direct_messages")
+    private Boolean canManageDirectMessages;
+
+    /**
      * Optional. Custom title for this user
      */
     @JsonProperty("custom_title")

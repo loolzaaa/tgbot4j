@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.MultipartType;
 import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMultipartMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.InputFile;
-import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyMarkup;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 
@@ -57,6 +54,14 @@ public class SendVideoNote implements TelegramMultipartMethod<Message> {
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
+
+    /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
 
     /**
      * Video note to send. Pass a file_id as String to send a video note
@@ -129,6 +134,16 @@ public class SendVideoNote implements TelegramMultipartMethod<Message> {
      */
     @JsonProperty("message_effect_id")
     private String messageEffectId;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @MultipartType(JSON)
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to

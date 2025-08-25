@@ -44,6 +44,14 @@ public class SendMessage implements TelegramMethod<Message> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent;
+     * required if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Text of the message to be sent,
      * 1-4096 characters after entities parsing
      */
@@ -101,6 +109,15 @@ public class SendMessage implements TelegramMethod<Message> {
      */
     @JsonProperty("message_effect_id")
     private String messageEffectId;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to

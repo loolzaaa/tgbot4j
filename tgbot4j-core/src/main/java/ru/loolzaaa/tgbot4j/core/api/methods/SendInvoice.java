@@ -8,10 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
-import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
-import ru.loolzaaa.tgbot4j.core.api.types.LabeledPrice;
-import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
+import ru.loolzaaa.tgbot4j.core.api.types.*;
 
 import java.util.List;
 
@@ -38,6 +35,14 @@ public class SendInvoice implements TelegramMethod<Message> {
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
+
+    /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
 
     /**
      * Product name, 1-32 characters
@@ -243,6 +248,15 @@ public class SendInvoice implements TelegramMethod<Message> {
      */
     @JsonProperty("message_effect_id")
     private String messageEffectId;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to

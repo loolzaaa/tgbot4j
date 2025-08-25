@@ -118,4 +118,12 @@ public class ChatAdministratorRights {
      */
     @JsonProperty("can_manage_topics")
     private Boolean canManageTopics;
+
+    /**
+     * Optional. True, if the administrator can manage
+     * direct messages of the channel and decline suggested posts;
+     * for channels only
+     */
+    @JsonProperty("can_manage_direct_messages")
+    private Boolean canManageDirectMessages;
 }

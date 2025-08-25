@@ -58,6 +58,14 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Video to send. Pass a file_id as String to send a video
      * that exists on the Telegram servers (recommended),
      * pass an HTTP URL as a String for Telegram to get a video
@@ -193,6 +201,16 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
      */
     @JsonProperty("message_effect_id")
     private String messageEffectId;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @MultipartType(JSON)
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to
