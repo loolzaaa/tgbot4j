@@ -27,5 +27,5 @@ public class InputProfilePhotoStatic implements InputProfilePhoto {
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("photo")
-    private InputFile photo;
+    private String photo;
 }

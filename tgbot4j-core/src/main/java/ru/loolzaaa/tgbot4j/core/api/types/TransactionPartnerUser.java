@@ -48,7 +48,8 @@ public class TransactionPartnerUser implements TransactionPartner {
     private AffiliateInfo affiliate;
 
     /**
-     * Optional. Bot-specified invoice payload
+     * Optional. Bot-specified invoice payload.
+     * Can be available only for “invoice_payment” transactions.
      */
     @JsonProperty("invoice_payload")
     private String invoicePayload;
@@ -62,13 +63,14 @@ public class TransactionPartnerUser implements TransactionPartner {
 
     /**
      * Optional. Information about the paid media
-     * bought by the user
+     * bought by the user; for “paid_media_payment” transactions only
      */
     @JsonProperty("paid_media")
     private List<PaidMedia> paidMedia;
 
     /**
-     * Optional. Bot-specified paid media payload
+     * Optional. Bot-specified paid media payload.
+     * Can be available only for “paid_media_payment” transactions.
      */
     @JsonProperty("paid_media_payload")
     private String paidMediaPayload;

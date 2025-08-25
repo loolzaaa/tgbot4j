@@ -58,7 +58,7 @@ public class SendPaidMedia implements TelegramMethod<Message> {
 
     /**
      * The number of Telegram Stars that must be paid
-     * to buy access to the media; 1-2500
+     * to buy access to the media; 1-10000
      */
     @Required
     @JsonProperty("star_count")

@@ -11,7 +11,6 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.InlineKeyboardMarkup;
 import ru.loolzaaa.tgbot4j.core.api.types.InputChecklist;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
-import ru.loolzaaa.tgbot4j.core.api.types.ReplyParameters;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
@@ -52,13 +51,6 @@ public class EditMessageChecklist implements TelegramMethod<Message> {
     @Required
     @JsonProperty("checklist")
     private InputChecklist checklist;
-
-    /**
-     * A JSON-serialized object for description
-     * of the message to reply to
-     */
-    @JsonProperty("reply_parameters")
-    private ReplyParameters replyParameters;
 
     /**
      * A JSON-serialized object for an inline keyboard

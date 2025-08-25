@@ -38,7 +38,6 @@ public class SetUserEmojiStatus implements TelegramMethod<Boolean> {
     /**
      * Expiration date of the emoji status, if any
      */
-    @Required
     @JsonProperty("emoji_status_expiration_date")
     private Integer emojiStatusExpirationDate;
 

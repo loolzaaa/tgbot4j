@@ -50,7 +50,7 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
      * with a thumbnail up to 32 kilobytes in size
      * (see <a href="https://core.telegram.org/stickers#animation-requirements">https://core.telegram.org/stickers#animation-requirements</a>
      * for animated sticker technical requirements),
-     * or a <b>WEBM</b> video with the thumbnail up to 32 kilobytes in size;
+     * or a <b>.WEBM</b> video with the thumbnail up to 32 kilobytes in size;
      * see <a href="https://core.telegram.org/stickers#video-requirements">https://core.telegram.org/stickers#video-requirements</a>
      * for video sticker technical requirements.
      * Pass a file_id as a String to send a file that already exists
@@ -69,7 +69,7 @@ public class SetStickerSetThumbnail implements TelegramMultipartMethod<Boolean> 
     /**
      * Format of the added sticker, must be one of “static”
      * for a <b>.WEBP</b> or <b>.PNG</b> image, “animated”
-     * for a <b>.TGS</b> animation, “video” for a <b>WEBM</b> video
+     * for a <b>.TGS</b> animation, “video” for a <b>.WEBM</b> video
      */
     @Required
     @JsonProperty("format")

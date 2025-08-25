@@ -35,14 +35,14 @@ public class ReadBusinessMessage implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Unique identifier of the message to mark as read
      */
     @Required
     @JsonProperty("message_id")
-    private String messageId;
+    private Integer messageId;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

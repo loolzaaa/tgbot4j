@@ -22,7 +22,8 @@ public class ChatAdministratorRights {
     /**
      * True, if the administrator can access the chat event log,
      * boost list in channels, see channel members, report spam messages,
-     * see anonymous administrators in supergroups and ignore slow mode.
+     * see anonymous administrators in supergroups and ignore slow mode,
+     * and send messages to the chat without paying Telegram Stars.
      * Implied by any other administrator privilege
      */
     @JsonProperty("can_manage_chat")
@@ -71,7 +72,8 @@ public class ChatAdministratorRights {
 
     /**
      * Optional. True, if the administrator can post messages
-     * in the channel, or access channel statistics; channels only
+     * in the channel, approve suggested posts,
+     * or access channel statistics; channels only
      */
     @JsonProperty("can_post_messages")
     private Boolean canPostMessages;

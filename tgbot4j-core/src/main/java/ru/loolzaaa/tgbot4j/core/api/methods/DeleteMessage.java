@@ -21,7 +21,8 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
  *     <li>Bots can delete incoming messages in private chats.</li>
  *     <li>Bots granted can_post_messages permissions can delete outgoing messages in channels.</li>
  *     <li>If the bot is an administrator of a group, it can delete any message there.</li>
- *     <li>If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.</li>
+ *     <li>If the bot has can_delete_messages administrator right in a supergroup or a channel, it can delete any message there.</li>
+ *     <li>If the bot has can_manage_direct_messages administrator right in a channel, it can delete any message in the corresponding direct messages chat.</li>
  * </ul>
  * Returns True on success.
  */

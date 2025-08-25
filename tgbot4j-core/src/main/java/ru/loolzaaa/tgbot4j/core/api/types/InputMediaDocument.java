@@ -44,7 +44,7 @@ public class InputMediaDocument implements InputMedia {
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("thumbnail")
-    private InputFile thumbnail;
+    private String thumbnail;
 
     /**
      * Optional. Caption of the document to be sent,

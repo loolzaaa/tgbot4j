@@ -32,18 +32,16 @@ public class DeclineSuggestedPost implements TelegramMethod<Boolean> {
     /**
      * Identifier of a suggested post message to approve
      */
+    @Required
     @JsonProperty("message_id")
     private Integer messageId;
 
     /**
-     * Point in time (Unix timestamp) when the post is expected
-     * to be published; omit if the date has already been specified
-     * when the suggested post was created. If specified,
-     * then the date must be not more than 2678400 seconds (30 days)
-     * in the future
+     * Comment for the creator of the suggested post;
+     * 0-128 characters
      */
-    @JsonProperty("send_date")
-    private Integer sendDate;
+    @JsonProperty("comment")
+    private String comment;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
@@ -57,6 +55,9 @@ public class DeclineSuggestedPost implements TelegramMethod<Boolean> {
         }
         if (messageId == null) {
             throw new ApiValidationException("Message Id parameter can't be null", this);
+        }
+        if (comment != null && comment.length() > 128) {
+            throw new ApiValidationException("Comment parameter must not exceed 128", this);
         }
     }
 }

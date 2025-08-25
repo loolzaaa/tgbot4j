@@ -65,8 +65,8 @@ public class InlineKeyboardButton implements Validated {
      * and insert the bot's username and the specified inline query
      * in the input field. May be empty, in which case
      * just the bot's username will be inserted.
-     * Not supported for messages sent on behalf
-     * of a Telegram Business account.
+     * Not supported for messages sent in channel direct messages chats
+     * and on behalf of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query")
     private String switchInlineQuery;
@@ -80,8 +80,8 @@ public class InlineKeyboardButton implements Validated {
      * in inline mode in the same chat - good for selecting
      * something from multiple options.
      * <p>
-     * Not supported for messages sent on behalf
-     * of a Telegram Business account.
+     * Not supported for messages sent in channel direct messages chats
+     * and on behalf of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query_current_chat")
     private String switchInlineQueryCurrentChat;
@@ -92,8 +92,8 @@ public class InlineKeyboardButton implements Validated {
      * open that chat and insert the bot's username
      * and the specified inline query in the input field
      * <p>
-     * Not supported for messages sent on behalf
-     * of a Telegram Business account.
+     * Not supported for messages sent in channel direct messages chats
+     * and on behalf of a Telegram Business account.
      */
     @JsonProperty("switch_inline_query_chosen_chat")
     private SwitchInlineQueryChosenChat switchInlineQueryChosenChat;

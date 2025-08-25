@@ -44,7 +44,7 @@ public class InputMediaVideo implements InputMedia {
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("thumbnail")
-    private InputFile thumbnail;
+    private String thumbnail;
 
     /**
      * Optional. Cover for the video in the message. Pass a file_id
@@ -55,7 +55,7 @@ public class InputMediaVideo implements InputMedia {
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("cover")
-    private InputFile cover;
+    private String cover;
 
     /**
      * Optional. Start timestamp for the video in the message

@@ -26,8 +26,8 @@ public class InputProfilePhotoAnimated implements InputProfilePhoto {
      * was uploaded using multipart/form-data under <file_attach_name>.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
-    @JsonProperty("photo")
-    private InputFile photo;
+    @JsonProperty("animation")
+    private String animation;
 
     /**
      * Optional. Timestamp in seconds of the frame

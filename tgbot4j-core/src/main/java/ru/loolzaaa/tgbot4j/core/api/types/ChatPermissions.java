@@ -58,7 +58,7 @@ public class ChatPermissions {
     private Boolean canSendVoiceNotes;
 
     /**
-     * Optional. True, if the user is allowed to send polls
+     * Optional. True, if the user is allowed to send polls and checklists
      */
     @JsonProperty("can_send_polls")
     private Boolean canSendPolls;

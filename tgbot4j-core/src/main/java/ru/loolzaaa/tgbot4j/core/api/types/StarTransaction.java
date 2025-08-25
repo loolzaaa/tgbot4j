@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * Describes a Telegram Star transaction.
+ * Note that if the buyer initiates a chargeback with the payment
+ * provider from whom they acquired Stars (e.g., Apple, Google)
+ * following this transaction, the refunded Stars will be deducted
+ * from the bot's balance. This is outside of Telegram's control.
  */
 
 @Data
@@ -24,7 +28,7 @@ public class StarTransaction {
     private String id;
 
     /**
-     * Number of Telegram Stars transferred by the transaction
+     * Integer amount of Telegram Stars transferred by the transaction
      */
     @JsonProperty("amount")
     private Integer amount;

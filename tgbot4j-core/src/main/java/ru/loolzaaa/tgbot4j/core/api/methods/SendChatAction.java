@@ -38,8 +38,9 @@ public class SendChatAction implements TelegramMethod<Boolean> {
 
     /**
      * Unique identifier for the target chat
-     * or username of the target channel
-     * (in the format {@code @channelusername})
+     * or username of the target supergroup
+     * (in the format {@code @supergroupusername}).
+     * Channel chats and channel direct messages chats aren't supported.
      */
     @Required
     @JsonProperty("chat_id")

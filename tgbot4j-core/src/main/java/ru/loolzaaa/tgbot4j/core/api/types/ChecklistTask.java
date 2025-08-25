@@ -38,7 +38,7 @@ public class ChecklistTask {
      * omitted if the task wasn't completed
      */
     @JsonProperty("completed_by_user")
-    private User compeltedByUser;
+    private User completedByUser;
 
     /**
      * Optional. Point in time (Unix timestamp) when the task

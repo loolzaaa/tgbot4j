@@ -66,7 +66,7 @@ public class GetUpdates implements TelegramMethod<List<Update>> {
      * If not specified, the previous setting will be used.
      * <p>
      * Please note that this parameter doesn't affect updates
-     * created before the call to the getUpdates,
+     * created before the call to getUpdates,
      * so unwanted updates may be received
      * for a short period of time.
      */

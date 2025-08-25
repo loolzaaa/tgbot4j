@@ -49,7 +49,7 @@ public class CreateChatSubscriptionInviteLink implements TelegramMethod<ChatInvi
     /**
      * The amount of Telegram Stars a user must pay initially
      * and after each subsequent subscription period
-     * to be a member of the chat; 1-2500
+     * to be a member of the chat; 1-10000
      */
     @Required
     @JsonProperty("subscription_price")
@@ -77,8 +77,8 @@ public class CreateChatSubscriptionInviteLink implements TelegramMethod<ChatInvi
         if (subscriptionPeriod != 2592000) {
             throw new ApiValidationException("SubscriptionPeriod parameter should be exact 2592000", this);
         }
-        if (subscriptionPrice < 1 || subscriptionPrice > 2500) {
-            throw new ApiValidationException("SubscriptionPrice parameter should be from 1 to 2500", this);
+        if (subscriptionPrice < 1 || subscriptionPrice > 10000) {
+            throw new ApiValidationException("SubscriptionPrice parameter should be from 1 to 10000", this);
         }
     }
 }

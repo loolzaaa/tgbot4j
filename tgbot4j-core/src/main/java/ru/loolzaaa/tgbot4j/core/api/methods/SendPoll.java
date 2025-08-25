@@ -32,7 +32,8 @@ public class SendPoll implements TelegramMethod<Message> {
     /**
      * Unique identifier for the target chat
      * or username of the target channel
-     * (in the format {@code @channelusername})
+     * (in the format {@code @channelusername}).
+     * Polls can't be sent to channel direct messages chats.
      */
     @Required
     @JsonProperty("chat_id")
@@ -70,7 +71,7 @@ public class SendPoll implements TelegramMethod<Message> {
     private List<MessageEntity> questionEntities;
 
     /**
-     * A JSON-serialized list of 2-10 answer options
+     * A JSON-serialized list of 2-12 answer options
      */
     @Required
     @JsonProperty("options")
@@ -212,7 +213,7 @@ public class SendPoll implements TelegramMethod<Message> {
         if (question.length() > 300) {
             throw new ApiValidationException("Question parameter must be in 1..300 range", this);
         }
-        if (options.size() < 2 || options.size() > 10) {
+        if (options.size() < 2 || options.size() > 12) {
             throw new ApiValidationException("Options size parameter must be in 2..10 range", this);
         }
         if (closeDate != null && openPeriod != null) {

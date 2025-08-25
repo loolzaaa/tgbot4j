@@ -33,7 +33,7 @@ public class InlineQueryResultMpeg4Gif implements InlineQueryResult {
     private String id;
 
     /**
-     * A valid URL for the MPEG4 file. File size must not exceed 1MB
+     * A valid URL for the MPEG4 file
      */
     @JsonProperty("mpeg4_url")
     private String mpeg4Url;

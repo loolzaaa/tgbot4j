@@ -2,7 +2,6 @@ package ru.loolzaaa.tgbot4j.core.api.methods;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
@@ -16,7 +15,7 @@ import ru.loolzaaa.tgbot4j.core.api.types.StarAmount;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class GetMyStarBalance implements TelegramMethod<StarAmount> {
     @Override
     public StarAmount determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

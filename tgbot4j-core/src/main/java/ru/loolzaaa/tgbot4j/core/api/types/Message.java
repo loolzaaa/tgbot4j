@@ -123,7 +123,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. For replies, the original message.
-     * Note that the Message object in this field will
+     * Note that the {@link Message} object in this field will
      * not contain further reply_to_message fields
      * even if it itself is a reply.
      */
@@ -483,7 +483,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Specified message was pinned.
-     * Note that the Message object in this field
+     * Note that the {@link Message} object in this field
      * will not contain further reply_to_message fields
      * even if it itself is a reply.
      */
@@ -600,7 +600,7 @@ public class Message implements MaybeInaccessibleMessage {
      * in the corresponding direct messages chat
      * of a channel has changed
      */
-    @JsonProperty("direct_message_price_changed ")
+    @JsonProperty("direct_message_price_changed")
     private DirectMessagePriceChanged directMessagePriceChanged;
 
     /**
@@ -674,7 +674,7 @@ public class Message implements MaybeInaccessibleMessage {
     /**
      * Optional. Service message: a suggested post was approved
      */
-    @JsonProperty("suggested_post_approved ")
+    @JsonProperty("suggested_post_approved")
     private SuggestedPostApproved suggestedPostApproved;
 
     /**

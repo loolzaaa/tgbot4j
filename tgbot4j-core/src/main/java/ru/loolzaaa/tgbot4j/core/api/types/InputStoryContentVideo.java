@@ -30,7 +30,7 @@ public class InputStoryContentVideo implements InputStoryContent {
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("video")
-    private InputFile video;
+    private String video;
 
     /**
      * Optional. Precise duration of the video in seconds; 0-60
