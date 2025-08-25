@@ -59,6 +59,12 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private Integer messageId;
 
     /**
+     * New start timestamp for the copied video in the message
+     */
+    @JsonProperty("video_start_timestamp")
+    private Integer videoStartTimestamp;
+
+    /**
      * New caption for media, 0-1024 characters after entities parsing.
      * If not specified, the original caption is kept
      */

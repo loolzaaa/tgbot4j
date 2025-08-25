@@ -45,6 +45,12 @@ public class ForwardMessage implements TelegramMethod<Message> {
     private String fromChatId;
 
     /**
+     * New start timestamp for the forwarded video in the message
+     */
+    @JsonProperty("video_start_timestamp")
+    private Integer videoStartTimestamp;
+
+    /**
      * Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>.
      * Users will receive a notification with no sound.
      */
