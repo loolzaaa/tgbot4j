@@ -45,11 +45,10 @@ public class BusinessConnection {
     private Integer date;
 
     /**
-     * True, if the bot can act on behalf of the business account
-     * in chats that were active in the last 24 hours
+     * Optional. Rights of the business bot
      */
-    @JsonProperty("can_reply")
-    private Boolean canReply;
+    @JsonProperty("rights")
+    private BusinessBotRights rights;
 
     /**
      * True, if the connection is active

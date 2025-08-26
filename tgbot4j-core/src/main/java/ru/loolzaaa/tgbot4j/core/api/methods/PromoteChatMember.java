@@ -46,7 +46,8 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
     /**
      * Pass True if the administrator can access the chat event log, boost list in channels,
      * see channel members, report spam messages, see anonymous administrators
-     * in supergroups and ignore slow mode.
+     * in supergroups and ignore slow mode,
+     * and send messages to the chat without paying Telegram Stars.
      * Implied by any other administrator privilege
      */
     @JsonProperty("can_manage_chat")
@@ -95,7 +96,7 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
 
     /**
      * Pass True if the administrator can post messages in the channel,
-     * or access channel statistics; channels only
+     * approve suggested posts or access channel statistics; channels only
      */
     @JsonProperty("can_post_messages")
     private Boolean canPostMessages;
@@ -141,6 +142,14 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
      */
     @JsonProperty("can_manage_topics")
     private Boolean canManageTopics;
+
+    /**
+     * Pass True if the administrator can manage direct messages
+     * within the channel and decline suggested posts;
+     * for channels only
+     */
+    @JsonProperty("can_manage_direct_messages")
+    private Boolean canManageDirectMessages;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

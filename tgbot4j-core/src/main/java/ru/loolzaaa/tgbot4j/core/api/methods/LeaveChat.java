@@ -21,7 +21,8 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 public class LeaveChat implements TelegramMethod<Boolean> {
     /**
      * Unique identifier for the target group or username
-     * of the target supergroup or channel (in the format {@code @channelusername})
+     * of the target supergroup or channel (in the format {@code @channelusername}).
+     * Channel direct messages chats aren't supported; leave the corresponding channel instead.
      */
     @Required
     @JsonProperty("chat_id")

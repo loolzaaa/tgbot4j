@@ -36,6 +36,13 @@ public class Message implements MaybeInaccessibleMessage {
     private Integer messageThreadId;
 
     /**
+     * Optional. Information about the direct messages chat topic
+     * that contains the message
+     */
+    @JsonProperty("direct_messages_topic")
+    private DirectMessagesTopic directMessagesTopic;
+
+    /**
      * Optional. Sender of the message; may be empty for messages sent to channels.
      * For backward compatibility, if the message was sent on behalf of a chat,
      * the field contains a fake sender user in non-channel chats
@@ -116,7 +123,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. For replies, the original message.
-     * Note that the Message object in this field will
+     * Note that the {@link Message} object in this field will
      * not contain further reply_to_message fields
      * even if it itself is a reply.
      */
@@ -146,6 +153,13 @@ public class Message implements MaybeInaccessibleMessage {
     private Story replyToStory;
 
     /**
+     * Optional. Identifier of the specific checklist task
+     * that is being replied to
+     */
+    @JsonProperty("reply_to_checklist_task_id")
+    private Integer replyToChecklistTaskId;
+
+    /**
      * Optional. Bot through which the message was sent
      */
     @JsonProperty("via_bot")
@@ -172,6 +186,14 @@ public class Message implements MaybeInaccessibleMessage {
     private Boolean isFromOffline;
 
     /**
+     * Optional. True, if the message is a paid post.
+     * Note that such posts must not be deleted
+     * for 24 hours to receive the payment and can't be edited.
+     */
+    @JsonProperty("is_paid_post")
+    private Boolean isPaidPost;
+
+    /**
      * Optional. The unique identifier of a media message group
      * this message belongs to
      */
@@ -185,6 +207,13 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("author_signature")
     private String authorSignature;
+
+    /**
+     * Optional. The number of Telegram Stars that
+     * were paid by the sender of the message to send it
+     */
+    @JsonProperty("paid_star_count")
+    private Integer paidStarCount;
 
     /**
      * Optional. For text messages, the actual UTF-8 text
@@ -208,6 +237,15 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("link_preview_options")
     private LinkPreviewOptions linkPreviewOptions;
+
+    /**
+     * Optional. Information about suggested post parameters
+     * if the message is a suggested post in a channel direct messages chat.
+     * If the message is an approved or declined suggested post,
+     * then it can't be edited.
+     */
+    @JsonProperty("suggested_post_info")
+    private SuggestedPostInfo suggestedPostInfo;
 
     /**
      * Optional. Unique identifier of the message effect
@@ -305,6 +343,12 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("has_media_spoiler")
     private Boolean hasMediaSpoiler;
+
+    /**
+     * Optional. Message is a checklist
+     */
+    @JsonProperty("checklist")
+    private Checklist checklist;
 
     /**
      * Optional. Message is a shared contact, information about the contact
@@ -439,7 +483,7 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Specified message was pinned.
-     * Note that the Message object in this field
+     * Note that the {@link Message} object in this field
      * will not contain further reply_to_message fields
      * even if it itself is a reply.
      */
@@ -481,6 +525,18 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("chat_shared")
     private ChatShared chatShared;
+
+    /**
+     * Optional. Service message: a regular gift was sent or received
+     */
+    @JsonProperty("gift")
+    private GiftInfo gift;
+
+    /**
+     * Optional. Service message: a unique gift was sent or received
+     */
+    @JsonProperty("unique_gift")
+    private UniqueGiftInfo uniqueGift;
 
     /**
      * Optional. The domain name of the website on which
@@ -525,6 +581,27 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("chat_background_set")
     private ChatBackground chatBackgroundSet;
+
+    /**
+     * Optional. Service message: some tasks in a checklist
+     * were marked as done or not done
+     */
+    @JsonProperty("checklist_tasks_done")
+    private ChecklistTasksDone checklistTasksDone;
+
+    /**
+     * Optional. Service message: tasks were added to a checklist
+     */
+    @JsonProperty("checklist_tasks_added")
+    private ChecklistTasksAdded checklistTasksAdded;
+
+    /**
+     * Optional. Service message: the price for paid messages
+     * in the corresponding direct messages chat
+     * of a channel has changed
+     */
+    @JsonProperty("direct_message_price_changed")
+    private DirectMessagePriceChanged directMessagePriceChanged;
 
     /**
      * Optional. Service message: forum topic created
@@ -586,6 +663,43 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("giveaway_completed")
     private GiveawayCompleted giveawayCompleted;
+
+    /**
+     * Optional. Service message: the price for paid messages
+     * has changed in the chat
+     */
+    @JsonProperty("paid_message_price_changed")
+    private PaidMessagePriceChanged paidMessagePriceChanged;
+
+    /**
+     * Optional. Service message: a suggested post was approved
+     */
+    @JsonProperty("suggested_post_approved")
+    private SuggestedPostApproved suggestedPostApproved;
+
+    /**
+     * Optional. Service message: approval of a suggested post has failed
+     */
+    @JsonProperty("suggested_post_approval_failed")
+    private SuggestedPostApprovalFailed suggestedPostApprovalFailed;
+
+    /**
+     * Optional. Service message: a suggested post was declined
+     */
+    @JsonProperty("suggested_post_declined")
+    private SuggestedPostDeclined suggestedPostDeclined;
+
+    /**
+     * Optional. Service message: payment for a suggested post was received
+     */
+    @JsonProperty("suggested_post_paid")
+    private SuggestedPostPaid suggestedPostPaid;
+
+    /**
+     * Optional. Service message: payment for a suggested post was refunded
+     */
+    @JsonProperty("suggested_post_refunded")
+    private SuggestedPostRefunded suggestedPostRefunded;
 
     /**
      * Optional. Service message: video chat scheduled

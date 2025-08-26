@@ -19,19 +19,18 @@ public class InputSticker {
      * The added sticker. Pass a file_id as a String to send a file
      * that already exists on the Telegram servers,
      * pass an HTTP URL as a String for Telegram to get a file from the Internet,
-     * upload a new one using multipart/form-data,
-     * or pass “attach://<file_attach_name>” to upload a new one
+     * or pass “attach://<file_attach_name>” to upload a new file
      * using multipart/form-data under <file_attach_name> name.
      * Animated and video stickers can't be uploaded via HTTP URL.
      * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
      */
     @JsonProperty("sticker")
-    private InputFile sticker;
+    private String sticker;
 
     /**
      * Format of the added sticker, must be one of “static”
      * for a <b>.WEBP</b> or <b>.PNG</b> image, “animated”
-     * for a <b>.TGS</b> animation, “video” for a <b>WEBM</b> video
+     * for a <b>.TGS</b> animation, “video” for a <b>.WEBM</b> video
      */
     @JsonProperty("format")
     private String format;

@@ -30,7 +30,8 @@ public class ReplyParameters {
      * for the chat or username of the channel
      * (in the format {@code @channelusername}).
      * Not supported for messages sent on behalf
-     * of a business account.
+     * of a business account and messages from channel
+     * direct messages chats.
      */
     @JsonProperty("chat_id")
     private String chatId;
@@ -79,4 +80,11 @@ public class ReplyParameters {
      */
     @JsonProperty("quote_position")
     private Integer quotePosition;
+
+    /**
+     * Optional. Identifier of the specific checklist task
+     * to be replied to
+     */
+    @JsonProperty("checklist_task_id")
+    private Integer checklistTaskId;
 }

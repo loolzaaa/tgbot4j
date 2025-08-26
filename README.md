@@ -7,13 +7,13 @@
 <dependency>
     <groupId>ru.loolzaaa.tgbot4j</groupId>
     <artifactId>tgbot4j</artifactId>
-    <version>0.3.3</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```
-implementation("ru.loolzaaa.tgbot4j:tgbot4j:0.3.3")
+implementation("ru.loolzaaa.tgbot4j:tgbot4j:0.4.0")
 ```
 
 ## Usage

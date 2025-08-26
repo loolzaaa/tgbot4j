@@ -58,6 +58,14 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Video to send. Pass a file_id as String to send a video
      * that exists on the Telegram servers (recommended),
      * pass an HTTP URL as a String for Telegram to get a video
@@ -103,6 +111,24 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
     @MultipartType(BINARY)
     @JsonProperty("thumbnail")
     private InputFile thumbnail;
+
+    /**
+     * Cover for the video in the message. Pass a file_id
+     * to send a file that exists on the Telegram servers (recommended),
+     * pass an HTTP URL for Telegram to get a file from the Internet,
+     * or pass “attach://<file_attach_name>” to upload a new one
+     * using multipart/form-data under <file_attach_name> name.
+     * <a href="https://core.telegram.org/bots/api#sending-files">More information on Sending Files »</a>
+     */
+    @MultipartType(BINARY)
+    @JsonProperty("cover")
+    private InputFile cover;
+
+    /**
+     * Start timestamp for the video in the message
+     */
+    @JsonProperty("start_timestamp")
+    private Integer startTimestamp;
 
     /**
      * Video caption (may also be used when resending
@@ -175,6 +201,16 @@ public class SendVideo implements TelegramMultipartMethod<Message> {
      */
     @JsonProperty("message_effect_id")
     private String messageEffectId;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @MultipartType(JSON)
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to

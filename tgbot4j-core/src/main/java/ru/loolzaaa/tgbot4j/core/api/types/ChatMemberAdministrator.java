@@ -41,7 +41,8 @@ public class ChatMemberAdministrator implements ChatMember {
     /**
      * True, if the administrator can access the chat event log,
      * boost list in channels, see channel members, report spam messages,
-     * see anonymous administrators in supergroups and ignore slow mode.
+     * see anonymous administrators in supergroups and ignore slow mode,
+     * and send messages to the chat without paying Telegram Stars.
      * Implied by any other administrator privilege
      */
     @JsonProperty("can_manage_chat")
@@ -90,7 +91,8 @@ public class ChatMemberAdministrator implements ChatMember {
 
     /**
      * Optional. True, if the administrator can post messages
-     * in the channel, or access channel statistics; channels only
+     * in the channel, approve suggested posts,
+     * or access channel statistics; channels only
      */
     @JsonProperty("can_post_messages")
     private Boolean canPostMessages;
@@ -137,6 +139,14 @@ public class ChatMemberAdministrator implements ChatMember {
      */
     @JsonProperty("can_manage_topics")
     private Boolean canManageTopics;
+
+    /**
+     * Optional. True, if the administrator can manage
+     * direct messages of the channel and decline suggested posts;
+     * for channels only
+     */
+    @JsonProperty("can_manage_direct_messages")
+    private Boolean canManageDirectMessages;
 
     /**
      * Optional. Custom title for this user

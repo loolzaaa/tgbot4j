@@ -27,8 +27,10 @@ import static ru.loolzaaa.tgbot4j.core.api.MultipartType.Type.JSON;
  * Whenever there is an update for the bot,
  * we will send an HTTPS POST request to the specified URL,
  * containing a JSON-serialized {@link Update}.
- * In case of an unsuccessful request,
- * we will give up after a reasonable amount of attempts.
+ * In case of an unsuccessful request
+ * (a request with response <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">HTTP status code</a>
+ * different from <code>2XY</code>),
+ * we will repeat the request and give up after a reasonable amount of attempts.
  * Returns True on success.
  * <p>
  * Notes:

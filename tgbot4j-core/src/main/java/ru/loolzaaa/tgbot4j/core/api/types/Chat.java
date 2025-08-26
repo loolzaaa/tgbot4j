@@ -63,4 +63,11 @@ public class Chat {
      */
     @JsonProperty("is_forum")
     private Boolean isForum;
+
+    /**
+     * Optional. True, if the chat is the direct messages chat
+     * of a channel
+     */
+    @JsonProperty("is_direct_messages")
+    private Boolean isDirectMessages;
 }

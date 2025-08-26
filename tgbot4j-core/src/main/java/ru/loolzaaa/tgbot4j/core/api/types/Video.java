@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * This object represents a video file.
  */
@@ -50,6 +52,20 @@ public class Video {
      */
     @JsonProperty("thumbnail")
     private PhotoSize thumbnail;
+
+    /**
+     * Optional. Available sizes of the cover of the video
+     * in the message
+     */
+    @JsonProperty("cover")
+    private List<PhotoSize> cover;
+
+    /**
+     * Optional. Timestamp in seconds from which the video
+     * will play in the message
+     */
+    @JsonProperty("start_timestamp")
+    private Integer startTimestamp;
 
     /**
      * Optional. Original filename as defined by the sender

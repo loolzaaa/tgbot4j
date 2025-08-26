@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.Message;
+import ru.loolzaaa.tgbot4j.core.api.types.SuggestedPostParameters;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
@@ -37,12 +38,26 @@ public class ForwardMessage implements TelegramMethod<Message> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be forwarded; required
+     * if the message is forwarded to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Unique identifier for the chat where the original message
      * was sent (or channel username in the format {@code @channelusername})
      */
     @Required
     @JsonProperty("from_chat_id")
     private String fromChatId;
+
+    /**
+     * New start timestamp for the forwarded video in the message
+     */
+    @JsonProperty("video_start_timestamp")
+    private Integer videoStartTimestamp;
 
     /**
      * Sends the message <a href="https://telegram.org/blog/channels-2-0#silent-messages">silently</a>.
@@ -57,6 +72,13 @@ public class ForwardMessage implements TelegramMethod<Message> {
      */
     @JsonProperty("protect_content")
     private Boolean protectContent;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only
+     */
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Message identifier in the chat specified in from_chat_id

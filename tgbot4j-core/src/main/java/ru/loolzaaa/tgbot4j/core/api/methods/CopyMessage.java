@@ -44,6 +44,14 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private Integer messageThreadId;
 
     /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * Unique identifier for the chat where the original message
      * was sent (or channel username in the format {@code @channelusername})
      */
@@ -57,6 +65,12 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     @Required
     @JsonProperty("message_id")
     private Integer messageId;
+
+    /**
+     * New start timestamp for the copied video in the message
+     */
+    @JsonProperty("video_start_timestamp")
+    private Integer videoStartTimestamp;
 
     /**
      * New caption for media, 0-1024 characters after entities parsing.
@@ -107,6 +121,15 @@ public class CopyMessage implements TelegramMethod<MessageId> {
      */
     @JsonProperty("allow_paid_broadcast")
     private Boolean allowPaidBroadcast;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to

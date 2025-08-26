@@ -19,7 +19,8 @@ import java.util.List;
  * Use this method to send a group of photos, videos,
  * documents or audios as an album. Documents and audio files
  * can be only grouped in an album with messages of the same type.
- * On success, an array of {@link Message} that were sent is returned.
+ * On success, an array of {@link Message} objects that
+ * were sent is returned.
  */
 
 @Data
@@ -49,6 +50,14 @@ public class SendMediaGroup implements TelegramMethod<List<Message>> {
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
+
+    /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
 
     /**
      * A JSON-serialized array describing messages

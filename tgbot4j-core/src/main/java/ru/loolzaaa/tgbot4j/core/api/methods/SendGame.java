@@ -29,7 +29,9 @@ public class SendGame implements TelegramMethod<Message> {
     private String businessConnectionId;
 
     /**
-     * Unique identifier for the target chat
+     * Unique identifier for the target chat.
+     * Games can't be sent to channel direct messages chats
+     * and channel chats.
      */
     @Required
     @JsonProperty("chat_id")

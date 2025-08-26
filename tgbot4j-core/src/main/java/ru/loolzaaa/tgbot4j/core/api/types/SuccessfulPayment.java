@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 /**
  * This object contains basic information about a successful payment.
+ * Note that if the buyer initiates a chargeback with the relevant
+ * payment provider following this transaction, the funds
+ * may be debited from your balance.
+ * This is outside of Telegram's control.
  */
 
 @Data
@@ -33,6 +37,27 @@ public class SuccessfulPayment {
      */
     @JsonProperty("invoice_payload")
     private String invoicePayload;
+
+    /**
+     * Optional. Expiration date of the subscription,
+     * in Unix time; for recurring payments only
+     */
+    @JsonProperty("subscription_expiration_date")
+    private Integer subscriptionExpirationDate;
+
+    /**
+     * Optional. True, if the payment is a recurring payment
+     * for a subscription
+     */
+    @JsonProperty("is_recurring")
+    private Boolean isRecurring;
+
+    /**
+     * Optional. True, if the payment is the first payment
+     * for a subscription
+     */
+    @JsonProperty("is_first_recurring")
+    private Boolean isFirstRecurring;
 
     /**
      * Optional. Identifier of the shipping option chosen by the user

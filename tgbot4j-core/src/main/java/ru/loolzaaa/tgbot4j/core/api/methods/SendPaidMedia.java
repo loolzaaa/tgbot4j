@@ -42,8 +42,23 @@ public class SendPaidMedia implements TelegramMethod<Message> {
     private String chatId;
 
     /**
+     * Unique identifier for the target message thread (topic)
+     * of the forum; for forum supergroups only
+     */
+    @JsonProperty("message_thread_id")
+    private Integer messageThreadId;
+
+    /**
+     * Identifier of the direct messages topic
+     * to which the message will be sent; required
+     * if the message is sent to a direct messages chat
+     */
+    @JsonProperty("direct_messages_topic_id")
+    private Integer directMessagesTopicId;
+
+    /**
      * The number of Telegram Stars that must be paid
-     * to buy access to the media; 1-2500
+     * to buy access to the media; 1-10000
      */
     @Required
     @JsonProperty("star_count")
@@ -114,6 +129,15 @@ public class SendPaidMedia implements TelegramMethod<Message> {
      */
     @JsonProperty("allow_paid_broadcast")
     private Boolean allowPaidBroadcast;
+
+    /**
+     * A JSON-serialized object containing the parameters
+     * of the suggested post to send; for direct messages chats only.
+     * If the message is sent as a reply to another suggested post,
+     * then that suggested post is automatically declined.
+     */
+    @JsonProperty("suggested_post_parameters")
+    private SuggestedPostParameters suggestedPostParameters;
 
     /**
      * Description of the message to reply to
