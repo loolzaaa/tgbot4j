@@ -149,6 +149,14 @@ public class ChatMemberAdministrator implements ChatMember {
     private Boolean canManageDirectMessages;
 
     /**
+     * Optional. True, if the administrator can edit the tags
+     * of regular members; for groups and supergroups only.
+     * If omitted defaults to the value of can_pin_messages.
+     */
+    @JsonProperty("can_manage_tags")
+    private Boolean canManageTags;
+
+    /**
      * Optional. Custom title for this user
      */
     @JsonProperty("custom_title")

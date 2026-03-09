@@ -21,6 +21,12 @@ public class ChatMemberMember implements ChatMember {
     private String status;
 
     /**
+     * Optional. Tag of the member
+     */
+    @JsonProperty("tag")
+    private String tag;
+
+    /**
      * Information about the user
      */
     @JsonProperty("user")

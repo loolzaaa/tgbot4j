@@ -151,6 +151,13 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
     @JsonProperty("can_manage_direct_messages")
     private Boolean canManageDirectMessages;
 
+    /**
+     * Pass True if the administrator can edit the tags
+     * of regular members; for groups and supergroups only
+     */
+    @JsonProperty("can_manage_tags")
+    private Boolean canManageTags;
+
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {
         return deserializeObjectResponse(mapper, resultNode, Boolean.class);

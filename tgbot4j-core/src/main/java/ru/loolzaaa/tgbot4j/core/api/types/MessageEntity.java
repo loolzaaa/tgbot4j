@@ -26,7 +26,8 @@ public class MessageEntity {
      * “expandable_blockquote” (collapsed-by-default block quotation),
      * “code” (monowidth string), “pre” (monowidth block),
      * “text_link” (for clickable text URLs), “text_mention” (for users <a href="https://telegram.org/blog/edit#new-mentions">without usernames</a>),
-     * “custom_emoji” (for inline custom emoji stickers)
+     * “custom_emoji” (for inline custom emoji stickers),
+     * or “date_time” (for formatted date and time)
      */
     @JsonProperty("type")
     private String type;
@@ -70,4 +71,19 @@ public class MessageEntity {
      */
     @JsonProperty("custom_emoji_id")
     private String customEmojiId;
+
+    /**
+     * Optional. For “date_time” only, the Unix time
+     * associated with the entity
+     */
+    @JsonProperty("unix_time")
+    private Integer unixTime;
+
+    /**
+     * Optional. For “date_time” only, the string
+     * that defines the formatting of the date and time.
+     * See <a href="https://core.telegram.org/bots/api#date-time-entity-formatting">date-time entity formatting</a> for more details.
+     */
+    @JsonProperty("date_time_format")
+    private String dateTimeFormat;
 }
