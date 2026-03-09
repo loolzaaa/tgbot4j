@@ -99,6 +99,13 @@ public class User {
     private Boolean canConnectToBusiness;
 
     /**
+     * Optional. True, if the bot has forum topic mode enabled
+     * in private chats. Returned only in {@link GetMe}.
+     */
+    @JsonProperty("has_topics_enabled")
+    private Boolean hasTopicsEnabled;
+
+    /**
      * Optional. True, if the bot has a main Web App.
      * Returned only in {@link GetMe}.
      */

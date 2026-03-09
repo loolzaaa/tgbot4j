@@ -37,8 +37,9 @@ public class CopyMessage implements TelegramMethod<MessageId> {
     private String chatId;
 
     /**
-     * Unique identifier for the target message thread (topic) of the forum;
-     * for forum supergroups only
+     * Unique identifier for the target message thread (topic) of a forum;
+     * for forum supergroups and private chats of bots
+     * with forum topic mode enabled only
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
@@ -121,6 +122,13 @@ public class CopyMessage implements TelegramMethod<MessageId> {
      */
     @JsonProperty("allow_paid_broadcast")
     private Boolean allowPaidBroadcast;
+
+    /**
+     * Unique identifier of the message effect to be added
+     * to the message; only available when copying to private chats
+     */
+    @JsonProperty("message_effect_id")
+    private String messageEffectId;
 
     /**
      * A JSON-serialized object containing the parameters

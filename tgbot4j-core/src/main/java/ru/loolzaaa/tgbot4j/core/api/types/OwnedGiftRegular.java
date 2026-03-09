@@ -101,4 +101,19 @@ public class OwnedGiftRegular implements OwnedGift {
      */
     @JsonProperty("prepaid_upgrade_star_count")
     private Integer prepaidUpgradeStarCount;
+
+    /**
+     * Optional. True, if the gift's upgrade was purchased
+     * after the gift was sent; for gifts received on behalf
+     * of business accounts only
+     */
+    @JsonProperty("is_upgrade_separate")
+    private Boolean isUpgradeSeparate;
+
+    /**
+     * Optional. Unique number reserved for this gift when upgraded.
+     * See the number field in {@link UniqueGift}
+     */
+    @JsonProperty("unique_gift_number")
+    private Integer uniqueGiftNumber;
 }

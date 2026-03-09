@@ -41,6 +41,13 @@ public class ChecklistTask {
     private User completedByUser;
 
     /**
+     * Optional. Chat that completed the task;
+     * omitted if the task wasn't completed by a chat
+     */
+    @JsonProperty("completed_by_chat")
+    private Chat completedByChat;
+
+    /**
      * Optional. Point in time (Unix timestamp) when the task
      * was completed; 0 if the task wasn't completed
      */

@@ -6,38 +6,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.tgbot4j.core.api.Required;
 import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.api.types.OwnedGifts;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Returns the gifts received and owned by a managed business account.
- * Requires the can_view_gifts_and_stars business bot right.
+ * Returns the gifts owned by a chat.
  * Returns {@link OwnedGifts} on success.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
+public class GetChatGifts implements TelegramMethod<OwnedGifts> {
     /**
-     * Unique identifier of the business connection
+     * Unique identifier for the target chat or username
+     * of the target channel (in the format {@code @channelusername})
      */
-    @Required
-    @JsonProperty("business_connection_id")
-    private String businessConnectionId;
+    @JsonProperty("chat_id")
+    private String chatId;
 
     /**
-     * Pass True to exclude gifts that aren't saved
-     * to the account's profile page
+     * Pass True to exclude gifts that aren't saved to the chat's profile page.
+     * Always True, unless the bot has the can_post_messages
+     * administrator right in the channel.
      */
     @JsonProperty("exclude_unsaved")
     private Boolean excludeUnsaved;
 
     /**
-     * Pass True to exclude gifts that are saved
-     * to the account's profile page
+     * Pass True to exclude gifts that are saved to the chat's profile page.
+     * Always False, unless the bot has the can_post_messages
+     * administrator right in the channel.
      */
     @JsonProperty("exclude_saved")
     private Boolean excludeSaved;
@@ -64,17 +64,18 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
     private Boolean excludeLimitedNonUpgradable;
 
     /**
+     * Pass True to exclude gifts that were assigned
+     * from the TON blockchain and can't be resold
+     * or transferred in Telegram
+     */
+    @JsonProperty("exclude_from_blockchain")
+    private Boolean excludeFromBlockchain;
+
+    /**
      * Pass True to exclude unique gifts
      */
     @JsonProperty("exclude_unique")
     private Boolean excludeUnique;
-
-    /**
-     * Pass True to exclude gifts that were assigned from the TON blockchain
-     * and can't be resold or transferred in Telegram
-     */
-    @JsonProperty("exclude_from_blockchain")
-    private Boolean excludeFromBlockchain;
 
     /**
      * Pass True to sort results by gift price instead of send date.
@@ -85,15 +86,15 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
 
     /**
      * Offset of the first entry to return as received
-     * from the previous request; use empty string
+     * from the previous request; use an empty string
      * to get the first chunk of results
      */
     @JsonProperty("offset")
     private String offset;
 
     /**
-     * The maximum number of gifts to be returned; 1-100.
-     * Defaults to 100
+     * The maximum number of gifts to be returned;
+     * 1-100. Defaults to 100
      */
     @JsonProperty("limit")
     private Integer limit;
@@ -105,11 +106,11 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
 
     @Override
     public void validate() {
-        if (businessConnectionId == null) {
-            throw new ApiValidationException("Business Connection Id parameter can't be null", this);
+        if (chatId == null || chatId.isEmpty()) {
+            throw new ApiValidationException("Chat ID parameter can't be null or empty", this);
         }
         if (limit != null && (limit < 1 || limit > 100)) {
-            throw new ApiValidationException("Limit parameter must be in 1-100", this);
+            throw new ApiValidationException("Limit parameter must be in range 1-100", this);
         }
     }
 }

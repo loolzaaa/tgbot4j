@@ -30,7 +30,8 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Unique identifier of a message thread
-     * to which the message belongs; for supergroups only
+     * or forum topic to which the message belongs;
+     * for supergroups and private chats only
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
@@ -108,7 +109,8 @@ public class Message implements MaybeInaccessibleMessage {
     private MessageOrigin forwardOrigin;
 
     /**
-     * Optional. True, if the message is sent to a forum topic
+     * Optional. True, if the message is sent to a topic
+     * in a forum supergroup or a private chat with the bot
      */
     @JsonProperty("is_topic_message")
     private Boolean isTopicMessage;
@@ -537,6 +539,13 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("unique_gift")
     private UniqueGiftInfo uniqueGift;
+
+    /**
+     * Optional. Service message: upgrade of a gift
+     * was purchased after the gift was sent
+     */
+    @JsonProperty("gift_upgrade_sent")
+    private GiftInfo giftUpgradeSent;
 
     /**
      * Optional. The domain name of the website on which

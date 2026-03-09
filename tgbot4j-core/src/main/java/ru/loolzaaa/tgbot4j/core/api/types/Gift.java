@@ -40,6 +40,20 @@ public class Gift {
     private Integer upgradeStarCount;
 
     /**
+     * Optional. True, if the gift can only be purchased
+     * by Telegram Premium subscribers
+     */
+    @JsonProperty("is_premium")
+    private Boolean isPremium;
+
+    /**
+     * Optional. True, if the gift can be used (after being upgraded)
+     * to customize a user's appearance
+     */
+    @JsonProperty("has_colors")
+    private Boolean hasColors;
+
+    /**
      * Optional. The total number of the gifts of this type
      * that can be sent; for limited gifts only
      */
@@ -52,6 +66,33 @@ public class Gift {
      */
     @JsonProperty("remaining_count")
     private Integer remainingCount;
+
+    /**
+     * Optional. The total number of gifts of this type
+     * that can be sent by the bot; for limited gifts only
+     */
+    @JsonProperty("personal_total_count")
+    private Integer personalTotalCount;
+
+    /**
+     * Optional. The number of remaining gifts of this type
+     * that can be sent by the bot; for limited gifts only
+     */
+    @JsonProperty("personal_remaining_count")
+    private Integer personalRemainingCount;
+
+    /**
+     * Optional. Background of the gift
+     */
+    @JsonProperty("background")
+    private GiftBackground background;
+
+    /**
+     * Optional. The total number of different unique gifts
+     * that can be obtained by upgrading the gift
+     */
+    @JsonProperty("unique_gift_variant_count")
+    private Integer uniqueGiftVariantCount;
 
     /**
      * 	Optional. Information about the chat that published the gift
