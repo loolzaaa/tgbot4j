@@ -54,8 +54,8 @@ public class Gift {
     private Boolean hasColors;
 
     /**
-     * Optional. The total number of the gifts of this type
-     * that can be sent; for limited gifts only
+     * Optional. The total number of gifts of this type
+     * that can be sent by all users; for limited gifts only
      */
     @JsonProperty("total_count")
     private Integer totalCount;

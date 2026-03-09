@@ -27,7 +27,7 @@ public class UniqueGiftModel {
 
     /**
      * The number of unique gifts that receive this model
-     * for every 1000 gifts upgraded
+     * for every 1000 gift upgrades. Always 0 for crafted gifts.
      */
     @JsonProperty("rarity_per_mille")
     private Integer rarityPerMille;

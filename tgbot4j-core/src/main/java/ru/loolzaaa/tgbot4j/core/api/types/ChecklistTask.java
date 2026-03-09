@@ -35,7 +35,7 @@ public class ChecklistTask {
 
     /**
      * Optional. User that completed the task;
-     * omitted if the task wasn't completed
+     * omitted if the task wasn't completed by a user
      */
     @JsonProperty("completed_by_user")
     private User completedByUser;

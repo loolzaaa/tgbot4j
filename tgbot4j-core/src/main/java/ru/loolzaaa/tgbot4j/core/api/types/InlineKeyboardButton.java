@@ -10,8 +10,8 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * This object represents one button of an inline keyboard.
- * Exactly one of the optional fields must be used
- * to specify type of the button.
+ * Exactly one of the fields other than text, icon_custom_emoji_id,
+ * and style must be used to specify the type of the button.
  */
 
 @Data

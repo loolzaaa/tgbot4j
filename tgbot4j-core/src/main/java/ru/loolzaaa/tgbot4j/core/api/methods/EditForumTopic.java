@@ -11,10 +11,13 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to edit name and icon of a topic in a forum supergroup chat.
- * The bot must be an administrator in the chat for this to work
- * and must have the <i>can_manage_topics</i> administrator rights, unless it is the creator of the topic.
- * Returns True on success.
+ * Use this method to edit name and icon of a topic
+ * in a forum supergroup chat or a private chat with a user.
+ * In the case of a supergroup chat the bot must be an administrator
+ * in the chat for this to work and must have
+ * the <i>can_manage_topics</i> administrator rights,
+ * unless it is the creator of the topic.
+ * Returns <i>True</i> on success.
  */
 
 @Data

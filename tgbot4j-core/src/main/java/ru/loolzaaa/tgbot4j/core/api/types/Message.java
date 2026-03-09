@@ -203,8 +203,8 @@ public class Message implements MaybeInaccessibleMessage {
     private Boolean isPaidPost;
 
     /**
-     * Optional. The unique identifier of a media message group
-     * this message belongs to
+     * Optional. The unique identifier inside this chat
+     * of a media message group this message belongs to
      */
     @JsonProperty("media_group_id")
     private String mediaGroupId;

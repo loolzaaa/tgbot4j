@@ -11,10 +11,12 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to delete a forum topic along with all its messages in a forum supergroup chat.
- * The bot must be an administrator in the chat for this to work
- * and must have the <i>can_delete_messages</i> administrator rights.
- * Returns True on success.
+ * Use this method to delete a forum topic along
+ * with all its messages in a forum supergroup chat
+ * or a private chat with a user. In the case of a supergroup chat
+ * the bot must be an administrator in the chat
+ * for this to work and must have the <i>can_delete_messages</i> administrator rights.
+ * Returns <i>True</i> on success.
  */
 
 @Data

@@ -26,7 +26,7 @@ public class SendMessageDraft implements TelegramMethod<Boolean> {
      */
     @Required
     @JsonProperty("chat_id")
-    private String chatId;
+    private Integer chatId;
 
     /**
      * Unique identifier for the target message thread
@@ -38,6 +38,7 @@ public class SendMessageDraft implements TelegramMethod<Boolean> {
      * Unique identifier of the message draft; must be non-zero.
      * Changes of drafts with the same identifier are animated
      */
+    @Required
     @JsonProperty("draft_id")
     private Integer draftId;
 

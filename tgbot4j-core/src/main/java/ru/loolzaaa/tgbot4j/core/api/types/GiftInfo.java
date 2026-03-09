@@ -39,7 +39,7 @@ public class GiftInfo {
 
     /**
      * Optional. Number of Telegram Stars that were prepaid
-     * by the sender for the ability to upgrade the gift
+     * for the ability to upgrade the gift
      */
     @JsonProperty("prepaid_upgrade_star_count")
     private Integer prepaidUpgradeStarCount;

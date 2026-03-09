@@ -9,23 +9,10 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
  * This object represents one button of the reply keyboard.
- * At most one of the optional fields must be used
- * to specify type of the button.
- * For simple text buttons, String can be used
- * instead of this object to specify the button text.
- *
- * @apiNote <ul><li>request_contact and request_location options
- * will only work in Telegram versions released after 9 April, 2016.
- * Older clients will display unsupported message.</li>
- * <li>request_poll option will only work
- * in Telegram versions released after 23 January, 2020.
- * Older clients will display unsupported message.</li>
- * <li>web_app option will only work in Telegram versions
- * released after 16 April, 2022.
- * Older clients will display unsupported message.</li>
- * <li>request_user and request_chat options will only work
- * in Telegram versions released after 3 February, 2023.
- * Older clients will display unsupported message.</li></ul>
+ * At most one of the fields other than text, icon_custom_emoji_id,
+ * and style must be used to specify the type of the button.
+ * For simple text buttons, String can be used instead
+ * of this object to specify the button text.
  */
 
 @Data
@@ -33,8 +20,9 @@ import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 @AllArgsConstructor
 public class KeyboardButton implements Validated {
     /**
-     * Text of the button. If none of the optional fields are used,
-     * it will be sent as a message when the button is pressed
+     * Text of the button. If none of the fields other than text,
+     * icon_custom_emoji_id, and style are used, it will be sent
+     * as a message when the button is pressed
      */
     @JsonProperty("text")
     private String text;

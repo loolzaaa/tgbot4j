@@ -12,10 +12,12 @@ import ru.loolzaaa.tgbot4j.core.api.types.ForumTopic;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to create a topic in a forum supergroup chat.
- * The bot must be an administrator in the chat for this to work
- * and must have the <i>can_manage_topics</i> administrator rights.
- * Returns information about the created topic as a ForumTopic object.
+ * Use this method to create a topic in a forum supergroup chat
+ * or a private chat with a user. In the case of a supergroup chat
+ * the bot must be an administrator in the chat for this to work
+ * and must have the <i>can_manage_topics</i> administrator right.
+ * Returns information about the created topic
+ * as a {@link ForumTopic} object.
  */
 
 @Data
