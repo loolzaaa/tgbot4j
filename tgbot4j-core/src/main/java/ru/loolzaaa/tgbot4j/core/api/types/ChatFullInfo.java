@@ -365,4 +365,32 @@ public class ChatFullInfo {
      */
     @JsonProperty("location")
     private ChatLocation location;
+
+    /**
+     * Optional. For private chats, the rating of the user if any
+     */
+    @JsonProperty("rating")
+    private UserRating rating;
+
+    /**
+     * Optional. For private chats, the first audio added
+     * to the profile of the user
+     */
+    @JsonProperty("first_profile_audio")
+    private Audio firstProfileAudio;
+
+    /**
+     * Optional. The color scheme based on a unique gift
+     * that must be used for the chat's name,
+     * message replies and link previews
+     */
+    @JsonProperty("unique_gift_colors")
+    private UniqueGiftColors uniqueGiftColors;
+
+    /**
+     * Optional. The number of Telegram Stars a general user
+     * have to pay to send a message to the chat
+     */
+    @JsonProperty("paid_message_star_count")
+    private Integer paidMessageStarCount;
 }

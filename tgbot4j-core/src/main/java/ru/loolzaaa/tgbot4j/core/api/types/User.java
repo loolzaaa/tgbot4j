@@ -99,9 +99,24 @@ public class User {
     private Boolean canConnectToBusiness;
 
     /**
+     * Optional. True, if the bot has forum topic mode enabled
+     * in private chats. Returned only in {@link GetMe}.
+     */
+    @JsonProperty("has_topics_enabled")
+    private Boolean hasTopicsEnabled;
+
+    /**
      * Optional. True, if the bot has a main Web App.
      * Returned only in {@link GetMe}.
      */
     @JsonProperty("has_main_web_app")
     private Boolean hasMainWebApp;
+
+    /**
+     * Optional. True, if the bot allows users to create
+     * and delete topics in private chats.
+     * Returned only in {@link GetMe}.
+     */
+    @JsonProperty("allows_users_to_create_topics")
+    private Boolean allowsUsersToCreateTopics;
 }

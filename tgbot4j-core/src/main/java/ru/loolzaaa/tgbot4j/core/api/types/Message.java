@@ -30,7 +30,8 @@ public class Message implements MaybeInaccessibleMessage {
 
     /**
      * Optional. Unique identifier of a message thread
-     * to which the message belongs; for supergroups only
+     * or forum topic to which the message belongs;
+     * for supergroups and private chats only
      */
     @JsonProperty("message_thread_id")
     private Integer messageThreadId;
@@ -79,6 +80,13 @@ public class Message implements MaybeInaccessibleMessage {
     private User senderBusinessBot;
 
     /**
+     * Optional. Tag or custom title of the sender of the message;
+     * for supergroups only
+     */
+    @JsonProperty("sender_tag")
+    private String senderTag;
+
+    /**
      * Date the message was sent in Unix time
      */
     @JsonProperty("date")
@@ -108,7 +116,8 @@ public class Message implements MaybeInaccessibleMessage {
     private MessageOrigin forwardOrigin;
 
     /**
-     * Optional. True, if the message is sent to a forum topic
+     * Optional. True, if the message is sent to a topic
+     * in a forum supergroup or a private chat with the bot
      */
     @JsonProperty("is_topic_message")
     private Boolean isTopicMessage;
@@ -194,8 +203,8 @@ public class Message implements MaybeInaccessibleMessage {
     private Boolean isPaidPost;
 
     /**
-     * Optional. The unique identifier of a media message group
-     * this message belongs to
+     * Optional. The unique identifier inside this chat
+     * of a media message group this message belongs to
      */
     @JsonProperty("media_group_id")
     private String mediaGroupId;
@@ -405,6 +414,18 @@ public class Message implements MaybeInaccessibleMessage {
     private User leftChatMember;
 
     /**
+     * Optional. Service message: chat owner has left
+     */
+    @JsonProperty("chat_owner_left")
+    private ChatOwnerLeft chatOwnerLeft;
+
+    /**
+     * Optional. Service message: chat owner has changed
+     */
+    @JsonProperty("chat_owner_changed")
+    private ChatOwnerChanged chatOwnerChanged;
+
+    /**
      * Optional. A chat title was changed to this value
      */
     @JsonProperty("new_chat_title")
@@ -537,6 +558,13 @@ public class Message implements MaybeInaccessibleMessage {
      */
     @JsonProperty("unique_gift")
     private UniqueGiftInfo uniqueGift;
+
+    /**
+     * Optional. Service message: upgrade of a gift
+     * was purchased after the gift was sent
+     */
+    @JsonProperty("gift_upgrade_sent")
+    private GiftInfo giftUpgradeSent;
 
     /**
      * Optional. The domain name of the website on which

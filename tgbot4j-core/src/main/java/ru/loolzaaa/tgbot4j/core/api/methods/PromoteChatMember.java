@@ -66,8 +66,10 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
     private Boolean canManageVideoChats;
 
     /**
-     * Pass True if the administrator can restrict, ban or unban chat members,
-     * or access supergroup statistics
+     * Pass True if the administrator can restrict,
+     * ban or unban chat members, or access supergroup statistics.
+     * For backward compatibility, defaults to True
+     * for promotions of channel administrators
      */
     @JsonProperty("can_restrict_members")
     private Boolean canRestrictMembers;
@@ -150,6 +152,13 @@ public class PromoteChatMember implements TelegramMethod<Boolean> {
      */
     @JsonProperty("can_manage_direct_messages")
     private Boolean canManageDirectMessages;
+
+    /**
+     * Pass True if the administrator can edit the tags
+     * of regular members; for groups and supergroups only
+     */
+    @JsonProperty("can_manage_tags")
+    private Boolean canManageTags;
 
     @Override
     public Boolean determineResponseType(ObjectMapper mapper, JsonNode resultNode) {

@@ -39,10 +39,17 @@ public class GiftInfo {
 
     /**
      * Optional. Number of Telegram Stars that were prepaid
-     * by the sender for the ability to upgrade the gift
+     * for the ability to upgrade the gift
      */
     @JsonProperty("prepaid_upgrade_star_count")
     private Integer prepaidUpgradeStarCount;
+
+    /**
+     * Optional. True, if the gift's upgrade was purchased
+     * after the gift was sent
+     */
+    @JsonProperty("is_upgrade_separate")
+    private Boolean isUpgradeSeparate;
 
     /**
      * Optional. True, if the gift can be upgraded to a unique gift
@@ -68,4 +75,11 @@ public class GiftInfo {
      */
     @JsonProperty("is_private")
     private Boolean isPrivate;
+
+    /**
+     * Optional. Unique number reserved for this gift when upgraded.
+     * See the number field in {@link UniqueGift}
+     */
+    @JsonProperty("unique_gift_number")
+    private Integer uniqueGiftNumber;
 }

@@ -12,35 +12,20 @@ import ru.loolzaaa.tgbot4j.core.api.types.OwnedGifts;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Returns the gifts received and owned by a managed business account.
- * Requires the can_view_gifts_and_stars business bot right.
+ * Returns the gifts owned and hosted by a user.
  * Returns {@link OwnedGifts} on success.
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
+public class GetUserGifts implements TelegramMethod<OwnedGifts> {
     /**
-     * Unique identifier of the business connection
+     * Unique identifier of the user
      */
     @Required
-    @JsonProperty("business_connection_id")
-    private String businessConnectionId;
-
-    /**
-     * Pass True to exclude gifts that aren't saved
-     * to the account's profile page
-     */
-    @JsonProperty("exclude_unsaved")
-    private Boolean excludeUnsaved;
-
-    /**
-     * Pass True to exclude gifts that are saved
-     * to the account's profile page
-     */
-    @JsonProperty("exclude_saved")
-    private Boolean excludeSaved;
+    @JsonProperty("user_id")
+    private Integer userId;
 
     /**
      * Pass True to exclude gifts that can be purchased
@@ -64,17 +49,18 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
     private Boolean excludeLimitedNonUpgradable;
 
     /**
+     * Pass True to exclude gifts that were assigned
+     * from the TON blockchain and can't be resold
+     * or transferred in Telegram
+     */
+    @JsonProperty("exclude_from_blockchain")
+    private Boolean excludeFromBlockchain;
+
+    /**
      * Pass True to exclude unique gifts
      */
     @JsonProperty("exclude_unique")
     private Boolean excludeUnique;
-
-    /**
-     * Pass True to exclude gifts that were assigned from the TON blockchain
-     * and can't be resold or transferred in Telegram
-     */
-    @JsonProperty("exclude_from_blockchain")
-    private Boolean excludeFromBlockchain;
 
     /**
      * Pass True to sort results by gift price instead of send date.
@@ -85,15 +71,15 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
 
     /**
      * Offset of the first entry to return as received
-     * from the previous request; use empty string
+     * from the previous request; use an empty string
      * to get the first chunk of results
      */
     @JsonProperty("offset")
     private String offset;
 
     /**
-     * The maximum number of gifts to be returned; 1-100.
-     * Defaults to 100
+     * The maximum number of gifts to be returned;
+     * 1-100. Defaults to 100
      */
     @JsonProperty("limit")
     private Integer limit;
@@ -105,11 +91,11 @@ public class GetBusinessAccountGifts implements TelegramMethod<OwnedGifts> {
 
     @Override
     public void validate() {
-        if (businessConnectionId == null) {
-            throw new ApiValidationException("Business Connection Id parameter can't be null", this);
+        if (userId == null) {
+            throw new ApiValidationException("User ID parameter can't be null or empty", this);
         }
         if (limit != null && (limit < 1 || limit > 100)) {
-            throw new ApiValidationException("Limit parameter must be in 1-100", this);
+            throw new ApiValidationException("Limit parameter must be in range 1-100", this);
         }
     }
 }

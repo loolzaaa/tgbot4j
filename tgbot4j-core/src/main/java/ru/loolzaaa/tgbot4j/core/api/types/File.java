@@ -39,7 +39,7 @@ public class File {
      * are safe for storing this value.
      */
     @JsonProperty("file_size")
-    private Integer fileSize;
+    private Long fileSize;
 
     /**
      * Optional. File path. Use {@code https://api.telegram.org/file/bot<token>/<file_path>} to get the file.

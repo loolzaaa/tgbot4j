@@ -78,6 +78,12 @@ public class ChatPermissions {
     private Boolean canAddWebPagePreviews;
 
     /**
+     * Optional. True, if the user is allowed to edit their own tag
+     */
+    @JsonProperty("can_edit_tag")
+    private Boolean canEditTag;
+
+    /**
      * Optional. True, if the user is allowed to change the chat title,
      * photo and other settings. Ignored in public supergroups
      */

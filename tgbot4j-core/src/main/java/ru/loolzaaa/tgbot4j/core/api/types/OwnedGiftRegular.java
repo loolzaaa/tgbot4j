@@ -90,15 +90,31 @@ public class OwnedGiftRegular implements OwnedGift {
     /**
      * Optional. Number of Telegram Stars that can be claimed
      * by the receiver instead of the gift;
-     * omitted if the gift cannot be converted to Telegram Stars
+     * omitted if the gift cannot be converted to Telegram Stars;
+     * for gifts received on behalf of business accounts only
      */
     @JsonProperty("convert_star_count")
     private Integer convertStarCount;
 
     /**
      * Optional. Number of Telegram Stars that were paid
-     * by the sender for the ability to upgrade the gift
+     * for the ability to upgrade the gift
      */
     @JsonProperty("prepaid_upgrade_star_count")
     private Integer prepaidUpgradeStarCount;
+
+    /**
+     * Optional. True, if the gift's upgrade was purchased
+     * after the gift was sent; for gifts received on behalf
+     * of business accounts only
+     */
+    @JsonProperty("is_upgrade_separate")
+    private Boolean isUpgradeSeparate;
+
+    /**
+     * Optional. Unique number reserved for this gift when upgraded.
+     * See the number field in {@link UniqueGift}
+     */
+    @JsonProperty("unique_gift_number")
+    private Integer uniqueGiftNumber;
 }

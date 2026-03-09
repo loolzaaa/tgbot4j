@@ -11,10 +11,13 @@ import ru.loolzaaa.tgbot4j.core.api.TelegramMethod;
 import ru.loolzaaa.tgbot4j.core.exception.ApiValidationException;
 
 /**
- * Use this method to clear the list of pinned messages in a forum topic.
- * The bot must be an administrator in the chat for this to work
- * and must have the <i>can_pin_messages</i> administrator right in the supergroup.
- * Returns True on success.
+ * Use this method to clear the list of pinned messages
+ * in a forum topic in a forum supergroup chat
+ * or a private chat with a user. In the case of a supergroup chat
+ * the bot must be an administrator in the chat
+ * for this to work and must have the <i>can_pin_messages</i>
+ * administrator right in the supergroup.
+ * Returns <i>True</i> on success.
  */
 
 @Data

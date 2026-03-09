@@ -40,7 +40,7 @@ public class SendGift implements TelegramMethod<Boolean> {
     private String chatId;
 
     /**
-     * Identifier of the gift
+     * Identifier of the gift; limited gifts can't be sent to channel chats
      */
     @Required
     @JsonProperty("gift_id")
