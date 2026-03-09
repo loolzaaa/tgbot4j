@@ -40,6 +40,25 @@ public class KeyboardButton implements Validated {
     private String text;
 
     /**
+     * Optional. Unique identifier of the custom emoji shown
+     * before the text of the button. Can only be used by bots
+     * that purchased additional usernames on Fragment
+     * or in the messages directly sent by the bot to private,
+     * group and supergroup chats if the owner of the bot
+     * has a Telegram Premium subscription.
+     */
+    @JsonProperty("icon_custom_emoji_id")
+    private String iconCustomEmojiId;
+
+    /**
+     * Optional. Style of the button. Must be one of “danger” (red),
+     * “success” (green) or “primary” (blue).
+     * If omitted, then an app-specific style is used.
+     */
+    @JsonProperty("style")
+    private String style;
+
+    /**
      * Optional. If specified, pressing the button will open
      * a list of suitable users. Identifiers of selected users
      * will be sent to the bot in a “users_shared” service message.

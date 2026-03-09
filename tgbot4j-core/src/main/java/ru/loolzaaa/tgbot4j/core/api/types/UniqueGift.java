@@ -67,6 +67,13 @@ public class UniqueGift {
     private Boolean isPremium;
 
     /**
+     * Optional. True, if the gift was used to craft another gift
+     * and isn't available anymore
+     */
+    @JsonProperty("is_burned")
+    private Boolean isBurned;
+
+    /**
      * Optional. True, if the gift is assigned from the TON blockchain
      * and can't be resold or transferred in Telegram
      */

@@ -111,4 +111,12 @@ public class User {
      */
     @JsonProperty("has_main_web_app")
     private Boolean hasMainWebApp;
+
+    /**
+     * Optional. True, if the bot allows users to create
+     * and delete topics in private chats.
+     * Returned only in {@link GetMe}.
+     */
+    @JsonProperty("allows_users_to_create_topics")
+    private Boolean allowsUsersToCreateTopics;
 }

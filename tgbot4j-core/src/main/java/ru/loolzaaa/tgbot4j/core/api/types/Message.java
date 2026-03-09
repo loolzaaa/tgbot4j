@@ -407,6 +407,18 @@ public class Message implements MaybeInaccessibleMessage {
     private User leftChatMember;
 
     /**
+     * Optional. Service message: chat owner has left
+     */
+    @JsonProperty("chat_owner_left")
+    private ChatOwnerLeft chatOwnerLeft;
+
+    /**
+     * Optional. Service message: chat owner has changed
+     */
+    @JsonProperty("chat_owner_changed")
+    private ChatOwnerChanged chatOwnerChanged;
+
+    /**
      * Optional. A chat title was changed to this value
      */
     @JsonProperty("new_chat_title")
