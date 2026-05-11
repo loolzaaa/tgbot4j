@@ -186,6 +186,8 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
         private int updateTimeout = 50;
         private int updateLimit = 100;
         private List<String> updateAllowedUpdates;
+        private String proxyAddress = null;
+        private int proxyPort = -1;
     }
 
     /**
@@ -255,6 +257,8 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
             senderOptions.setConnectTimeout(options.getConnectTimeout());
             senderOptions.setRequestTimeout(options.getRequestTimeout());
             senderOptions.setMaxThreads(options.getMaxThreads());
+            senderOptions.setProxyAddress(options.getProxyAddress());
+            senderOptions.setProxyPort(options.getProxyPort());
             this.methodSender = new DefaultMethodSender(botToken, senderOptions);
         }
 

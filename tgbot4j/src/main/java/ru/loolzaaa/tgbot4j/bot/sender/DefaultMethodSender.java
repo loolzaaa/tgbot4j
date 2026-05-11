@@ -17,6 +17,8 @@ import ru.loolzaaa.tgbot4j.core.pojo.MultipartBodyPart;
 import ru.loolzaaa.tgbot4j.util.MultipartUtils;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -56,7 +58,7 @@ public final class DefaultMethodSender implements MethodSender {
     private static final Logger log = LoggerFactory.getLogger(DefaultMethodSender.class);
 
     private final ObjectMapper mapper = new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
             .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -83,10 +85,13 @@ public final class DefaultMethodSender implements MethodSender {
     public DefaultMethodSender(String botToken, SenderOptions options) {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, SenderOptions::new);
-        this.httpClient = HttpClient.newBuilder()
+        HttpClient.Builder httpClientBuilder = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
-                .connectTimeout(Duration.of(this.options.connectTimeout, ChronoUnit.MILLIS))
-                .build();
+                .connectTimeout(Duration.of(this.options.connectTimeout, ChronoUnit.MILLIS));
+        if (this.options.proxyAddress != null && this.options.proxyPort > 0) {
+            httpClientBuilder.proxy(ProxySelector.of(new InetSocketAddress(this.options.proxyAddress, this.options.proxyPort)));
+        }
+        this.httpClient = httpClientBuilder.build();
         this.executorService = Executors.newFixedThreadPool(this.options.maxThreads);
         log.info("Default telegram sender created with next options: {}", options);
     }
@@ -204,5 +209,7 @@ public final class DefaultMethodSender implements MethodSender {
         private int connectTimeout = 75 * 1000;
         private int requestTimeout = 100 * 1000;
         private int maxThreads = 1;
+        private String proxyAddress = null;
+        private int proxyPort = -1;
     }
 }
