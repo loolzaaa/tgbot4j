@@ -9,10 +9,12 @@ import com.sun.net.httpserver.HttpServer;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.loolzaaa.tgbot4j.bot.sender.DefaultMethodSender;
 import ru.loolzaaa.tgbot4j.core.api.methods.SetWebhook;
 import ru.loolzaaa.tgbot4j.core.api.types.Update;
 import ru.loolzaaa.tgbot4j.core.api.types.WebhookInfo;
 import ru.loolzaaa.tgbot4j.core.bot.receiver.UpdateReceiver;
+import ru.loolzaaa.tgbot4j.core.bot.sender.MethodSender;
 import ru.loolzaaa.tgbot4j.util.WebhookUtils;
 
 import java.io.IOException;
@@ -42,6 +44,8 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
 
     private final ReceiverOptions options;
 
+    private final MethodSender methodSender;
+
     private volatile boolean isRunning = false;
 
     private HttpServer server;
@@ -70,6 +74,14 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
             this.options.serverPort = -1;
         }
         sanitizeContextPath();
+
+        DefaultMethodSender.SenderOptions senderOptions = new DefaultMethodSender.SenderOptions();
+        senderOptions.setConnectTimeout(this.options.getConnectTimeout());
+        senderOptions.setRequestTimeout(this.options.getRequestTimeout());
+        senderOptions.setMaxThreads(this.options.getMaxThreads());
+        senderOptions.setProxyAddress(this.options.getProxyAddress());
+        senderOptions.setProxyPort(this.options.getProxyPort());
+        this.methodSender = new DefaultMethodSender(botToken, senderOptions);
     }
 
     /**
@@ -98,7 +110,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         }
 
         if (setWebhook != null) {
-            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook, null);
+            boolean setWebhookResult = WebhookUtils.setWebhook(botToken, setWebhook, methodSender);
             if (setWebhookResult) {
                 log.info("Webhook for {} successfully set", botName);
             } else {
@@ -106,7 +118,7 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
                 throw new IllegalStateException("Cannot set webhook for " + botName);
             }
         } else {
-            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, null);
+            WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, methodSender);
             if (webhookInfo.getUrl() == null || webhookInfo.getUrl().isEmpty()) {
                 throw new IllegalStateException("You need to set webhook before start webhook receiver");
             } else {
@@ -194,6 +206,11 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
      *     <li>botPath - bot mapping context path for incoming request</li>
      *     <li>executor - custom executor for server request processing</li>
      *     <li>secretToken - token for incoming webhook request</li>
+     *     <li>connectTimeout - http client timeout</li>
+     *     <li>requestTimeout - http request timeout</li>
+     *     <li>maxThreads - http client thread pool size</li>
+     *     <li>proxyAddress - proxy server address</li>
+     *     <li>proxyPort - proxy server port</li>
      * </ul>
      */
     @Getter
@@ -205,6 +222,11 @@ public final class WebhookUpdateReceiver implements UpdateReceiver {
         private String botPath = "/bot";
         private Executor executor = null;
         private String secretToken = null;
+        private int connectTimeout = 75 * 1000;
+        private int requestTimeout = 100 * 1000;
+        private int maxThreads = 1;
+        private String proxyAddress = null;
+        private int proxyPort = -1;
     }
 
     /**

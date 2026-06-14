@@ -41,6 +41,8 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
 
     private final ReceiverOptions options;
 
+    private final MethodSender methodSender;
+
     private volatile boolean isRunning = false;
 
     private ScheduledExecutorService receiverService;
@@ -66,6 +68,14 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
         this.botToken = botToken;
         this.options = Objects.requireNonNullElseGet(options, ReceiverOptions::new);
         this.updatesSupplier = Objects.requireNonNullElseGet(updatesSupplier, DefaultUpdateSupplier::new);
+
+        DefaultMethodSender.SenderOptions senderOptions = new DefaultMethodSender.SenderOptions();
+        senderOptions.setConnectTimeout(this.options.getConnectTimeout());
+        senderOptions.setRequestTimeout(this.options.getRequestTimeout());
+        senderOptions.setMaxThreads(this.options.getMaxThreads());
+        senderOptions.setProxyAddress(this.options.getProxyAddress());
+        senderOptions.setProxyPort(this.options.getProxyPort());
+        this.methodSender = new DefaultMethodSender(botToken, senderOptions);
     }
 
     /**
@@ -93,10 +103,10 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
             throw new IllegalStateException(botName + " receiver already running!");
         }
 
-        WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, null);
+        WebhookInfo webhookInfo = WebhookUtils.getWebhook(botToken, methodSender);
         if (options.clearWebhookIfExist) {
             if (webhookInfo.getUrl() != null && !webhookInfo.getUrl().isEmpty()) {
-                boolean deleteWebhookResult = WebhookUtils.deleteWebhook(botToken, false, null);
+                boolean deleteWebhookResult = WebhookUtils.deleteWebhook(botToken, false, methodSender);
                 log.info("Webhook for {} delete result: {}", botName, deleteWebhookResult);
             }
         } else {
@@ -166,10 +176,12 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
      *     <li>receiverTaskDelay - fixed delay for receiving updates</li>
      *     <li>connectTimeout - http client timeout</li>
      *     <li>requestTimeout - http request timeout</li>
-     *     <li>maxThreads - update supplier thread pool size</li>
+     *     <li>maxThreads - http client thread pool size</li>
      *     <li>updateTimeout - timeout in seconds for long polling</li>
      *     <li>updateLimit - limits the number of updates to be retrieved</li>
      *     <li>updateAllowedUpdates - allowed update types</li>
+     *     <li>proxyAddress - proxy server address</li>
+     *     <li>proxyPort - proxy server port</li>
      * </ul>
      *
      * @see GetUpdates
@@ -239,27 +251,16 @@ public final class LongPollingUpdateReceiver implements UpdateReceiver {
      */
     private class DefaultUpdateSupplier implements Supplier<List<Update>> {
 
-        private final MethodSender methodSender;
-
         private final BackOff backOff = new ExponentialBackOff();
 
         /**
          * Constructor creates new default update supplier.
-         * <p>
-         * Setting options for default method sender.
          */
         public DefaultUpdateSupplier() {
             if (options.requestTimeout <= (options.updateTimeout * 1000)) {
                 log.warn("Timeout for http request ({}) usually greater than GetUpdates method timeout ({}).",
                         options.requestTimeout, options.updateTimeout);
             }
-            DefaultMethodSender.SenderOptions senderOptions = new DefaultMethodSender.SenderOptions();
-            senderOptions.setConnectTimeout(options.getConnectTimeout());
-            senderOptions.setRequestTimeout(options.getRequestTimeout());
-            senderOptions.setMaxThreads(options.getMaxThreads());
-            senderOptions.setProxyAddress(options.getProxyAddress());
-            senderOptions.setProxyPort(options.getProxyPort());
-            this.methodSender = new DefaultMethodSender(botToken, senderOptions);
         }
 
         /**
